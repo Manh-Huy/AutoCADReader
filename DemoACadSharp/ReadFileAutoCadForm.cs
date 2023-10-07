@@ -13,6 +13,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.NetworkInformation;
+using Aspose.CAD.ImageOptions;
+using Aspose.CAD.FileFormats.Cad;
+using Aspose.CAD.FileFormats.Cad.CadObjects;
 
 namespace DemoACadSharp
 {
@@ -225,7 +229,6 @@ namespace DemoACadSharp
 
                 _listAllEntities = GetObjectProperties(filePath);
 
-
                 _listUniqueEntities = _listAllEntities
                     .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
                     .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
@@ -237,6 +240,23 @@ namespace DemoACadSharp
 
                 string uniqueObjectPath = "..\\..\\File Text\\All_Unique_Entities.txt";
                 SaveListEntitiesInfoToFile(_listUniqueEntities, uniqueObjectPath);
+
+
+                using (CadImage cadImage = (CadImage)Aspose.CAD.Image.Load(filePath))
+                {
+                    // Create output options for the image (e.g., PNG)
+                    PngOptions pngOptions = new PngOptions();
+
+                    // Save the image as PNG
+                    string outputPath = "output_image.png"; // Output file path
+                    cadImage.Save(outputPath, pngOptions);
+
+                    // Display the image on the PictureBox
+                    using (Bitmap bitmap = new Bitmap(outputPath))
+                    {
+                        pictureBox1.Image = new Bitmap(bitmap);
+                    }
+                }
             }
         }
 
