@@ -167,41 +167,6 @@ namespace DemoACadSharp
             }
         }
 
-        public static List<string> ConvertCoordinatesEntityToVector(EntityInfo entity)
-        {
-            List<string> vectors = new List<string>();
-
-            if (entity.Coordinates == null || entity.Coordinates.Count == 0)
-            {
-                MessageBox.Show("Entity không có tọa độ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return vectors;
-            }
-
-            foreach (string element in entity.Coordinates)
-            {
-                string[] parts = element.Split(',');
-
-                if (parts.Length == 2)
-                {
-                    if (double.TryParse(parts[0], out double x) && double.TryParse(parts[1], out double z))
-                    {
-                        vectors.Add($"new Vector3({x}f, 0, {z}f),");
-                    }
-                    //else
-                    //{
-                    //    MessageBox.Show("Không thể chuyển đổi thành số double ở đây");
-                    //}
-                }
-                //else
-                //{
-                //    MessageBox.Show("Không đúng định dạng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
-            }
-
-            return vectors;
-        }
-
         public ReadFileAutoCadForm()
         {
             InitializeComponent();
@@ -248,13 +213,13 @@ namespace DemoACadSharp
                     PngOptions pngOptions = new PngOptions();
 
                     // Save the image as PNG
-                    string outputPath = "output_image.png"; // Output file path
+                    string outputPath = "..\\..\\Picture Autocad2D\\output_image.png"; // Output file path
                     cadImage.Save(outputPath, pngOptions);
 
                     // Display the image on the PictureBox
                     using (Bitmap bitmap = new Bitmap(outputPath))
                     {
-                        pictureBox1.Image = new Bitmap(bitmap);
+                        pictureBox2DAutoCad.Image = new Bitmap(bitmap);
                     }
                 }
             }
@@ -372,19 +337,6 @@ namespace DemoACadSharp
                     _listTypeEntityFilePath.Add(listTypePath);
                     SaveDetailEntityInfoToFile(entity, listTypePath);
 
-                    // tạo các file text chứa vector từng lwpolyline
-                    List<string> coordinates = ConvertCoordinatesEntityToVector(entity);
-                    string vectorPath = $"..\\..\\File Text\\LwPolyline Entities\\File Vector\\LwPolyline_Entities_Vector_{temp}.txt";
-                    if (coordinates != null)
-                    {
-                        using (StreamWriter writer = new StreamWriter(vectorPath))
-                        {
-                            foreach (string element in coordinates)
-                            {
-                                writer.WriteLine(element);
-                            }
-                        }
-                    }
                     temp++;
                 }
             }

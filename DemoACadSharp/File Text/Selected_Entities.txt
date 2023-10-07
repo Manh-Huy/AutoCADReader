@@ -1,5 +1,0 @@
-Id: , Layer: Text, Object Type: MText
-Id: , Layer: Stairs, Object Type: Line
-Id: , Layer: Walls, Object Type: LwPolyline
-Id: , Layer: Cabinetry, Object Type: LwPolyline
-Id: , Layer: Stairs, Object Type: LwPolyline

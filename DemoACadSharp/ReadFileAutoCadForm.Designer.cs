@@ -38,8 +38,8 @@
             this.buttonDisplayEntities = new System.Windows.Forms.Button();
             this.buttonDisplayAllEntitiesProperties = new System.Windows.Forms.Button();
             this.buttonInputFile = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox2DAutoCad = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2DAutoCad)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonHandleSelectedEntities
@@ -145,21 +145,21 @@
             this.buttonInputFile.UseVisualStyleBackColor = true;
             this.buttonInputFile.Click += new System.EventHandler(this.buttonInputFile_Click);
             // 
-            // pictureBox1
+            // pictureBox2DAutoCad
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(286, 192);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(467, 169);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 33;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox2DAutoCad.Location = new System.Drawing.Point(286, 192);
+            this.pictureBox2DAutoCad.Name = "pictureBox2DAutoCad";
+            this.pictureBox2DAutoCad.Size = new System.Drawing.Size(467, 169);
+            this.pictureBox2DAutoCad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2DAutoCad.TabIndex = 33;
+            this.pictureBox2DAutoCad.TabStop = false;
             // 
             // ReadFileAutoCadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1057, 752);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictureBox2DAutoCad);
             this.Controls.Add(this.buttonHandleSelectedEntities);
             this.Controls.Add(this.tableLayoutPanelEntityList);
             this.Controls.Add(this.buttonDisplayClassifySelectedEntitiesByType);
@@ -172,7 +172,7 @@
             this.Controls.Add(this.buttonInputFile);
             this.Name = "ReadFileAutoCadForm";
             this.Text = "ReadFileAutoCadForm";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2DAutoCad)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -189,6 +189,6 @@
         private System.Windows.Forms.Button buttonDisplayEntities;
         private System.Windows.Forms.Button buttonDisplayAllEntitiesProperties;
         private System.Windows.Forms.Button buttonInputFile;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2DAutoCad;
     }
 }
