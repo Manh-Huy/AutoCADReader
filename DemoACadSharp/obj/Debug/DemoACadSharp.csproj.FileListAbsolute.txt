@@ -78,3 +78,17 @@ D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\D
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CopyComplete
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.exe
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.pdb
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Aspose.CAD.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Json.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.ValueTuple.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Aspose.CAD.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Json.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.ValueTuple.xml
