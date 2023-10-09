@@ -1,0 +1,5 @@
+Id: 104, Layer: Deck, Object Type: Insert
+Id: 105, Layer: Deck, Object Type: Insert
+Id: 106, Layer: Deck, Object Type: Insert
+Id: 107, Layer: Deck, Object Type: Insert
+Id: 108, Layer: Deck, Object Type: Insert

@@ -16,7 +16,7 @@ namespace DemoACadSharp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ReadFileAutoCadForm());
+            Application.Run(new MainForm());
         }
     }
 }

@@ -92,3 +92,4 @@ F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encodings.We
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Json.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.ValueTuple.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources

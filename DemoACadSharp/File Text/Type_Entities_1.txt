@@ -1,0 +1,3 @@
+Id: 76, Layer: Lighting, Object Type: Line
+Id: 77, Layer: Lighting, Object Type: Line
+Id: 78, Layer: Lighting, Object Type: Line
