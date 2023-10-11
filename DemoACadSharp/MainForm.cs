@@ -101,6 +101,16 @@ namespace DemoACadSharp
             }
         }
 
+        // Event check in node parent
+        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (e.Action != TreeViewAction.Unknown)
+            {
+                // Thay đổi trạng thái kiểm tra của tất cả nút con
+                CheckChildNodes(e.Node, e.Node.Checked);
+            }
+        }
+
         #endregion
 
         #region Method
@@ -142,26 +152,41 @@ namespace DemoACadSharp
 
         public void AddEntityToHierachy(List<EntityInfo> listUniqueEntities, List<EntityInfo> listAllEntities)
         {
-           
+
             treeView1.CheckBoxes = true;
 
             foreach (EntityInfo UniEntity in listUniqueEntities)
             {
                 TreeNode parentNode = new TreeNode($"{UniEntity.LayerName} ({UniEntity.ObjectType})");
                 treeView1.Nodes.Add(parentNode);
-                foreach(EntityInfo entity in listAllEntities)
+                foreach (EntityInfo entity in listAllEntities)
                 {
-                    if(UniEntity.LayerName == entity.LayerName && UniEntity.ObjectType == entity.ObjectType)
+                    if (UniEntity.LayerName == entity.LayerName && UniEntity.ObjectType == entity.ObjectType)
                     {
                         TreeNode childNode = new TreeNode($"{UniEntity.LayerName} ({UniEntity.ObjectType})");
                         parentNode.Nodes.Add(childNode);
                     }
                 }
-                toolStripProgressBar.Value++;
+                //toolStripProgressBar.Value++;
+            }
+        }
+
+
+        // Method support check in node parent
+        private void CheckChildNodes(TreeNode treeNode, bool isChecked)
+        {
+            foreach (TreeNode childNode in treeNode.Nodes)
+            {
+                childNode.Checked = isChecked;
+
+                // Đệ quy để thay đổi trạng thái của các nút con của nút con
+                CheckChildNodes(childNode, isChecked);
             }
         }
 
         #endregion
+
+
 
     }
 }
