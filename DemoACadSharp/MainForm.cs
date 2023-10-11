@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace DemoACadSharp
 {
@@ -111,6 +113,19 @@ namespace DemoACadSharp
             }
         }
 
+        // Event save file to JSON(JavaScript Object Notation =))))))))))) )
+        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
+
+            string json = JsonConvert.SerializeObject(selectedEntities, Formatting.Indented);
+
+            string path = @"C:\Users\ADMIN\OneDrive\Desktop\myJSON.json";
+            File.WriteAllText(path, json);
+
+            MessageBox.Show("Save Successfully!");
+        }
+
         #endregion
 
         #region Method
@@ -163,8 +178,10 @@ namespace DemoACadSharp
                 {
                     if (UniEntity.LayerName == entity.LayerName && UniEntity.ObjectType == entity.ObjectType)
                     {
-                        TreeNode childNode = new TreeNode($"{UniEntity.LayerName} ({UniEntity.ObjectType})");
+                        TreeNode childNode = new TreeNode($"{UniEntity.Id}: {UniEntity.LayerName} ({UniEntity.ObjectType})");
                         parentNode.Nodes.Add(childNode);
+                        childNode.Tag = entity;
+                        objectDictionary[childNode] = entity;
                     }
                 }
                 //toolStripProgressBar.Value++;
@@ -184,9 +201,29 @@ namespace DemoACadSharp
             }
         }
 
+        // Function call Recursion to support for btn SaveFile
+        private List<EntityInfo> GetSelectedEntities(TreeNodeCollection nodes, List<EntityInfo> entityList)
+        {
+            List<EntityInfo> selectedEntities = new List<EntityInfo>();
+
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Checked && node.Tag is EntityInfo entityInfo && entityList.Contains(entityInfo))
+                {
+                    selectedEntities.Add(entityInfo);
+                }
+
+                if (node.Nodes.Count > 0)
+                {
+                    selectedEntities.AddRange(GetSelectedEntities(node.Nodes, entityList));
+                }
+            }
+
+            return selectedEntities;
+        }
+
+
         #endregion
-
-
 
     }
 }
