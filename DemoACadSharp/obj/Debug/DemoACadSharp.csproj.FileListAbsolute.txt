@@ -96,3 +96,5 @@ F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.r
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.dll
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.xml
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Newtonsoft.Json.dll
+F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Newtonsoft.Json.xml

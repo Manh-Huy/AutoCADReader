@@ -120,10 +120,16 @@ namespace DemoACadSharp
 
             string json = JsonConvert.SerializeObject(selectedEntities, Formatting.Indented);
 
-            string path = @"C:\Users\ADMIN\OneDrive\Desktop\myJSON.json";
-            File.WriteAllText(path, json);
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.Title = "Save JSON File";
 
-            MessageBox.Show("Save Successfully!");
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = saveFileDialog.FileName;
+                File.WriteAllText(path, json);
+                MessageBox.Show("Save Successfully!");
+            }
         }
 
         #endregion
@@ -181,7 +187,7 @@ namespace DemoACadSharp
                         TreeNode childNode = new TreeNode($"{UniEntity.Id}: {UniEntity.LayerName} ({UniEntity.ObjectType})");
                         parentNode.Nodes.Add(childNode);
                         childNode.Tag = entity;
-                        objectDictionary[childNode] = entity;
+                        //objectDictionary[childNode] = entity;
                     }
                 }
                 //toolStripProgressBar.Value++;
