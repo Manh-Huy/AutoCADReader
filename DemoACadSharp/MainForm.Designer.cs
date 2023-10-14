@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStripAllFeature = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,11 +41,18 @@
             this.statusStripLoadTime = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wall = new System.Windows.Forms.ToolStripMenuItem();
+            this.doorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripAllFeature.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDetailEntities)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).BeginInit();
             this.statusStripLoadTime.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripAllFeature
@@ -71,21 +79,21 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
@@ -134,6 +142,7 @@
             this.treeView1.Size = new System.Drawing.Size(355, 420);
             this.treeView1.TabIndex = 4;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
             // statusStripLoadTime
             // 
@@ -158,6 +167,50 @@
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(250, 18);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.objectTypeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 80);
+            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem1.Text = "Properties";
+            // 
+            // objectTypeToolStripMenuItem
+            // 
+            this.objectTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wall,
+            this.doorToolStripMenuItem,
+            this.stairToolStripMenuItem});
+            this.objectTypeToolStripMenuItem.Name = "objectTypeToolStripMenuItem";
+            this.objectTypeToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.objectTypeToolStripMenuItem.Text = "Object Type";
+            // 
+            // wall
+            // 
+            this.wall.Name = "wall";
+            this.wall.Size = new System.Drawing.Size(126, 26);
+            this.wall.Text = "Wall";
+            // 
+            // doorToolStripMenuItem
+            // 
+            this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
+            this.doorToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
+            this.doorToolStripMenuItem.Text = "Door";
+            // 
+            // stairToolStripMenuItem
+            // 
+            this.stairToolStripMenuItem.Name = "stairToolStripMenuItem";
+            this.stairToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
+            this.stairToolStripMenuItem.Text = "Stair";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -167,9 +220,11 @@
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripAllFeature);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.MainMenuStrip = this.menuStripAllFeature;
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStripAllFeature.ResumeLayout(false);
             this.menuStripAllFeature.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -177,6 +232,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).EndInit();
             this.statusStripLoadTime.ResumeLayout(false);
             this.statusStripLoadTime.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -196,5 +252,11 @@
         private System.Windows.Forms.StatusStrip statusStripLoadTime;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem objectTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wall;
+        private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stairToolStripMenuItem;
     }
 }

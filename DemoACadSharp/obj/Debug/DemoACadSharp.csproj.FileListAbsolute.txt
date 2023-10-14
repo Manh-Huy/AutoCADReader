@@ -42,42 +42,6 @@ F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.Cop
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.exe
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.pdb
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.ReadFileAutoCadForm.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.exe.config
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.exe
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.pdb
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\ACadSharp.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Aspose.CAD.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Buffers.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Memory.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Numerics.Vectors.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Json.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.ValueTuple.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\ACadSharp.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Aspose.CAD.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Buffers.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Memory.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Numerics.Vectors.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Json.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.ValueTuple.xml
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.AssemblyReference.cache
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.SuggestedBindingRedirects.cache
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.Properties.Resources.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.ReadFileAutoCadForm.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.GenerateResource.cache
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CoreCompileInputs.cache
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CopyComplete
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.exe
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.pdb
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Aspose.CAD.dll
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.dll
@@ -93,8 +57,44 @@ F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Text.Json.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\System.ValueTuple.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.dll
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.xml
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Newtonsoft.Json.dll
 F:\Push_In_Github\AutoCADReader\DemoACadSharp\bin\Debug\Newtonsoft.Json.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.exe.config
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.exe
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\DemoACadSharp.pdb
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\ACadSharp.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Aspose.CAD.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Buffers.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Memory.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Numerics.Vectors.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Json.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.ValueTuple.dll
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\ACadSharp.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Aspose.CAD.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\Newtonsoft.Json.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Buffers.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Memory.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Numerics.Vectors.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encoding.CodePages.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Encodings.Web.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Text.Json.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\bin\Debug\System.ValueTuple.xml
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.AssemblyReference.cache
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.SuggestedBindingRedirects.cache
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.Properties.Resources.resources
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.ReadFileAutoCadForm.resources
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.GenerateResource.cache
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CoreCompileInputs.cache
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CopyComplete
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.exe
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.pdb
