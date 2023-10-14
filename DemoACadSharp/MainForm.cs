@@ -17,6 +17,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
 using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 
 namespace DemoACadSharp
 {
@@ -116,9 +118,9 @@ namespace DemoACadSharp
         // Event save file to JSON(JavaScript Object Notation =))))))))))) )
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
+            //List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
 
-            string json = JsonConvert.SerializeObject(selectedEntities, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(_listAllEntities, Formatting.Indented);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
@@ -184,7 +186,7 @@ namespace DemoACadSharp
                 {
                     if (UniEntity.LayerName == entity.LayerName && UniEntity.ObjectType == entity.ObjectType)
                     {
-                        TreeNode childNode = new TreeNode($"{UniEntity.Id}: {UniEntity.LayerName} ({UniEntity.ObjectType})");
+                        TreeNode childNode = new TreeNode($"{UniEntity.LayerName} ({UniEntity.ObjectType})");
                         parentNode.Nodes.Add(childNode);
                         childNode.Tag = entity;
                         //objectDictionary[childNode] = entity;
@@ -228,8 +230,90 @@ namespace DemoACadSharp
             return selectedEntities;
         }
 
-
         #endregion
+
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Mở hộp thoại OpenFileDialog để chọn tệp JSON
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "JSON Files (*.json)|*.json";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string json = File.ReadAllText(openFileDialog.FileName);
+
+                        _listAllEntities.Clear();
+
+                        // Xóa nút hiện tại trong TreeView
+                        treeView1.Nodes.Clear();
+                        treeView1.CheckBoxes = true;
+
+                        // Chuyển đổi JSON thành mảng đối tượng
+                        JArray jsonArray = JArray.Parse(json);
+
+                        // Tạo nút gốc cho mỗi loại LayerName
+                        var layerGroups = jsonArray.GroupBy(obj => obj.Value<string>("LayerName"));
+                        foreach (var layerGroup in layerGroups)
+                        {
+                            string layerName = layerGroup.Key;
+                            TreeNode layerNode = treeView1.Nodes.Add(layerName);
+
+                            // Thêm các nút con cho mỗi đối tượng cùng loại LayerName
+                            foreach (var obj in layerGroup)
+                            {
+                                string objectType = obj.Value<string>("ObjectType");
+                                string nodeText = $"{layerName} ({objectType})";
+                                layerNode.Nodes.Add(nodeText);
+                                string layerNameObj = obj.Value<string>("LayerName"); // Lấy layerName từ obj
+
+                                EntityInfo entity = new EntityInfo(null, layerNameObj, objectType, new List<string>());
+                                _listAllEntities.Add(entity);
+                            }
+                        }
+
+                        // Mở tất cả các nút gốc
+                        treeView1.ExpandAll();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi đọc tệp JSON: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void AddNode(JToken token, TreeNode parentNode)
+        {
+
+            if (token.Type == JTokenType.Object)
+            {
+                JObject obj = (JObject)token;
+                string layerName = obj.Value<string>("LayerName");
+                string objectType = obj.Value<string>("ObjectType");
+                string nodeText = $"{layerName} ({objectType})";
+
+                // Tìm hoặc tạo nút cha dựa trên LayerName
+                TreeNode layerNode = parentNode.Nodes.Cast<TreeNode>()
+                    .FirstOrDefault(n => n.Text.StartsWith(layerName));
+                if (layerNode == null)
+                {
+                    layerNode = parentNode.Nodes.Add(layerName);
+                }
+
+                // Thêm nút con mới dựa trên nodeText
+                layerNode.Nodes.Add(nodeText);
+            }
+            else if (token.Type == JTokenType.Array)
+            {
+                JArray array = (JArray)token;
+                for (int i = 0; i < array.Count; i++)
+                {
+                    AddNode(array[i], parentNode);
+                }
+            }
+        }
 
     }
 }
