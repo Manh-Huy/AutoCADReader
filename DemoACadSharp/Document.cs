@@ -8,5 +8,10 @@ namespace DemoACadSharp
 {
     public class Document
     {
+        private List<ParentEntity> allEntity = new List<ParentEntity>();
+
+
+
+        public List<ParentEntity> AllEntity { get => allEntity; set => allEntity = value; }
     }
 }

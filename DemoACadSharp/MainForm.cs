@@ -19,11 +19,14 @@ using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
+using Aspose.CAD.FileFormats.GLB.IO;
 
 namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
+        Document document = new Document();
+
         List<EntityInfo> _listAllEntities = new List<EntityInfo>();
 
         List<EntityInfo> _listUniqueEntities = new List<EntityInfo>();
@@ -58,6 +61,8 @@ namespace DemoACadSharp
             // Dọn Cache
             _listAllEntities.Clear();
             _listUniqueEntities.Clear();
+
+
 
             // Hiển thị hộp thoại mở tệp và cho phép người dùng chọn tệp DWG
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -120,7 +125,26 @@ namespace DemoACadSharp
         {
             //List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
 
-            string json = JsonConvert.SerializeObject(_listAllEntities, Formatting.Indented);
+            Document document = new Document();
+            foreach(EntityInfo entity in _listUniqueEntities)
+            {
+                ParentEntity parentEntity= new ParentEntity();
+                parentEntity.ParentLayerName = entity.LayerName;
+                parentEntity.ParentObjectType = entity.ObjectType;
+                document.AllEntity.Add(parentEntity);
+            }
+            foreach(EntityInfo entity in _listAllEntities)
+            {
+                foreach(ParentEntity parentEntity in document.AllEntity)
+                {
+                    if(parentEntity.ParentLayerName == entity.LayerName && parentEntity.ParentObjectType == entity.ObjectType)
+                    {
+                        parentEntity.EntityInfos.Add(entity);
+                    }
+                }
+            }
+
+            string json = JsonConvert.SerializeObject(document, Formatting.Indented);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
@@ -251,9 +275,18 @@ namespace DemoACadSharp
                         treeView1.CheckBoxes = true;
 
                         // Chuyển đổi JSON thành mảng đối tượng
-                        JArray jsonArray = JArray.Parse(json);
+                        Document document = JsonConvert.DeserializeObject<Document>(json);
+                        foreach(ParentEntity parentEntity in document.AllEntity)
+                        {
+                            TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
+                            foreach(EntityInfo entities in parentEntity.EntityInfos)
+                            {
+                                TreeNode childNode = parentNode.Nodes.Add($"{entities.LayerName} ({entities.ObjectType})");
+                            }                                  
+                        }    
 
-                        // Tạo nút gốc cho mỗi loại LayerName
+
+                        /*// Tạo nút gốc cho mỗi loại LayerName
                         var layerGroups = jsonArray.GroupBy(obj => obj.Value<string>("LayerName"));
                         foreach (var layerGroup in layerGroups)
                         {
@@ -271,10 +304,10 @@ namespace DemoACadSharp
                                 EntityInfo entity = new EntityInfo(null, layerNameObj, objectType, new List<string>());
                                 _listAllEntities.Add(entity);
                             }
-                        }
+                        }*/
+
 
                         // Mở tất cả các nút gốc
-                        treeView1.ExpandAll();
                     }
                     catch (Exception ex)
                     {
