@@ -20,6 +20,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using Aspose.CAD.FileFormats.GLB.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace DemoACadSharp
 {
@@ -50,6 +51,7 @@ namespace DemoACadSharp
 
         List<string> _listTypeEntityFilePath = new List<string>(); // lưu path file của các loại entity
 
+        string _selectedTreeNodeName;
         public MainForm()
         {
             InitializeComponent();
@@ -149,6 +151,8 @@ namespace DemoACadSharp
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
             saveFileDialog.Title = "Save JSON File";
+
+            
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -279,11 +283,21 @@ namespace DemoACadSharp
                         foreach(ParentEntity parentEntity in document.AllEntity)
                         {
                             TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
-                            foreach(EntityInfo entities in parentEntity.EntityInfos)
+
+
+                            foreach (EntityInfo entities in parentEntity.EntityInfos)
                             {
                                 TreeNode childNode = parentNode.Nodes.Add($"{entities.LayerName} ({entities.ObjectType})");
                             }                                  
-                        }    
+                        }
+
+                        _listAllEntities.Clear();
+                        _listAllEntities = document.getAllEntity();
+                        _listUniqueEntities.Clear();
+                        _listUniqueEntities = _listAllEntities
+                    .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
+                    .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
+                    .ToList();
 
 
                         /*// Tạo nút gốc cho mỗi loại LayerName
@@ -317,6 +331,15 @@ namespace DemoACadSharp
             }
         }
 
+        private void ContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem node = sender as System.Windows.Forms.ToolStripMenuItem;
+            if(node.Name == "wall")
+            {
+                MessageBox.Show("Rhyderrr");
+            }
+        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi
+
         private void AddNode(JToken token, TreeNode parentNode)
         {
 
@@ -348,5 +371,20 @@ namespace DemoACadSharp
             }
         }
 
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if(e.Node != null)
+                {
+                    e.Node.ContextMenuStrip = contextMenuStrip1;
+                }    
+            }
+        } // Cái hàm này là để đnăg ký sự kiện lắng nghe cho các Node
+
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            MessageBox.Show(sender.GetType().ToString());
+        } // Hàm này sẽ thực thi nè
     }
 }
