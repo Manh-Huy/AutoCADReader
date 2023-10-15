@@ -79,5 +79,15 @@ namespace DemoACadSharp.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _376371757_161526873661412_820728656325930674_n {
+            get {
+                object obj = ResourceManager.GetObject("376371757_161526873661412_820728656325930674_n", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

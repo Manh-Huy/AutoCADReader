@@ -149,6 +149,9 @@
   <ItemGroup>
     <None Include="Resources\200x200.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\376371757_161526873661412_820728656325930674_n.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
