@@ -28,31 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.menuStripAllFeature = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBoxDetailEntities = new System.Windows.Forms.PictureBox();
-            this.pictureBoxThumbNail = new System.Windows.Forms.PictureBox();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.statusStripLoadTime = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.objectTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wall = new System.Windows.Forms.ToolStripMenuItem();
-            this.doorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnSelect = new System.Windows.Forms.Button();
+            this.pictureBoxThumbNail = new System.Windows.Forms.PictureBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
+            this.dataGridViewPropertiesEntity = new System.Windows.Forms.DataGridView();
+            this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStripAllFeature.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDetailEntities)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).BeginInit();
             this.statusStripLoadTime.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPropertiesEntity)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripAllFeature
@@ -62,7 +64,7 @@
             this.FileToolStripMenuItem});
             this.menuStripAllFeature.Location = new System.Drawing.Point(0, 0);
             this.menuStripAllFeature.Name = "menuStripAllFeature";
-            this.menuStripAllFeature.Size = new System.Drawing.Size(1560, 28);
+            this.menuStripAllFeature.Size = new System.Drawing.Size(981, 28);
             this.menuStripAllFeature.TabIndex = 0;
             this.menuStripAllFeature.Text = "menuStrip1";
             // 
@@ -97,53 +99,6 @@
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.pictureBoxDetailEntities);
-            this.panel1.Controls.Add(this.pictureBoxThumbNail);
-            this.panel1.Location = new System.Drawing.Point(409, 45);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(978, 429);
-            this.panel1.TabIndex = 3;
-            // 
-            // pictureBoxDetailEntities
-            // 
-            this.pictureBoxDetailEntities.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxDetailEntities.Location = new System.Drawing.Point(503, 17);
-            this.pictureBoxDetailEntities.Name = "pictureBoxDetailEntities";
-            this.pictureBoxDetailEntities.Size = new System.Drawing.Size(436, 395);
-            this.pictureBoxDetailEntities.TabIndex = 1;
-            this.pictureBoxDetailEntities.TabStop = false;
-            // 
-            // pictureBoxThumbNail
-            // 
-            this.pictureBoxThumbNail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxThumbNail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBoxThumbNail.Image = global::DemoACadSharp.Properties.Resources._345668002_207268608768377_4716940698160860698_n;
-            this.pictureBoxThumbNail.Location = new System.Drawing.Point(32, 17);
-            this.pictureBoxThumbNail.Name = "pictureBoxThumbNail";
-            this.pictureBoxThumbNail.Size = new System.Drawing.Size(452, 395);
-            this.pictureBoxThumbNail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxThumbNail.TabIndex = 0;
-            this.pictureBoxThumbNail.TabStop = false;
-            // 
-            // treeView1
-            // 
-            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeView1.Location = new System.Drawing.Point(12, 54);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(355, 420);
-            this.treeView1.TabIndex = 4;
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
-            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
-            // 
             // statusStripLoadTime
             // 
             this.statusStripLoadTime.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -152,7 +107,7 @@
             this.toolStripProgressBar});
             this.statusStripLoadTime.Location = new System.Drawing.Point(0, 489);
             this.statusStripLoadTime.Name = "statusStripLoadTime";
-            this.statusStripLoadTime.Size = new System.Drawing.Size(1560, 26);
+            this.statusStripLoadTime.Size = new System.Drawing.Size(981, 26);
             this.statusStripLoadTime.TabIndex = 5;
             this.statusStripLoadTime.Text = "statusStrip1";
             // 
@@ -167,58 +122,130 @@
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(250, 18);
             // 
-            // contextMenuStrip1
+            // tabControl1
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.objectTypeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 80);
-            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(0, 31);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(981, 455);
+            this.tabControl1.TabIndex = 6;
             // 
-            // toolStripMenuItem1
+            // tabPage1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(210, 24);
-            this.toolStripMenuItem1.Text = "Properties";
+            this.tabPage1.Controls.Add(this.btnSelect);
+            this.tabPage1.Controls.Add(this.pictureBoxThumbNail);
+            this.tabPage1.Controls.Add(this.treeView1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(973, 426);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "View";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // objectTypeToolStripMenuItem
+            // btnSelect
             // 
-            this.objectTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.wall,
-            this.doorToolStripMenuItem,
-            this.stairToolStripMenuItem});
-            this.objectTypeToolStripMenuItem.Name = "objectTypeToolStripMenuItem";
-            this.objectTypeToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-            this.objectTypeToolStripMenuItem.Text = "Object Type";
+            this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSelect.Location = new System.Drawing.Point(3, 391);
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(355, 29);
+            this.btnSelect.TabIndex = 6;
+            this.btnSelect.Text = "Select";
+            this.btnSelect.UseVisualStyleBackColor = true;
             // 
-            // wall
+            // pictureBoxThumbNail
             // 
-            this.wall.Name = "wall";
-            this.wall.Size = new System.Drawing.Size(126, 26);
-            this.wall.Text = "Wall";
+            this.pictureBoxThumbNail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxThumbNail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBoxThumbNail.Image = global::DemoACadSharp.Properties.Resources._345668002_207268608768377_4716940698160860698_n;
+            this.pictureBoxThumbNail.Location = new System.Drawing.Point(364, 6);
+            this.pictureBoxThumbNail.Name = "pictureBoxThumbNail";
+            this.pictureBoxThumbNail.Size = new System.Drawing.Size(601, 417);
+            this.pictureBoxThumbNail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxThumbNail.TabIndex = 0;
+            this.pictureBoxThumbNail.TabStop = false;
             // 
-            // doorToolStripMenuItem
+            // treeView1
             // 
-            this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
-            this.doorToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
-            this.doorToolStripMenuItem.Text = "Door";
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeView1.Location = new System.Drawing.Point(3, 6);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(355, 379);
+            this.treeView1.TabIndex = 5;
             // 
-            // stairToolStripMenuItem
+            // tabPage2
             // 
-            this.stairToolStripMenuItem.Name = "stairToolStripMenuItem";
-            this.stairToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
-            this.stairToolStripMenuItem.Text = "Stair";
+            this.tabPage2.Controls.Add(this.panel1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(973, 426);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Config";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // pictureBoxSelected
+            // 
+            this.pictureBoxSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxSelected.Image = global::DemoACadSharp.Properties.Resources._376371757_161526873661412_820728656325930674_n;
+            this.pictureBoxSelected.Location = new System.Drawing.Point(779, 3);
+            this.pictureBoxSelected.Name = "pictureBoxSelected";
+            this.pictureBoxSelected.Size = new System.Drawing.Size(175, 408);
+            this.pictureBoxSelected.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxSelected.TabIndex = 2;
+            this.pictureBoxSelected.TabStop = false;
+            // 
+            // dataGridViewPropertiesEntity
+            // 
+            this.dataGridViewPropertiesEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGridViewPropertiesEntity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPropertiesEntity.Location = new System.Drawing.Point(360, 3);
+            this.dataGridViewPropertiesEntity.Name = "dataGridViewPropertiesEntity";
+            this.dataGridViewPropertiesEntity.RowHeadersWidth = 51;
+            this.dataGridViewPropertiesEntity.RowTemplate.Height = 24;
+            this.dataGridViewPropertiesEntity.Size = new System.Drawing.Size(413, 408);
+            this.dataGridViewPropertiesEntity.TabIndex = 1;
+            // 
+            // treeViewSelectedEntity
+            // 
+            this.treeViewSelectedEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.treeViewSelectedEntity.Location = new System.Drawing.Point(3, 3);
+            this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
+            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 408);
+            this.treeViewSelectedEntity.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.treeViewSelectedEntity);
+            this.panel1.Controls.Add(this.pictureBoxSelected);
+            this.panel1.Controls.Add(this.dataGridViewPropertiesEntity);
+            this.panel1.Location = new System.Drawing.Point(8, 6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(957, 414);
+            this.panel1.TabIndex = 3;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1560, 515);
+            this.ClientSize = new System.Drawing.Size(981, 515);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStripLoadTime);
-            this.Controls.Add(this.treeView1);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripAllFeature);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.MainMenuStrip = this.menuStripAllFeature;
@@ -227,12 +254,15 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStripAllFeature.ResumeLayout(false);
             this.menuStripAllFeature.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDetailEntities)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).EndInit();
             this.statusStripLoadTime.ResumeLayout(false);
             this.statusStripLoadTime.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPropertiesEntity)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -245,18 +275,18 @@
         private System.Windows.Forms.ToolStripMenuItem importFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBoxDetailEntities;
-        private System.Windows.Forms.PictureBox pictureBoxThumbNail;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.StatusStrip statusStripLoadTime;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem objectTypeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wall;
-        private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stairToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.PictureBox pictureBoxThumbNail;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button btnSelect;
+        private System.Windows.Forms.PictureBox pictureBoxSelected;
+        private System.Windows.Forms.DataGridView dataGridViewPropertiesEntity;
+        private System.Windows.Forms.TreeView treeViewSelectedEntity;
+        private System.Windows.Forms.Panel panel1;
     }
 }

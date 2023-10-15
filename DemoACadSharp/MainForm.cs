@@ -186,7 +186,7 @@ namespace DemoACadSharp
             }
         } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi
 
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        /*private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -199,8 +199,10 @@ namespace DemoACadSharp
 
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            MessageBox.Show(sender.GetType().ToString());
-        } // Hàm này sẽ thực thi nè
+            *//*ToolStripMenuItem item = sender as ToolStripMenuItem;
+            MessageBox.Show(item.GetType().ToString());*//*
+            MessageBox.Show(sender.ToString());
+        } // Hàm này sẽ thực thi nè*/
 
         #endregion
 
