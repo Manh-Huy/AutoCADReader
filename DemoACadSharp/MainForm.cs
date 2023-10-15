@@ -32,26 +32,6 @@ namespace DemoACadSharp
 
         List<EntityInfo> _listUniqueEntities = new List<EntityInfo>();
 
-        List<EntityInfo> _listSelectedEntities = new List<EntityInfo>();
-
-        List<EntityInfo> _listAllSelectedEntities = new List<EntityInfo>();
-
-        List<CheckBox> _listCheckBoxes = new List<CheckBox>();
-
-        // List các type entity cần thiết
-
-        List<List<EntityInfo>> _allListType;
-
-        List<EntityInfo> _listTypeLwPolyline = new List<EntityInfo>();
-
-        List<EntityInfo> _listTypeLine = new List<EntityInfo>();
-
-        List<EntityInfo> _listOtherType = new List<EntityInfo>();
-
-
-        List<string> _listTypeEntityFilePath = new List<string>(); // lưu path file của các loại entity
-
-        string _selectedTreeNodeName;
         public MainForm()
         {
             InitializeComponent();
@@ -63,8 +43,6 @@ namespace DemoACadSharp
             // Dọn Cache
             _listAllEntities.Clear();
             _listUniqueEntities.Clear();
-
-
 
             // Hiển thị hộp thoại mở tệp và cho phép người dùng chọn tệp DWG
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -84,14 +62,6 @@ namespace DemoACadSharp
 
                 AddEntityToHierachy(_listUniqueEntities, _listAllEntities);
 
-                //// Lưu danh sách thông số các đối tượng vào tệp văn bản
-                //string allObjectPropertiesFilePath = "..\\..\\File Text\\All_Entities_Properties.txt";
-                //SaveListEntitiesInfoToFile(_listAllEntities, allObjectPropertiesFilePath);
-
-                //string uniqueObjectPath = "..\\..\\File Text\\All_Unique_Entities.txt";
-                //SaveListEntitiesInfoToFile(_listUniqueEntities, uniqueObjectPath);
-
-
                 using (CadImage cadImage = (CadImage)Aspose.CAD.Image.Load(filePath))
                 {
                     // Create output options for the image (e.g., PNG)
@@ -106,23 +76,59 @@ namespace DemoACadSharp
                     {
                         pictureBoxThumbNail.Image = new Bitmap(bitmap);
                         pictureBoxThumbNail.BackgroundImageLayout = ImageLayout.Zoom;
-
                     }
                 }
             }
         }
 
-        // Event check in node parent
-        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (e.Action != TreeViewAction.Unknown)
+            // Mở hộp thoại OpenFileDialog để chọn tệp JSON
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                // Thay đổi trạng thái kiểm tra của tất cả nút con
-                CheckChildNodes(e.Node, e.Node.Checked);
+                openFileDialog.Filter = "JSON Files (*.json)|*.json";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string json = File.ReadAllText(openFileDialog.FileName);
+
+                        _listAllEntities.Clear();
+
+                        // Xóa nút hiện tại trong TreeView
+                        treeView1.Nodes.Clear();
+                        treeView1.CheckBoxes = true;
+
+                        // Chuyển đổi JSON thành mảng đối tượng
+                        Document document = JsonConvert.DeserializeObject<Document>(json);
+                        foreach (ParentEntity parentEntity in document.ParentEntity)
+                        {
+                            TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
+
+
+                            foreach (EntityInfo entities in parentEntity.EntityInfos)
+                            {
+                                TreeNode childNode = parentNode.Nodes.Add($"{entities.LayerName} ({entities.ObjectType})");
+                            }
+                        }
+
+                        _listAllEntities.Clear();
+                        _listAllEntities = document.getAllEntity();
+                        _listUniqueEntities.Clear();
+
+                        _listUniqueEntities = _listAllEntities
+                        .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
+                        .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
+                        .ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi đọc tệp JSON: " + ex.Message);
+                    }
+                }
             }
         }
-
-        // Event save file to JSON(JavaScript Object Notation =))))))))))) )
+        // Event check in node parent
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
@@ -133,11 +139,11 @@ namespace DemoACadSharp
                 ParentEntity parentEntity= new ParentEntity();
                 parentEntity.ParentLayerName = entity.LayerName;
                 parentEntity.ParentObjectType = entity.ObjectType;
-                document.AllEntity.Add(parentEntity);
+                document.ParentEntity.Add(parentEntity);
             }
             foreach(EntityInfo entity in _listAllEntities)
             {
-                foreach(ParentEntity parentEntity in document.AllEntity)
+                foreach(ParentEntity parentEntity in document.ParentEntity)
                 {
                     if(parentEntity.ParentLayerName == entity.LayerName && parentEntity.ParentObjectType == entity.ObjectType)
                     {
@@ -161,6 +167,40 @@ namespace DemoACadSharp
                 MessageBox.Show("Save Successfully!");
             }
         }
+
+        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (e.Action != TreeViewAction.Unknown)
+            {
+                // Thay đổi trạng thái kiểm tra của tất cả nút con
+                CheckChildNodes(e.Node, e.Node.Checked);
+            }
+        }
+
+        private void ContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem node = sender as System.Windows.Forms.ToolStripMenuItem;
+            if (node.Name == "wall")
+            {
+                MessageBox.Show("Rhyderrr");
+            }
+        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.Node != null)
+                {
+                    e.Node.ContextMenuStrip = contextMenuStrip1;
+                }
+            }
+        } // Cái hàm này là để đnăg ký sự kiện lắng nghe cho các Node
+
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            MessageBox.Show(sender.GetType().ToString());
+        } // Hàm này sẽ thực thi nè
 
         #endregion
 
@@ -258,88 +298,6 @@ namespace DemoACadSharp
             return selectedEntities;
         }
 
-        #endregion
-
-        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Mở hộp thoại OpenFileDialog để chọn tệp JSON
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "JSON Files (*.json)|*.json";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        string json = File.ReadAllText(openFileDialog.FileName);
-
-                        _listAllEntities.Clear();
-
-                        // Xóa nút hiện tại trong TreeView
-                        treeView1.Nodes.Clear();
-                        treeView1.CheckBoxes = true;
-
-                        // Chuyển đổi JSON thành mảng đối tượng
-                        Document document = JsonConvert.DeserializeObject<Document>(json);
-                        foreach(ParentEntity parentEntity in document.AllEntity)
-                        {
-                            TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
-
-
-                            foreach (EntityInfo entities in parentEntity.EntityInfos)
-                            {
-                                TreeNode childNode = parentNode.Nodes.Add($"{entities.LayerName} ({entities.ObjectType})");
-                            }                                  
-                        }
-
-                        _listAllEntities.Clear();
-                        _listAllEntities = document.getAllEntity();
-                        _listUniqueEntities.Clear();
-                        _listUniqueEntities = _listAllEntities
-                    .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
-                    .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
-                    .ToList();
-
-
-                        /*// Tạo nút gốc cho mỗi loại LayerName
-                        var layerGroups = jsonArray.GroupBy(obj => obj.Value<string>("LayerName"));
-                        foreach (var layerGroup in layerGroups)
-                        {
-                            string layerName = layerGroup.Key;
-                            TreeNode layerNode = treeView1.Nodes.Add(layerName);
-
-                            // Thêm các nút con cho mỗi đối tượng cùng loại LayerName
-                            foreach (var obj in layerGroup)
-                            {
-                                string objectType = obj.Value<string>("ObjectType");
-                                string nodeText = $"{layerName} ({objectType})";
-                                layerNode.Nodes.Add(nodeText);
-                                string layerNameObj = obj.Value<string>("LayerName"); // Lấy layerName từ obj
-
-                                EntityInfo entity = new EntityInfo(null, layerNameObj, objectType, new List<string>());
-                                _listAllEntities.Add(entity);
-                            }
-                        }*/
-
-
-                        // Mở tất cả các nút gốc
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi đọc tệp JSON: " + ex.Message);
-                    }
-                }
-            }
-        }
-
-        private void ContextMenuStrip_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem node = sender as System.Windows.Forms.ToolStripMenuItem;
-            if(node.Name == "wall")
-            {
-                MessageBox.Show("Rhyderrr");
-            }
-        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi
-
         private void AddNode(JToken token, TreeNode parentNode)
         {
 
@@ -371,20 +329,6 @@ namespace DemoACadSharp
             }
         }
 
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                if(e.Node != null)
-                {
-                    e.Node.ContextMenuStrip = contextMenuStrip1;
-                }    
-            }
-        } // Cái hàm này là để đnăg ký sự kiện lắng nghe cho các Node
-
-        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            MessageBox.Show(sender.GetType().ToString());
-        } // Hàm này sẽ thực thi nè
+        #endregion
     }
 }

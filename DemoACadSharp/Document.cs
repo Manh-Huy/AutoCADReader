@@ -8,15 +8,15 @@ namespace DemoACadSharp
 {
     public class Document
     {
-        private List<ParentEntity> allEntity = new List<ParentEntity>();
+        private List<ParentEntity> parentEntity = new List<ParentEntity>();
 
 
-        public List<ParentEntity> AllEntity { get => allEntity; set => allEntity = value; }
+        public List<ParentEntity> ParentEntity { get => parentEntity; set => parentEntity = value; }
 
         public List<EntityInfo> getAllEntity()
         {
             List<EntityInfo> allEntity = new List<EntityInfo>();
-            foreach(ParentEntity parentEntity in AllEntity)
+            foreach(ParentEntity parentEntity in ParentEntity)
             {
                 foreach(EntityInfo childEntity in parentEntity.EntityInfos)
                 {
