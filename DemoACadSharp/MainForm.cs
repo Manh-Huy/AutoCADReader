@@ -32,9 +32,27 @@ namespace DemoACadSharp
 
         List<EntityInfo> _listUniqueEntities = new List<EntityInfo>();
 
+        string nameHouse;
+        int numberOfFloors;
+        string topFloor;
+
         public MainForm()
         {
             InitializeComponent();
+            nameHouse = InitialForm.nameHouse;
+            numberOfFloors = InitialForm.numberOfFloors;
+            topFloor = InitialForm.topFloor;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            txtNameHouse.Text = nameHouse;
+            for (int i = 1; i <= numberOfFloors; i++)
+            {
+                cbNumberFloor.Items.Add(i);
+            }
+            txtTopFloor.Text = topFloor;
+            
         }
 
         #region Event
@@ -332,5 +350,7 @@ namespace DemoACadSharp
         }
 
         #endregion
+
+
     }
 }

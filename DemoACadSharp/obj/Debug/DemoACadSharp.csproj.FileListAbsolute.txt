@@ -98,3 +98,4 @@ D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\D
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CopyComplete
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.exe
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.pdb
+D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.InitialForm.resources
