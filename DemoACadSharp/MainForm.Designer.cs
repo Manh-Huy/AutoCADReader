@@ -38,6 +38,7 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtTopFloor = new System.Windows.Forms.TextBox();
             this.cbNumberFloor = new System.Windows.Forms.ComboBox();
             this.txtNameHouse = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -51,7 +52,6 @@
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
             this.dataGridViewPropertiesEntity = new System.Windows.Forms.DataGridView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
-            this.txtTopFloor = new System.Windows.Forms.TextBox();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -87,21 +87,21 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
@@ -160,6 +160,14 @@
             this.tabPage1.Text = "View";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // txtTopFloor
+            // 
+            this.txtTopFloor.Enabled = false;
+            this.txtTopFloor.Location = new System.Drawing.Point(833, 12);
+            this.txtTopFloor.Name = "txtTopFloor";
+            this.txtTopFloor.Size = new System.Drawing.Size(123, 22);
+            this.txtTopFloor.TabIndex = 12;
+            // 
             // cbNumberFloor
             // 
             this.cbNumberFloor.FormattingEnabled = true;
@@ -167,6 +175,8 @@
             this.cbNumberFloor.Name = "cbNumberFloor";
             this.cbNumberFloor.Size = new System.Drawing.Size(143, 24);
             this.cbNumberFloor.TabIndex = 11;
+            this.cbNumberFloor.Text = "1";
+            this.cbNumberFloor.SelectedIndexChanged += new System.EventHandler(this.cbNumberFloor_SelectedIndexChanged);
             // 
             // txtNameHouse
             // 
@@ -215,6 +225,7 @@
             this.btnSelect.TabIndex = 6;
             this.btnSelect.Text = "Select";
             this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
             // 
             // pictureBoxThumbNail
             // 
@@ -295,14 +306,6 @@
             this.pictureBoxSelected.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxSelected.TabIndex = 2;
             this.pictureBoxSelected.TabStop = false;
-            // 
-            // txtTopFloor
-            // 
-            this.txtTopFloor.Enabled = false;
-            this.txtTopFloor.Location = new System.Drawing.Point(833, 12);
-            this.txtTopFloor.Name = "txtTopFloor";
-            this.txtTopFloor.Size = new System.Drawing.Size(123, 22);
-            this.txtTopFloor.TabIndex = 12;
             // 
             // MainForm
             // 
