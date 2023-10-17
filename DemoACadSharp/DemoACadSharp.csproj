@@ -93,6 +93,8 @@
   <ItemGroup>
     <Compile Include="Document.cs" />
     <Compile Include="EntityInfo.cs" />
+    <Compile Include="Floor.cs" />
+    <Compile Include="House.cs" />
     <Compile Include="InitialForm.cs">
       <SubType>Form</SubType>
     </Compile>

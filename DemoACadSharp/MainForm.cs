@@ -21,11 +21,16 @@ using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using Aspose.CAD.FileFormats.GLB.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using Aspose.CAD.FileFormats.Ifc.IFC2X3.Types;
+using Aspose.CAD.FileFormats.GLB;
+using Aspose.CAD.FileFormats.Collada.FileParser.Elements;
+using static ACadSharp.Objects.XRecrod;
 
 namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
+        House house = new House();
         Document document = new Document();
 
         List<EntityInfo> _listAllEntities = new List<EntityInfo>();
@@ -35,24 +40,38 @@ namespace DemoACadSharp
         string nameHouse;
         int numberOfFloors;
         string topFloor;
+        bool isInitial = true;
 
         public MainForm()
         {
             InitializeComponent();
-            nameHouse = InitialForm.nameHouse;
-            numberOfFloors = InitialForm.numberOfFloors;
-            topFloor = InitialForm.topFloor;
+
+            /*for(int i = 1; i <= numberOfFloors; i++)
+            {
+
+            }*/
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            nameHouse = InitialForm.nameHouse;
+            numberOfFloors = InitialForm.numberOfFloors;
+            topFloor = InitialForm.topFloor;
+            house.NameHouse = nameHouse;
+            house.NumberOfFloor = numberOfFloors;
+            house.TopFloor = topFloor;
+            house.ListFloor = new List<Floor>();
+            for (int i = 1; i <= numberOfFloors; i++)
+            {
+                house.ListFloor.Add(new Floor());
+            }
             txtNameHouse.Text = nameHouse;
             for (int i = 1; i <= numberOfFloors; i++)
             {
                 cbNumberFloor.Items.Add(i);
             }
             txtTopFloor.Text = topFloor;
-            
+
         }
 
         #region Event
@@ -113,12 +132,13 @@ namespace DemoACadSharp
 
                         _listAllEntities.Clear();
 
+                        int floor = Int32.Parse(cbNumberFloor.Text) - 1;
                         // Xóa nút hiện tại trong TreeView
                         treeView1.Nodes.Clear();
                         treeView1.CheckBoxes = true;
 
                         // Chuyển đổi JSON thành mảng đối tượng
-                        Document document = JsonConvert.DeserializeObject<Document>(json);
+                        document = JsonConvert.DeserializeObject<Document>(json);
                         foreach (ParentEntity parentEntity in document.ParentEntity)
                         {
                             TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
@@ -126,7 +146,7 @@ namespace DemoACadSharp
 
                             foreach (EntityInfo entities in parentEntity.EntityInfos)
                             {
-                                TreeNode childNode = parentNode.Nodes.Add($"{entities.LayerName} ({entities.ObjectType})");
+                                TreeNode childNode = parentNode.Nodes.Add($"{entities.Id}: {entities.LayerName} ({entities.ObjectType})");
                             }
                         }
 
@@ -138,6 +158,8 @@ namespace DemoACadSharp
                         .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
                         .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
                         .ToList();
+
+                        house.ListFloor[floor].AllEntityOfFloor = document;
                     }
                     catch (Exception ex)
                     {
@@ -152,18 +174,18 @@ namespace DemoACadSharp
             //List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
 
             Document document = new Document();
-            foreach(EntityInfo entity in _listUniqueEntities)
+            foreach (EntityInfo entity in _listUniqueEntities)
             {
-                ParentEntity parentEntity= new ParentEntity();
+                ParentEntity parentEntity = new ParentEntity();
                 parentEntity.ParentLayerName = entity.LayerName;
                 parentEntity.ParentObjectType = entity.ObjectType;
                 document.ParentEntity.Add(parentEntity);
             }
-            foreach(EntityInfo entity in _listAllEntities)
+            foreach (EntityInfo entity in _listAllEntities)
             {
-                foreach(ParentEntity parentEntity in document.ParentEntity)
+                foreach (ParentEntity parentEntity in document.ParentEntity)
                 {
-                    if(parentEntity.ParentLayerName == entity.LayerName && parentEntity.ParentObjectType == entity.ObjectType)
+                    if (parentEntity.ParentLayerName == entity.LayerName && parentEntity.ParentObjectType == entity.ObjectType)
                     {
                         parentEntity.EntityInfos.Add(entity);
                     }
@@ -176,7 +198,7 @@ namespace DemoACadSharp
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
             saveFileDialog.Title = "Save JSON File";
 
-            
+
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -349,8 +371,174 @@ namespace DemoACadSharp
             }
         }
 
+
         #endregion
 
+        private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            List<Floor> listFloor = house.ListFloor;
 
+            if (listFloor[floor].EntityOfFloor.getAllEntity().Count == 0)
+            {
+                treeView1.Nodes.Clear();
+                treeViewSelectedEntity.Nodes.Clear();
+                MessageBox.Show("Rhyderrr");
+            }
+            else
+            {
+                setDataToTreeView_View();
+                setDataToTreeView_Config();
+            }
+        }
+
+        int countCha, countCon;
+
+        private List<ParentEntity> GetParentEntities(TreeNodeCollection nodes, List<ParentEntity> entityList)
+        {
+            List<ParentEntity> parentEntities = new List<ParentEntity>();
+
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Checked && node.Tag is ParentEntity entityInfo && entityList.Contains(entityInfo))
+                {
+                    parentEntities.Add(entityInfo);
+                }
+            }
+            return parentEntities;
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            getDataFromTreeView_View();
+            setDataToTreeView_Config();
+            MessageBox.Show("Selected Successfully!");
+        }
+
+        private void getDataFromTreeView_View()
+        {
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            int numberParentEntity = _listUniqueEntities.Count - 1;
+            int numberEntitySelected = -1;
+            house.ListFloor[floor].EntityOfFloor.ParentEntity.Clear();
+            List<Floor> listFloor = house.ListFloor;
+
+            /*            foreach(TreeNode node in treeView1.Nodes)
+                        {
+                            if (node.Checked) numberEntitySelected++;
+                        }    
+                        for (int i = 0; i < numberEntitySelected; i++)
+                        {
+                            listFloor[floor].EntityOfFloor.ParentEntity.Add(new ParentEntity());
+                        }
+            */
+
+
+            Stack<TreeNode> nodeStack = new Stack<TreeNode>();
+
+            foreach (TreeNode node in treeView1.Nodes)
+            {
+                nodeStack.Push(node);
+
+            }
+
+            while (nodeStack.Count > 0)
+            {
+                TreeNode currentNode = nodeStack.Pop();
+
+                if (currentNode.Checked)
+                {
+                    listFloor[floor].EntityOfFloor.ParentEntity.Add(new ParentEntity());
+                    numberEntitySelected++;
+                    EntityInfo parentEntityInfo = _listUniqueEntities[numberParentEntity];
+                    ParentEntity parentEntity = new ParentEntity();
+                    parentEntity.ParentLayerName = parentEntityInfo.LayerName;
+                    parentEntity.ParentObjectType = parentEntityInfo.ObjectType;
+                    listFloor[floor].EntityOfFloor.ParentEntity[numberEntitySelected] = parentEntity;
+                    foreach (TreeNode childNode in currentNode.Nodes)
+                    {
+                        if (childNode.Checked)
+                        {
+                            nodeStack.Push(childNode);
+                            int idEntity = getIdEntity(childNode.Text);
+                            foreach (EntityInfo entity in _listAllEntities)
+                            {
+                                if (entity.Id == idEntity)
+                                {
+                                    listFloor[floor].EntityOfFloor.ParentEntity[numberEntitySelected].EntityInfos.Add(entity);
+                                    countCon++;
+                                    nodeStack.Pop();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    countCha++;
+                }
+
+                numberParentEntity--;
+
+            }
+            /*MessageBox.Show(countCha.ToString() + "_________" + countCon.ToString());*/
+        }
+
+        private void setDataToTreeView_View()
+        {
+            treeView1.Nodes.Clear();
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            treeView1.CheckBoxes = true;
+
+            foreach (ParentEntity parentEntity in house.ListFloor[floor].AllEntityOfFloor.ParentEntity)
+            {
+                TreeNode parentNode = treeView1.Nodes.Add(parentEntity.ParentLayerName);
+
+
+                foreach (EntityInfo entities in parentEntity.EntityInfos)
+                {
+                    TreeNode childNode = parentNode.Nodes.Add($"{entities.Id}: {entities.LayerName} ({entities.ObjectType})");
+                }
+            }
+        }
+
+        private void setDataToTreeView_Config()
+        {
+            treeViewSelectedEntity.Nodes.Clear();
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            List<Floor> listFloor = house.ListFloor;
+            treeViewSelectedEntity.CheckBoxes = true;
+
+/*            foreach (ParentEntity parentEntity in listFloor[floor].EntityOfFloor.ParentEntity)
+            {*/
+            for(int i = listFloor[floor].EntityOfFloor.ParentEntity.Count - 1; i >= 0; i--)
+            { 
+                ParentEntity parentEntity = listFloor[floor].EntityOfFloor.ParentEntity[i];
+                if (parentEntity.ParentLayerName != null)
+                {
+                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add(parentEntity.ParentLayerName);
+
+
+                    foreach (EntityInfo entities in parentEntity.EntityInfos)
+                    {
+                        TreeNode childNode = parentNode.Nodes.Add($"{entities.Id}: {entities.LayerName} ({entities.ObjectType})");
+                    }
+                }
+            }
+        }
+
+        private int getIdEntity(string entity)
+        {
+            string extractedSubString;
+            int indexOfColon = entity.IndexOf(':'); // Tìm vị trí của ký tự ':'
+            int indexOfOpeningParenthesis = entity.IndexOf('('); // Tìm vị trí của ký tự '('
+
+            if (indexOfColon != -1 && indexOfOpeningParenthesis != -1)
+            {
+                extractedSubString = entity.Substring(0, indexOfColon); // Trích xuất phần a từ vị trí 0 đến vị trí của ký tự ':'
+                int result = int.Parse(extractedSubString);
+                return result;
+            }
+
+            return 0;
+        }
     }
 }
