@@ -40,16 +40,13 @@ namespace DemoACadSharp
         string nameHouse;
         int numberOfFloors;
         string topFloor;
-        bool isInitial = true;
 
         public MainForm()
         {
             InitializeComponent();
 
-            /*for(int i = 1; i <= numberOfFloors; i++)
-            {
-
-            }*/
+            ParentEntity parentEntity = new ParentEntity();
+            propertyGrid1.SelectedObject = parentEntity;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -133,6 +130,10 @@ namespace DemoACadSharp
                         _listAllEntities.Clear();
 
                         int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+                        for(int i = 0; i < floor; i++)
+                        {
+                            house.ListFloor.Add(new Floor());
+                        }
                         // Xóa nút hiện tại trong TreeView
                         treeView1.Nodes.Clear();
                         treeView1.CheckBoxes = true;
@@ -159,6 +160,7 @@ namespace DemoACadSharp
                         .Select(group => new EntityInfo(null, group.Key.LayerName, group.Key.ObjectType, null))
                         .ToList();
 
+                        
                         house.ListFloor[floor].AllEntityOfFloor = document;
                     }
                     catch (Exception ex)
@@ -208,23 +210,73 @@ namespace DemoACadSharp
             }
         }
 
-        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.Action != TreeViewAction.Unknown)
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            List<Floor> listFloor = house.ListFloor;
+
+            if (listFloor[floor].AllEntityOfFloor.getAllEntity().Count == 0)
             {
-                // Thay đổi trạng thái kiểm tra của tất cả nút con
-                CheckChildNodes(e.Node, e.Node.Checked);
+                treeView1.Nodes.Clear();
+                treeViewSelectedEntity.Nodes.Clear();
+                MessageBox.Show("Rhyderrr");
+            }
+            else
+            {
+                setDataToTreeView_View();
+                setDataToTreeView_Config();
             }
         }
 
-        private void ContextMenuStrip_Click(object sender, EventArgs e)
+        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Nodes.Count > 0)
+            {
+                // Lặp qua tất cả các node con và đặt trạng thái check của chúng giống với node cha
+                foreach (TreeNode childNode in e.Node.Nodes)
+                {
+                    childNode.Checked = e.Node.Checked;
+                }
+            }
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            getDataFromTreeView_View();
+            setDataToTreeView_Config();
+            MessageBox.Show("Selected Successfully!");
+        }
+
+        private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            int idEntity = getIdEntity(e.Node.Text);
+
+            foreach (ParentEntity parent in house.ListFloor[floor].EntityOfFloor.ParentEntity)
+            {
+                if (parent.ParentLayerName == e.Node.Text)
+                {
+                    propertyGrid1.SelectedObject = parent;
+                }
+                else foreach (EntityInfo childEntity in parent.EntityInfos)
+                    {
+                        if (idEntity == childEntity.Id)
+                        {
+                            propertyGrid1.SelectedObject = childEntity;
+                        }
+                    }
+            }
+
+        }
+
+        /*private void ContextMenuStrip_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem node = sender as System.Windows.Forms.ToolStripMenuItem;
             if (node.Name == "wall")
             {
                 MessageBox.Show("Rhyderrr");
             }
-        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi
+        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi*/
 
         /*private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -306,9 +358,8 @@ namespace DemoACadSharp
             }
         }
 
-
         // Method support check in node parent
-        private void CheckChildNodes(TreeNode treeNode, bool isChecked)
+        /*private void CheckChildNodes(TreeNode treeNode, bool isChecked)
         {
             foreach (TreeNode childNode in treeNode.Nodes)
             {
@@ -317,10 +368,10 @@ namespace DemoACadSharp
                 // Đệ quy để thay đổi trạng thái của các nút con của nút con
                 CheckChildNodes(childNode, isChecked);
             }
-        }
+        }*/
 
         // Function call Recursion to support for btn SaveFile
-        private List<EntityInfo> GetSelectedEntities(TreeNodeCollection nodes, List<EntityInfo> entityList)
+        /*private List<EntityInfo> GetSelectedEntities(TreeNodeCollection nodes, List<EntityInfo> entityList)
         {
             List<EntityInfo> selectedEntities = new List<EntityInfo>();
 
@@ -338,9 +389,9 @@ namespace DemoACadSharp
             }
 
             return selectedEntities;
-        }
+        }*/
 
-        private void AddNode(JToken token, TreeNode parentNode)
+        /*private void AddNode(JToken token, TreeNode parentNode)
         {
 
             if (token.Type == JTokenType.Object)
@@ -369,52 +420,9 @@ namespace DemoACadSharp
                     AddNode(array[i], parentNode);
                 }
             }
-        }
+        }*/
 
-
-        #endregion
-
-        private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
-            List<Floor> listFloor = house.ListFloor;
-
-            if (listFloor[floor].EntityOfFloor.getAllEntity().Count == 0)
-            {
-                treeView1.Nodes.Clear();
-                treeViewSelectedEntity.Nodes.Clear();
-                MessageBox.Show("Rhyderrr");
-            }
-            else
-            {
-                setDataToTreeView_View();
-                setDataToTreeView_Config();
-            }
-        }
-
-        int countCha, countCon;
-
-        private List<ParentEntity> GetParentEntities(TreeNodeCollection nodes, List<ParentEntity> entityList)
-        {
-            List<ParentEntity> parentEntities = new List<ParentEntity>();
-
-            foreach (TreeNode node in nodes)
-            {
-                if (node.Checked && node.Tag is ParentEntity entityInfo && entityList.Contains(entityInfo))
-                {
-                    parentEntities.Add(entityInfo);
-                }
-            }
-            return parentEntities;
-        }
-
-        private void btnSelect_Click(object sender, EventArgs e)
-        {
-            getDataFromTreeView_View();
-            setDataToTreeView_Config();
-            MessageBox.Show("Selected Successfully!");
-        }
-
+        // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
         private void getDataFromTreeView_View()
         {
             int floor = Int32.Parse(cbNumberFloor.Text) - 1;
@@ -422,16 +430,6 @@ namespace DemoACadSharp
             int numberEntitySelected = -1;
             house.ListFloor[floor].EntityOfFloor.ParentEntity.Clear();
             List<Floor> listFloor = house.ListFloor;
-
-            /*            foreach(TreeNode node in treeView1.Nodes)
-                        {
-                            if (node.Checked) numberEntitySelected++;
-                        }    
-                        for (int i = 0; i < numberEntitySelected; i++)
-                        {
-                            listFloor[floor].EntityOfFloor.ParentEntity.Add(new ParentEntity());
-                        }
-            */
 
 
             Stack<TreeNode> nodeStack = new Stack<TreeNode>();
@@ -466,14 +464,12 @@ namespace DemoACadSharp
                                 if (entity.Id == idEntity)
                                 {
                                     listFloor[floor].EntityOfFloor.ParentEntity[numberEntitySelected].EntityInfos.Add(entity);
-                                    countCon++;
                                     nodeStack.Pop();
                                     break;
                                 }
                             }
                         }
                     }
-                    countCha++;
                 }
 
                 numberParentEntity--;
@@ -507,10 +503,10 @@ namespace DemoACadSharp
             List<Floor> listFloor = house.ListFloor;
             treeViewSelectedEntity.CheckBoxes = true;
 
-/*            foreach (ParentEntity parentEntity in listFloor[floor].EntityOfFloor.ParentEntity)
-            {*/
-            for(int i = listFloor[floor].EntityOfFloor.ParentEntity.Count - 1; i >= 0; i--)
-            { 
+            /*            foreach (ParentEntity parentEntity in listFloor[floor].EntityOfFloor.ParentEntity)
+                        {*/
+            for (int i = listFloor[floor].EntityOfFloor.ParentEntity.Count - 1; i >= 0; i--)
+            {
                 ParentEntity parentEntity = listFloor[floor].EntityOfFloor.ParentEntity[i];
                 if (parentEntity.ParentLayerName != null)
                 {
@@ -540,5 +536,9 @@ namespace DemoACadSharp
 
             return 0;
         }
+
+        #endregion
+
+
     }
 }

@@ -49,8 +49,8 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
-            this.dataGridViewPropertiesEntity = new System.Windows.Forms.DataGridView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
@@ -59,7 +59,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPropertiesEntity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,21 +86,21 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
@@ -249,6 +248,7 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(355, 340);
             this.treeView1.TabIndex = 5;
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // tabPage2
             // 
@@ -266,13 +266,25 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.propertyGrid1);
             this.panel1.Controls.Add(this.treeViewSelectedEntity);
-            this.panel1.Controls.Add(this.dataGridViewPropertiesEntity);
             this.panel1.Controls.Add(this.pictureBoxSelected);
             this.panel1.Location = new System.Drawing.Point(8, 6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(957, 414);
             this.panel1.TabIndex = 3;
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.propertyGrid1.CanShowVisualStyleGlyphs = false;
+            this.propertyGrid1.Location = new System.Drawing.Point(360, 3);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.propertyGrid1.SelectedObject = this.treeViewSelectedEntity;
+            this.propertyGrid1.Size = new System.Drawing.Size(413, 408);
+            this.propertyGrid1.TabIndex = 3;
             // 
             // treeViewSelectedEntity
             // 
@@ -282,17 +294,7 @@
             this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
             this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 408);
             this.treeViewSelectedEntity.TabIndex = 0;
-            // 
-            // dataGridViewPropertiesEntity
-            // 
-            this.dataGridViewPropertiesEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.dataGridViewPropertiesEntity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewPropertiesEntity.Location = new System.Drawing.Point(360, 3);
-            this.dataGridViewPropertiesEntity.Name = "dataGridViewPropertiesEntity";
-            this.dataGridViewPropertiesEntity.RowHeadersWidth = 51;
-            this.dataGridViewPropertiesEntity.Size = new System.Drawing.Size(413, 408);
-            this.dataGridViewPropertiesEntity.TabIndex = 1;
+            this.treeViewSelectedEntity.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseDoubleClick);
             // 
             // pictureBoxSelected
             // 
@@ -319,7 +321,6 @@
             this.MainMenuStrip = this.menuStripAllFeature;
             this.Name = "MainForm";
             this.Text = "MainForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStripAllFeature.ResumeLayout(false);
             this.menuStripAllFeature.PerformLayout();
@@ -331,7 +332,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPropertiesEntity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -353,7 +353,6 @@
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnSelect;
-        private System.Windows.Forms.DataGridView dataGridViewPropertiesEntity;
         private System.Windows.Forms.TreeView treeViewSelectedEntity;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBoxThumbNail;
@@ -364,5 +363,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTopFloor;
+        private System.Windows.Forms.PropertyGrid propertyGrid1;
     }
 }
