@@ -91,6 +91,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcadEntity.cs" />
+    <Compile Include="Architecture.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="EntityInfo.cs" />
     <Compile Include="Floor.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="ReadFileAutoCadForm.Designer.cs">
       <DependentUpon>ReadFileAutoCadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UnityEntity.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>

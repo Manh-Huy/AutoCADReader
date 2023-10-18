@@ -17,5 +17,13 @@ namespace DemoACadSharp
         public string LayerName { get => layerName; set => layerName = value; }
         public string ObjectType { get => objectType; set => objectType = value; }
         public List<string> Coordinates { get => coordinates; set => coordinates = value; }
+
+        public AcadEntity(int? id, string layerName, string objectType, List<string> coordinates)
+        {
+            this.Id = id;
+            this.LayerName = layerName;
+            this.ObjectType = objectType;
+            this.Coordinates = coordinates;
+        }
     }
 }
