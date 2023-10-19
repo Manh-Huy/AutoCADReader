@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStripAllFeature = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,12 @@
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.powerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -60,6 +67,7 @@
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripAllFeature
@@ -294,6 +302,7 @@
             this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
             this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 408);
             this.treeViewSelectedEntity.TabIndex = 0;
+            this.treeViewSelectedEntity.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseClick);
             this.treeViewSelectedEntity.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseDoubleClick);
             // 
             // pictureBoxSelected
@@ -309,6 +318,48 @@
             this.pictureBoxSelected.TabIndex = 2;
             this.pictureBoxSelected.TabStop = false;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem,
+            this.wallToolStripMenuItem,
+            this.stairToolStripMenuItem,
+            this.doorToolStripMenuItem,
+            this.powerToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 124);
+            // 
+            // noneToolStripMenuItem
+            // 
+            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.noneToolStripMenuItem.Text = "None";
+            // 
+            // wallToolStripMenuItem
+            // 
+            this.wallToolStripMenuItem.Name = "wallToolStripMenuItem";
+            this.wallToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.wallToolStripMenuItem.Text = "Wall";
+            // 
+            // stairToolStripMenuItem
+            // 
+            this.stairToolStripMenuItem.Name = "stairToolStripMenuItem";
+            this.stairToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.stairToolStripMenuItem.Text = "Stair";
+            // 
+            // doorToolStripMenuItem
+            // 
+            this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
+            this.doorToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.doorToolStripMenuItem.Text = "Door";
+            // 
+            // powerToolStripMenuItem
+            // 
+            this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
+            this.powerToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
+            this.powerToolStripMenuItem.Text = "Power";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -322,7 +373,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStripAllFeature.ResumeLayout(false);
             this.menuStripAllFeature.PerformLayout();
@@ -335,6 +385,7 @@
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,5 +417,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTopFloor;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wallToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stairToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
     }
 }

@@ -26,6 +26,7 @@ using Aspose.CAD.FileFormats.GLB;
 using Aspose.CAD.FileFormats.Collada.FileParser.Elements;
 using static ACadSharp.Objects.XRecrod;
 using Aspose.CAD;
+using Color = System.Drawing.Color;
 
 namespace DemoACadSharp
 {
@@ -513,42 +514,58 @@ namespace DemoACadSharp
         {
             treeViewSelectedEntity.Nodes.Clear();
             int floor = Int32.Parse(cbNumberFloor.Text) - 1;
-            treeViewSelectedEntity.CheckBoxes = true;
             List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
             listUniqueSelectedEntity = Architecture.getInstance().Floors[currentFloor].getUniqueSelectedEntities();
 
             if (listUniqueSelectedEntity != null)
             {
-                foreach (AcadEntity parentEntity in listUniqueSelectedEntity)
+                for(int i = listUniqueSelectedEntity.Count - 1; i >= 0; i--)
                 {
-                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{parentEntity.LayerName} ({parentEntity.ObjectType})");
-
+                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{listUniqueSelectedEntity[i].LayerName} ({listUniqueSelectedEntity[i].ObjectType})");
+                    //parentNode.BackColor = Color.FromArgb(65, 105, 225);
 
                     foreach (AcadEntity childEntity in Architecture.getInstance().Floors[currentFloor].ListSelectedEntities)
                     {
-                        if (parentEntity.LayerName == childEntity.LayerName && parentEntity.ObjectType == childEntity.ObjectType)
+                        if (listUniqueSelectedEntity[i].LayerName == childEntity.LayerName && listUniqueSelectedEntity[i].ObjectType == childEntity.ObjectType)
                         {
                             TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
                         }
                     }
                 }
+
+
             }
         }
 
         private string getLayer(string input)
         {
-            int startIndex = 0;
-            int endIndex = input.IndexOf(" ");
-            string x = input.Substring(startIndex, endIndex);
-            return x;
+            int openBracketIndex = input.IndexOf("(");
+
+            if (openBracketIndex != -1)
+            {
+                string outsideBrackets = input.Substring(0, openBracketIndex).Trim();
+                return outsideBrackets;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private string getObjectType(string input)
         {
-            int startIndex = input.IndexOf("(") + 1;
-            int endIndex = input.IndexOf(")");
-            string y = input.Substring(startIndex, endIndex - startIndex);
-            return y;
+            int openBracketIndex = input.IndexOf("(");
+            int closeBracketIndex = input.IndexOf(")");
+
+            if (openBracketIndex != -1 && closeBracketIndex != -1)
+            {
+                string insideBrackets = input.Substring(openBracketIndex + 1, closeBracketIndex - openBracketIndex - 1).Trim();
+                return insideBrackets;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private int getIdEntity(string entity)
@@ -567,8 +584,18 @@ namespace DemoACadSharp
             return 0;
         }
 
+
         #endregion
 
-
+        private void treeViewSelectedEntity_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.Node != null && e.Node.Nodes.Count > 0)
+                {
+                    e.Node.ContextMenuStrip = contextMenuStrip1;
+                }
+            }
+        }
     }
 }
