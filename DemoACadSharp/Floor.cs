@@ -14,6 +14,11 @@ namespace DemoACadSharp
         List<AcadEntity> listSelectedEntities;
         List<AcadEntity> listUniqueEntities;
         List<AcadEntity> listUniqueSelectedEntities;
+        List<UnityEntity> listUnityEntities;
+        List<Wall> listWalls;
+        List<Stair> listStairs;
+        List<Door> listDoors;
+        List<Power> listPowers;
 
 
         public int Order { get => order; set => order = value; }
@@ -21,6 +26,13 @@ namespace DemoACadSharp
         public List<AcadEntity> ListAllEntities { get => listAllEntities; set => listAllEntities = value; }
         public List<AcadEntity> ListSelectedEntities { get => listSelectedEntities; set => listSelectedEntities = value; }
         public List<AcadEntity> ListUniqueEntities { get => listUniqueEntities; set => listUniqueEntities = value; }
+        public List<AcadEntity> ListUniqueSelectedEntities { get => listUniqueSelectedEntities; set => listUniqueSelectedEntities = value; }
+        public List<UnityEntity> ListUnityEntities { get => listUnityEntities; set => listUnityEntities = value; }
+        public List<Wall> ListWalls { get => listWalls; set => listWalls = value; }
+        public List<Stair> ListStairs { get => listStairs; set => listStairs = value; }
+        public List<Door> ListDoors { get => listDoors; set => listDoors = value; }
+        public List<Power> ListPowers { get => listPowers; set => listPowers = value; }
+
 
         public List<AcadEntity> getAllEntities() { return listAllEntities; }
         public List<AcadEntity> getSelectedEntities() { return listSelectedEntities; }
@@ -93,6 +105,6 @@ namespace DemoACadSharp
 
         public Document EntityOfFloor { get => entityOfFloor; set => entityOfFloor = value; }
         public Document AllEntityOfFloor { get => allEntityOfFloor; set => allEntityOfFloor = value; }
-        public List<AcadEntity> ListUniqueSelectedEntities { get => listUniqueSelectedEntities; set => listUniqueSelectedEntities = value; }
+
     }
 }
