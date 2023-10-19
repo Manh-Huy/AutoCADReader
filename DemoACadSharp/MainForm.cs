@@ -27,6 +27,8 @@ using Aspose.CAD.FileFormats.Collada.FileParser.Elements;
 using static ACadSharp.Objects.XRecrod;
 using Aspose.CAD;
 using Color = System.Drawing.Color;
+using TreeView = System.Windows.Forms.TreeView;
+using System.Collections;
 
 namespace DemoACadSharp
 {
@@ -148,8 +150,6 @@ namespace DemoACadSharp
                 }
             }
         }
-
-
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //List<EntityInfo> selectedEntities = GetSelectedEntities(treeView1.Nodes, _listAllEntities);
@@ -169,7 +169,6 @@ namespace DemoACadSharp
                 MessageBox.Show("Save Successfully!");
             }
         }
-
         private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
@@ -187,7 +186,6 @@ namespace DemoACadSharp
                 setDataToTreeView_Config();
             }
         }
-
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Nodes.Count > 0)
@@ -199,7 +197,6 @@ namespace DemoACadSharp
                 }
             }
         }
-
         private void btnSelect_Click(object sender, EventArgs e)
         {
             bool isHaveCheck = false;
@@ -211,33 +208,78 @@ namespace DemoACadSharp
             {
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
+                copyDataFromAcadEntityToUnityEntity();
                 MessageBox.Show("Selected Successfully!");
-            } else
+            }
+            else
             {
                 MessageBox.Show("You have not selected any Entity yet!!");
             }
         }
 
+        private void copyDataFromAcadEntityToUnityEntity()
+        {
+            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[currentFloor];
+            floor.ListUnityEntities = new List<UnityEntity>();
+            foreach (AcadEntity entity in floor.ListSelectedEntities)
+            {
+                UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
+                floor.ListUnityEntities.Add(unityEntity);
+            }
+        }
+
+        private string deleteId(string input)
+        {
+            int colonIndex = input.IndexOf(':');
+            if (colonIndex >= 0 && colonIndex < input.Length - 1)
+            {
+                string y = input.Substring(colonIndex + 1).Trim();
+                return y;
+            }
+            else
+            {
+                // Trường hợp không tìm thấy ký tự ':' hoặc không có phần tử "y"
+                // Xử lý hoặc trả về giá trị mặc định tùy thuộc vào logic của bạn
+                return string.Empty;
+            }
+        }
+
         private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[currentFloor];
             int idEntity = getIdEntity(e.Node.Text);
 
-            foreach (ParentEntity parent in house.ListFloor[floor].EntityOfFloor.ParentEntity)
+            if (e.Node.Nodes.Count == 0)
             {
-                if (parent.ParentLayerName == e.Node.Text)
+                string layerName = deleteId(getLayer(e.Node.Text));
+                string objectType = getObjectType(e.Node.Text);
+
+                foreach(UnityEntity unityEntity in floor.ListUnityEntities)
                 {
-                    propertyGrid1.SelectedObject = parent;
-                }
-                else foreach (EntityInfo childEntity in parent.EntityInfos)
+                    if(unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType
+                        && unityEntity.Id == idEntity)
                     {
-                        if (idEntity == childEntity.Id)
+                        switch(unityEntity.TypeOfUnityEntity)
                         {
-                            propertyGrid1.SelectedObject = childEntity;
+                            case "Wall":
+                                foreach(Wall wall in floor.ListWalls)
+                                {
+                                    if(wall.Id == idEntity)
+                                        propertyGrid1.SelectedObject = wall;
+                                }
+                                break;
+                            case "Stair":
+                                break;
+                            case "Door":
+                                break;
+                            case "Power":
+                                break;
                         }
                     }
+                }
             }
-
         }
 
         /*private void ContextMenuStrip_Click(object sender, EventArgs e)
@@ -396,60 +438,6 @@ namespace DemoACadSharp
         // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
         private void getDataFromTreeView_View()
         {
-            /*int floor = Int32.Parse(cbNumberFloor.Text) - 1;
-            int numberParentEntity = _listUniqueEntities.Count - 1;
-            int numberEntitySelected = -1;
-            house.ListFloor[floor].EntityOfFloor.ParentEntity.Clear();
-            List<Floor> listFloor = house.ListFloor;
-
-
-            Stack<TreeNode> nodeStack = new Stack<TreeNode>();
-
-            foreach (TreeNode node in treeView1.Nodes)
-            {
-                nodeStack.Push(node);
-
-            }
-
-            while (nodeStack.Count > 0)
-            {
-                TreeNode currentNode = nodeStack.Pop();
-
-                if (currentNode.Checked)
-                {
-                    listFloor[floor].EntityOfFloor.ParentEntity.Add(new ParentEntity());
-                    numberEntitySelected++;
-                    EntityInfo parentEntityInfo = _listUniqueEntities[numberParentEntity];
-                    ParentEntity parentEntity = new ParentEntity();
-                    parentEntity.ParentLayerName = parentEntityInfo.LayerName;
-                    parentEntity.ParentObjectType = parentEntityInfo.ObjectType;
-                    listFloor[floor].EntityOfFloor.ParentEntity[numberEntitySelected] = parentEntity;
-                    foreach (TreeNode childNode in currentNode.Nodes)
-                    {
-                        if (childNode.Checked)
-                        {
-                            nodeStack.Push(childNode);
-                            int idEntity = getIdEntity(childNode.Text);
-                            foreach (EntityInfo entity in _listAllEntities)
-                            {
-                                if (entity.Id == idEntity)
-                                {
-                                    listFloor[floor].EntityOfFloor.ParentEntity[numberEntitySelected].EntityInfos.Add(entity);
-                                    nodeStack.Pop();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                numberParentEntity--;
-
-            }
-            MessageBox.Show(countCha.ToString() + "_________" + countCon.ToString());*/
-
-
-
             currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             Architecture.getInstance().Floors[currentFloor].ListSelectedEntities = new List<AcadEntity>();
 
@@ -486,6 +474,8 @@ namespace DemoACadSharp
                     }
                 }
             }
+
+            Architecture.getInstance().Floors[currentFloor].ListSelectedEntities.Reverse();
         }
 
         private void setDataToTreeView_View()
@@ -519,14 +509,14 @@ namespace DemoACadSharp
 
             if (listUniqueSelectedEntity != null)
             {
-                for(int i = listUniqueSelectedEntity.Count - 1; i >= 0; i--)
+                foreach (AcadEntity entity in listUniqueSelectedEntity)
                 {
-                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{listUniqueSelectedEntity[i].LayerName} ({listUniqueSelectedEntity[i].ObjectType})");
-                    //parentNode.BackColor = Color.FromArgb(65, 105, 225);
+                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{entity.LayerName} ({entity.ObjectType})");
+                    parentNode.ForeColor = Color.Black;
 
                     foreach (AcadEntity childEntity in Architecture.getInstance().Floors[currentFloor].ListSelectedEntities)
                     {
-                        if (listUniqueSelectedEntity[i].LayerName == childEntity.LayerName && listUniqueSelectedEntity[i].ObjectType == childEntity.ObjectType)
+                        if (entity.LayerName == childEntity.LayerName && entity.ObjectType == childEntity.ObjectType)
                         {
                             TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
                         }
@@ -595,7 +585,57 @@ namespace DemoACadSharp
                 {
                     e.Node.ContextMenuStrip = contextMenuStrip1;
                 }
+
             }
+        }
+
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[currentFloor];
+            floor.ListWalls = new List<Wall>();
+            floor.ListStairs = new List<Stair>();
+            floor.ListDoors = new List<Door>();
+            floor.ListPowers = new List<Power>();
+            string layerName = "", objectType = "";
+            string typeOfUnityEntity = e.ClickedItem.Text;
+              
+            if (contextMenuStrip1.SourceControl is TreeView treeView)
+            {
+                TreeNode selectedNode = treeView.SelectedNode;  
+                
+                layerName = getLayer(selectedNode.Text);
+                objectType = getObjectType(selectedNode.Text);
+            }
+
+            foreach (UnityEntity childEntity in floor.ListUnityEntities)
+            {
+                if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType)
+                {
+                    childEntity.TypeOfUnityEntity = typeOfUnityEntity;
+                    var templateEntity = FactoryUnityEntity.createObjectUnity(childEntity);
+                    switch (templateEntity)
+                    {
+                        case Wall wall:
+                            floor.ListWalls.Add(wall);
+                            break;
+
+                        case Stair stair:
+                            floor.ListStairs.Add(stair);
+                            break;
+
+                        case Door door:
+                            floor.ListDoors.Add(door);
+                            break;
+
+                        case Power power:
+                            floor.ListPowers.Add(power);
+                            break;
+                    }
+                }
+            }
+
+            
         }
     }
 }

@@ -39,12 +39,6 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.txtTopFloor = new System.Windows.Forms.TextBox();
-            this.cbNumberFloor = new System.Windows.Forms.ComboBox();
-            this.txtNameHouse = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnSelect = new System.Windows.Forms.Button();
             this.pictureBoxThumbNail = new System.Windows.Forms.PictureBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -59,6 +53,12 @@
             this.stairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.powerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtTopFloor = new System.Windows.Forms.TextBox();
+            this.cbNumberFloor = new System.Windows.Forms.ComboBox();
+            this.txtNameHouse = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,7 +77,7 @@
             this.FileToolStripMenuItem});
             this.menuStripAllFeature.Location = new System.Drawing.Point(0, 0);
             this.menuStripAllFeature.Name = "menuStripAllFeature";
-            this.menuStripAllFeature.Size = new System.Drawing.Size(981, 28);
+            this.menuStripAllFeature.Size = new System.Drawing.Size(981, 30);
             this.menuStripAllFeature.TabIndex = 0;
             this.menuStripAllFeature.Text = "menuStrip1";
             // 
@@ -142,91 +142,29 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 31);
+            this.tabControl1.Location = new System.Drawing.Point(0, 73);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(981, 455);
+            this.tabControl1.Size = new System.Drawing.Size(981, 413);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.txtTopFloor);
-            this.tabPage1.Controls.Add(this.cbNumberFloor);
-            this.tabPage1.Controls.Add(this.txtNameHouse);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.btnSelect);
             this.tabPage1.Controls.Add(this.pictureBoxThumbNail);
             this.tabPage1.Controls.Add(this.treeView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(973, 426);
+            this.tabPage1.Size = new System.Drawing.Size(973, 384);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "View";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // txtTopFloor
-            // 
-            this.txtTopFloor.Enabled = false;
-            this.txtTopFloor.Location = new System.Drawing.Point(833, 12);
-            this.txtTopFloor.Name = "txtTopFloor";
-            this.txtTopFloor.Size = new System.Drawing.Size(123, 22);
-            this.txtTopFloor.TabIndex = 12;
-            // 
-            // cbNumberFloor
-            // 
-            this.cbNumberFloor.FormattingEnabled = true;
-            this.cbNumberFloor.Location = new System.Drawing.Point(531, 10);
-            this.cbNumberFloor.Name = "cbNumberFloor";
-            this.cbNumberFloor.Size = new System.Drawing.Size(143, 24);
-            this.cbNumberFloor.TabIndex = 11;
-            this.cbNumberFloor.Text = "1";
-            this.cbNumberFloor.SelectedIndexChanged += new System.EventHandler(this.cbNumberFloor_SelectedIndexChanged);
-            // 
-            // txtNameHouse
-            // 
-            this.txtNameHouse.Enabled = false;
-            this.txtNameHouse.Location = new System.Drawing.Point(155, 12);
-            this.txtNameHouse.Name = "txtNameHouse";
-            this.txtNameHouse.Size = new System.Drawing.Size(123, 22);
-            this.txtNameHouse.TabIndex = 10;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(732, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 20);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Top Floor:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(360, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(139, 20);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Number Floors:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(-1, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(149, 20);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Name Of House:";
-            // 
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelect.Location = new System.Drawing.Point(3, 391);
+            this.btnSelect.Location = new System.Drawing.Point(3, 349);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(355, 29);
             this.btnSelect.TabIndex = 6;
@@ -241,9 +179,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxThumbNail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxThumbNail.Image = global::DemoACadSharp.Properties.Resources._345668002_207268608768377_4716940698160860698_n;
-            this.pictureBoxThumbNail.Location = new System.Drawing.Point(364, 45);
+            this.pictureBoxThumbNail.Location = new System.Drawing.Point(364, 6);
             this.pictureBoxThumbNail.Name = "pictureBoxThumbNail";
-            this.pictureBoxThumbNail.Size = new System.Drawing.Size(601, 378);
+            this.pictureBoxThumbNail.Size = new System.Drawing.Size(601, 375);
             this.pictureBoxThumbNail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxThumbNail.TabIndex = 0;
             this.pictureBoxThumbNail.TabStop = false;
@@ -252,9 +190,9 @@
             // 
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeView1.Location = new System.Drawing.Point(3, 45);
+            this.treeView1.Location = new System.Drawing.Point(3, 6);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(355, 340);
+            this.treeView1.Size = new System.Drawing.Size(355, 337);
             this.treeView1.TabIndex = 5;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
@@ -264,7 +202,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(973, 426);
+            this.tabPage2.Size = new System.Drawing.Size(973, 384);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Config";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -291,7 +229,7 @@
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.propertyGrid1.SelectedObject = this.treeViewSelectedEntity;
-            this.propertyGrid1.Size = new System.Drawing.Size(413, 408);
+            this.propertyGrid1.Size = new System.Drawing.Size(413, 369);
             this.propertyGrid1.TabIndex = 3;
             // 
             // treeViewSelectedEntity
@@ -300,7 +238,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.treeViewSelectedEntity.Location = new System.Drawing.Point(3, 3);
             this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
-            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 408);
+            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 369);
             this.treeViewSelectedEntity.TabIndex = 0;
             this.treeViewSelectedEntity.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseClick);
             this.treeViewSelectedEntity.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseDoubleClick);
@@ -313,7 +251,7 @@
             this.pictureBoxSelected.Image = global::DemoACadSharp.Properties.Resources._376371757_161526873661412_820728656325930674_n;
             this.pictureBoxSelected.Location = new System.Drawing.Point(779, 3);
             this.pictureBoxSelected.Name = "pictureBoxSelected";
-            this.pictureBoxSelected.Size = new System.Drawing.Size(175, 408);
+            this.pictureBoxSelected.Size = new System.Drawing.Size(175, 369);
             this.pictureBoxSelected.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxSelected.TabIndex = 2;
             this.pictureBoxSelected.TabStop = false;
@@ -328,30 +266,31 @@
             this.doorToolStripMenuItem,
             this.powerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 124);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 152);
+            this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // noneToolStripMenuItem
             // 
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.noneToolStripMenuItem.Text = "None";
             // 
             // wallToolStripMenuItem
             // 
             this.wallToolStripMenuItem.Name = "wallToolStripMenuItem";
-            this.wallToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.wallToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.wallToolStripMenuItem.Text = "Wall";
             // 
             // stairToolStripMenuItem
             // 
             this.stairToolStripMenuItem.Name = "stairToolStripMenuItem";
-            this.stairToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.stairToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.stairToolStripMenuItem.Text = "Stair";
             // 
             // doorToolStripMenuItem
             // 
             this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
-            this.doorToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.doorToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.doorToolStripMenuItem.Text = "Door";
             // 
             // powerToolStripMenuItem
@@ -360,11 +299,73 @@
             this.powerToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
             this.powerToolStripMenuItem.Text = "Power";
             // 
+            // txtTopFloor
+            // 
+            this.txtTopFloor.Enabled = false;
+            this.txtTopFloor.Location = new System.Drawing.Point(846, 40);
+            this.txtTopFloor.Name = "txtTopFloor";
+            this.txtTopFloor.Size = new System.Drawing.Size(123, 22);
+            this.txtTopFloor.TabIndex = 18;
+            // 
+            // cbNumberFloor
+            // 
+            this.cbNumberFloor.FormattingEnabled = true;
+            this.cbNumberFloor.Location = new System.Drawing.Point(544, 38);
+            this.cbNumberFloor.Name = "cbNumberFloor";
+            this.cbNumberFloor.Size = new System.Drawing.Size(143, 24);
+            this.cbNumberFloor.TabIndex = 17;
+            this.cbNumberFloor.Text = "1";
+            this.cbNumberFloor.SelectedIndexChanged += new System.EventHandler(this.cbNumberFloor_SelectedIndexChanged);
+            // 
+            // txtNameHouse
+            // 
+            this.txtNameHouse.Enabled = false;
+            this.txtNameHouse.Location = new System.Drawing.Point(168, 40);
+            this.txtNameHouse.Name = "txtNameHouse";
+            this.txtNameHouse.Size = new System.Drawing.Size(123, 22);
+            this.txtNameHouse.TabIndex = 16;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(745, 40);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 20);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Top Floor:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(373, 40);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(139, 20);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Number Floors:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(3, 40);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 20);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Name Of House:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(981, 515);
+            this.Controls.Add(this.txtTopFloor);
+            this.Controls.Add(this.cbNumberFloor);
+            this.Controls.Add(this.txtNameHouse);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStripLoadTime);
             this.Controls.Add(this.menuStripAllFeature);
@@ -380,7 +381,6 @@
             this.statusStripLoadTime.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxThumbNail)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -410,12 +410,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBoxThumbNail;
         private System.Windows.Forms.PictureBox pictureBoxSelected;
-        private System.Windows.Forms.ComboBox cbNumberFloor;
-        private System.Windows.Forms.TextBox txtNameHouse;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtTopFloor;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
@@ -423,5 +417,11 @@
         private System.Windows.Forms.ToolStripMenuItem stairToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtTopFloor;
+        private System.Windows.Forms.ComboBox cbNumberFloor;
+        private System.Windows.Forms.TextBox txtNameHouse;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

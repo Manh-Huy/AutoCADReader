@@ -8,6 +8,7 @@ namespace DemoACadSharp
 {
     public class UnityEntity : AcadEntity
     {
+        string typeOfUnityEntity;
         string color;
         double height;
 
@@ -15,6 +16,12 @@ namespace DemoACadSharp
         {
         }
 
+        public UnityEntity(string _typeOfUnityEntity)
+        {
+            this.typeOfUnityEntity = _typeOfUnityEntity;
+        }
+
+        public string TypeOfUnityEntity { get => typeOfUnityEntity; set => typeOfUnityEntity = value; }
         public string Color { get => color; set => color = value; }
         public double Height { get => height; set => height = value; }
     }

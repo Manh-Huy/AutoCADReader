@@ -94,7 +94,9 @@
     <Compile Include="AcadEntity.cs" />
     <Compile Include="Architecture.cs" />
     <Compile Include="Document.cs" />
+    <Compile Include="Door.cs" />
     <Compile Include="EntityInfo.cs" />
+    <Compile Include="FactoryUnityEntity.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="House.cs" />
     <Compile Include="InitialForm.cs">
@@ -110,6 +112,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ParentEntity.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,7 +122,9 @@
     <Compile Include="ReadFileAutoCadForm.Designer.cs">
       <DependentUpon>ReadFileAutoCadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stair.cs" />
     <Compile Include="UnityEntity.cs" />
+    <Compile Include="Wall.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>
