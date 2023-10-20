@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DemoACadSharp
 {
@@ -18,4 +20,26 @@ namespace DemoACadSharp
 
         public Wall(string typeOfUnityEntity) : base(typeOfUnityEntity) { }
     }
+
+
+    /*private string name;
+    public string Name
+    {
+        get { return name; }
+        set
+        {
+            if (name != value)
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }*/
 }
