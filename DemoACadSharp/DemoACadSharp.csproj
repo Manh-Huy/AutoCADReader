@@ -96,6 +96,7 @@
     <Compile Include="Document.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="EntityInfo.cs" />
+    <Compile Include="ExportArchitectureToJSON.cs" />
     <Compile Include="FactoryUnityEntity.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="House.cs" />

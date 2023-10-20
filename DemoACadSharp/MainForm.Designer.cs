@@ -59,6 +59,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnExportToJSON = new System.Windows.Forms.Button();
+            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,7 +79,7 @@
             this.FileToolStripMenuItem});
             this.menuStripAllFeature.Location = new System.Drawing.Point(0, 0);
             this.menuStripAllFeature.Name = "menuStripAllFeature";
-            this.menuStripAllFeature.Size = new System.Drawing.Size(981, 30);
+            this.menuStripAllFeature.Size = new System.Drawing.Size(981, 28);
             this.menuStripAllFeature.TabIndex = 0;
             this.menuStripAllFeature.Text = "menuStrip1";
             // 
@@ -86,7 +88,8 @@
             this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importFileToolStripMenuItem,
             this.openFileToolStripMenuItem,
-            this.saveFileToolStripMenuItem});
+            this.saveFileToolStripMenuItem,
+            this.exportJSONToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
             this.FileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.FileToolStripMenuItem.Text = "File";
@@ -94,21 +97,21 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
@@ -212,6 +215,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btnExportToJSON);
             this.panel1.Controls.Add(this.propertyGrid1);
             this.panel1.Controls.Add(this.treeViewSelectedEntity);
             this.panel1.Controls.Add(this.pictureBoxSelected);
@@ -238,7 +242,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.treeViewSelectedEntity.Location = new System.Drawing.Point(3, 3);
             this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
-            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 369);
+            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 341);
             this.treeViewSelectedEntity.TabIndex = 0;
             this.treeViewSelectedEntity.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseClick);
             this.treeViewSelectedEntity.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseDoubleClick);
@@ -266,7 +270,7 @@
             this.doorToolStripMenuItem,
             this.powerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 152);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 124);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // noneToolStripMenuItem
@@ -355,6 +359,24 @@
             this.label1.TabIndex = 13;
             this.label1.Text = "Name Of House:";
             // 
+            // btnExportToJSON
+            // 
+            this.btnExportToJSON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportToJSON.Location = new System.Drawing.Point(3, 346);
+            this.btnExportToJSON.Name = "btnExportToJSON";
+            this.btnExportToJSON.Size = new System.Drawing.Size(351, 29);
+            this.btnExportToJSON.TabIndex = 7;
+            this.btnExportToJSON.Text = "Export to JSON";
+            this.btnExportToJSON.UseVisualStyleBackColor = true;
+            this.btnExportToJSON.Click += new System.EventHandler(this.btnExportToJSON_Click);
+            // 
+            // exportJSONToolStripMenuItem
+            // 
+            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
+            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportJSONToolStripMenuItem.Text = "Export (JSON)";
+            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -423,5 +445,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnExportToJSON;
+        private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
     }
 }
