@@ -38,61 +38,61 @@ namespace DemoACadSharp
         public List<AcadEntity> getSelectedEntities() { return listSelectedEntities; }
         public List<AcadEntity> getUniqueEntities()
         {
-            if(listUniqueEntities == null)
+            if (listUniqueEntities == null)
             {
                 bool isNewUniqueEntity = false;
                 listUniqueEntities = new List<AcadEntity>();
                 AcadEntity currentEntity = listAllEntities.FirstOrDefault();
                 listUniqueEntities.Add(currentEntity);
-                for(int i = 1; i < listAllEntities.Count; i++)
+                for (int i = 1; i < listAllEntities.Count; i++)
                 {
-                    foreach(AcadEntity parentEntity in listUniqueEntities)
+                    foreach (AcadEntity parentEntity in listUniqueEntities)
                     {
-                        if(parentEntity.LayerName == listAllEntities[i].LayerName &&
+                        if (parentEntity.LayerName == listAllEntities[i].LayerName &&
                             parentEntity.ObjectType == listAllEntities[i].ObjectType)
                         {
                             isNewUniqueEntity = false;
                             break;
-                        } else
+                        }
+                        else
                         {
                             isNewUniqueEntity = true;
                             currentEntity = listAllEntities[i];
-                        }    
+                        }
                     }
                     if (isNewUniqueEntity) listUniqueEntities.Add(currentEntity);
-                }    
-            }    
-            return listUniqueEntities; 
+                }
+            }
+            return listUniqueEntities;
         }
         public List<AcadEntity> getUniqueSelectedEntities()
         {
             if (listSelectedEntities != null)
             {
-                if (listUniqueSelectedEntities == null)
+
+                bool isNewUniqueEntity = false;
+                listUniqueSelectedEntities = new List<AcadEntity>();
+                AcadEntity currentEntity = listSelectedEntities.FirstOrDefault();
+                listUniqueSelectedEntities.Add(currentEntity);
+                for (int i = 1; i < listSelectedEntities.Count; i++)
                 {
-                    bool isNewUniqueEntity = false;
-                    listUniqueSelectedEntities = new List<AcadEntity>();
-                    AcadEntity currentEntity = listSelectedEntities.FirstOrDefault();
-                    listUniqueSelectedEntities.Add(currentEntity);
-                    for (int i = 1; i < listSelectedEntities.Count; i++)
+                    foreach (AcadEntity parentEntity in listUniqueSelectedEntities)
                     {
-                        foreach (AcadEntity parentEntity in listUniqueSelectedEntities)
+                        if (parentEntity.LayerName == listSelectedEntities[i].LayerName &&
+                            parentEntity.ObjectType == listSelectedEntities[i].ObjectType)
                         {
-                            if (parentEntity.LayerName == listSelectedEntities[i].LayerName &&
-                                parentEntity.ObjectType == listSelectedEntities[i].ObjectType)
-                            {
-                                isNewUniqueEntity = false;
-                                break;
-                            }
-                            else
-                            {
-                                isNewUniqueEntity = true;
-                                currentEntity = listSelectedEntities[i];
-                            }
+                            isNewUniqueEntity = false;
+                            break;
                         }
-                        if (isNewUniqueEntity) listUniqueSelectedEntities.Add(currentEntity);
+                        else
+                        {
+                            isNewUniqueEntity = true;
+                            currentEntity = listSelectedEntities[i];
+                        }
                     }
+                    if (isNewUniqueEntity) listUniqueSelectedEntities.Add(currentEntity);
                 }
+
             }
             return listUniqueSelectedEntities;
         }

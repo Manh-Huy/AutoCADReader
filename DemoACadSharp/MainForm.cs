@@ -48,6 +48,7 @@ namespace DemoACadSharp
         string topFloor = InitialForm.topFloor;
 
         int currentFloor = 1;
+        private TreeNode selectedNode;
 
         public MainForm()
         {
@@ -134,6 +135,8 @@ namespace DemoACadSharp
                             AcadEntity entity = token.ToObject<AcadEntity>();
                             _listAllEntities.Add(entity);
                         }
+
+                        Architecture.getInstance().Floors[currentFloor].Order = currentFloor + 1;
 
                         Architecture.getInstance().Floors[currentFloor].ListAllEntities = _listAllEntities;
                         _listUniqueEntities = Architecture.getInstance().Floors[currentFloor].getUniqueEntities();
@@ -227,6 +230,10 @@ namespace DemoACadSharp
                 UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
                 floor.ListUnityEntities.Add(unityEntity);
             }
+            floor.ListWalls = new List<Wall>();
+            floor.ListStairs = new List<Stair>();
+            floor.ListDoors = new List<Door>();
+            floor.ListPowers = new List<Power>();
         }
 
         private string deleteId(string input)
@@ -249,65 +256,54 @@ namespace DemoACadSharp
         {
             currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             Floor floor = Architecture.getInstance().Floors[currentFloor];
-            int idEntity = getIdEntity(e.Node.Text);
+
 
             if (e.Node.Nodes.Count == 0)
             {
+                int idEntity = getIdEntity(e.Node.Text);
                 string layerName = deleteId(getLayer(e.Node.Text));
                 string objectType = getObjectType(e.Node.Text);
 
-                foreach(UnityEntity unityEntity in floor.ListUnityEntities)
+                foreach (UnityEntity unityEntity in floor.ListUnityEntities)
                 {
-                    if(unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType
+                    if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType
                         && unityEntity.Id == idEntity)
                     {
-                        switch(unityEntity.TypeOfUnityEntity)
+                        switch (unityEntity.TypeOfUnityEntity)
                         {
                             case "Wall":
-                                foreach(Wall wall in floor.ListWalls)
+                                foreach (Wall wall in floor.ListWalls)
                                 {
-                                    if(wall.Id == idEntity)
+                                    if (wall.Id == idEntity)
                                         propertyGrid1.SelectedObject = wall;
                                 }
                                 break;
                             case "Stair":
+                                foreach (Stair stair in floor.ListStairs)
+                                {
+                                    if (stair.Id == idEntity)
+                                        propertyGrid1.SelectedObject = stair;
+                                }
                                 break;
                             case "Door":
+                                foreach (Door door in floor.ListDoors)
+                                {
+                                    if (door.Id == idEntity)
+                                        propertyGrid1.SelectedObject = door;
+                                }
                                 break;
                             case "Power":
+                                foreach (Power power in floor.ListPowers)
+                                {
+                                    if (power.Id == idEntity)
+                                        propertyGrid1.SelectedObject = power;
+                                }
                                 break;
                         }
                     }
                 }
             }
         }
-
-        /*private void ContextMenuStrip_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem node = sender as System.Windows.Forms.ToolStripMenuItem;
-            if (node.Name == "wall")
-            {
-                MessageBox.Show("Rhyderrr");
-            }
-        } // Cái hàm này bỏ rồi, đang để đó để tham khảo thôi*/
-
-        /*private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                if (e.Node != null)
-                {
-                    e.Node.ContextMenuStrip = contextMenuStrip1;
-                }
-            }
-        } // Cái hàm này là để đnăg ký sự kiện lắng nghe cho các Node
-
-        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            *//*ToolStripMenuItem item = sender as ToolStripMenuItem;
-            MessageBox.Show(item.GetType().ToString());*//*
-            MessageBox.Show(sender.ToString());
-        } // Hàm này sẽ thực thi nè*/
 
         #endregion
 
@@ -370,70 +366,6 @@ namespace DemoACadSharp
                 //toolStripProgressBar.Value++;
             }
         }
-
-        // Method support check in node parent
-        /*private void CheckChildNodes(TreeNode treeNode, bool isChecked)
-        {
-            foreach (TreeNode childNode in treeNode.Nodes)
-            {
-                childNode.Checked = isChecked;
-
-                // Đệ quy để thay đổi trạng thái của các nút con của nút con
-                CheckChildNodes(childNode, isChecked);
-            }
-        }*/
-
-        // Function call Recursion to support for btn SaveFile
-        /*private List<EntityInfo> GetSelectedEntities(TreeNodeCollection nodes, List<EntityInfo> entityList)
-        {
-            List<EntityInfo> selectedEntities = new List<EntityInfo>();
-
-            foreach (TreeNode node in nodes)
-            {
-                if (node.Checked && node.Tag is EntityInfo entityInfo && entityList.Contains(entityInfo))
-                {
-                    selectedEntities.Add(entityInfo);
-                }
-
-                if (node.Nodes.Count > 0)
-                {
-                    selectedEntities.AddRange(GetSelectedEntities(node.Nodes, entityList));
-                }
-            }
-
-            return selectedEntities;
-        }*/
-
-        /*private void AddNode(JToken token, TreeNode parentNode)
-        {
-
-            if (token.Type == JTokenType.Object)
-            {
-                JObject obj = (JObject)token;
-                string layerName = obj.Value<string>("LayerName");
-                string objectType = obj.Value<string>("ObjectType");
-                string nodeText = $"{layerName} ({objectType})";
-
-                // Tìm hoặc tạo nút cha dựa trên LayerName
-                TreeNode layerNode = parentNode.Nodes.Cast<TreeNode>()
-                    .FirstOrDefault(n => n.Text.StartsWith(layerName));
-                if (layerNode == null)
-                {
-                    layerNode = parentNode.Nodes.Add(layerName);
-                }
-
-                // Thêm nút con mới dựa trên nodeText
-                layerNode.Nodes.Add(nodeText);
-            }
-            else if (token.Type == JTokenType.Array)
-            {
-                JArray array = (JArray)token;
-                for (int i = 0; i < array.Count; i++)
-                {
-                    AddNode(array[i], parentNode);
-                }
-            }
-        }*/
 
         // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
         private void getDataFromTreeView_View()
@@ -503,7 +435,7 @@ namespace DemoACadSharp
         private void setDataToTreeView_Config()
         {
             treeViewSelectedEntity.Nodes.Clear();
-            int floor = Int32.Parse(cbNumberFloor.Text) - 1;
+            int currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
             listUniqueSelectedEntity = Architecture.getInstance().Floors[currentFloor].getUniqueSelectedEntities();
 
@@ -522,8 +454,6 @@ namespace DemoACadSharp
                         }
                     }
                 }
-
-
             }
         }
 
@@ -581,11 +511,11 @@ namespace DemoACadSharp
         {
             if (e.Button == MouseButtons.Right)
             {
+                selectedNode = e.Node;
                 if (e.Node != null && e.Node.Nodes.Count > 0)
                 {
                     e.Node.ContextMenuStrip = contextMenuStrip1;
                 }
-
             }
         }
 
@@ -593,17 +523,11 @@ namespace DemoACadSharp
         {
             currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             Floor floor = Architecture.getInstance().Floors[currentFloor];
-            floor.ListWalls = new List<Wall>();
-            floor.ListStairs = new List<Stair>();
-            floor.ListDoors = new List<Door>();
-            floor.ListPowers = new List<Power>();
             string layerName = "", objectType = "";
             string typeOfUnityEntity = e.ClickedItem.Text;
-              
-            if (contextMenuStrip1.SourceControl is TreeView treeView)
+
+            if (selectedNode != null)
             {
-                TreeNode selectedNode = treeView.SelectedNode;  
-                
                 layerName = getLayer(selectedNode.Text);
                 objectType = getObjectType(selectedNode.Text);
             }
@@ -635,6 +559,109 @@ namespace DemoACadSharp
                 }
             }
 
+
+        }
+
+        private void btnExportToJSON_Click(object sender, EventArgs e)
+        {
+            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[currentFloor];
+            List<UnityEntity> listToExport = new List<UnityEntity>();
+            listToExport.AddRange(floor.ListWalls);
+            listToExport.AddRange(floor.ListStairs);
+            listToExport.AddRange(floor.ListDoors);
+            listToExport.AddRange(floor.ListPowers);
+
+            string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.Title = "Save JSON File";
+
+
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = saveFileDialog.FileName;
+                File.WriteAllText(path, json);
+                MessageBox.Show("Save Successfully!");
+            }
+        }
+
+        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool check = false;
+            List<string> listFloorNoData = new List<string>();
+            for(int i = 0; i < Architecture.getInstance().Floors.Count; i++)
+            {
+                if (Architecture.getInstance().Floors[i].ListUnityEntities == null)
+                {
+                    listFloorNoData.Add((i + 1).ToString());
+                }    
+            }
+
+            foreach (Floor floorCheck in Architecture.getInstance().Floors)
+            {
+                if(floorCheck.ListUnityEntities == null)
+                {
+                    check = false;
+                    break;
+                } else
+                {
+                    check = true;
+                }    
+            }    
+
+            if(check)
+            {
+                List<ExportArchitectureToJSON> listToExport = new List<ExportArchitectureToJSON>();
+                foreach (Floor floor in Architecture.getInstance().Floors)
+                {
+                    ExportArchitectureToJSON floorEntity = new ExportArchitectureToJSON();
+                    floorEntity.NameFloor = "Floor " + floor.Order.ToString();
+                    if (floor.ListWalls.Count > 0)
+                    {
+                        floorEntity.ListToExport.AddRange(floor.ListWalls);
+                    }
+                    if (floor.ListStairs.Count > 0)
+                    {
+                        floorEntity.ListToExport.AddRange(floor.ListStairs);
+                    }
+                    if (floor.ListDoors.Count > 0)
+                    {
+                        floorEntity.ListToExport.AddRange(floor.ListDoors);
+                    }
+                    if (floor.ListPowers.Count > 0)
+                    {
+                        floorEntity.ListToExport.AddRange(floor.ListPowers);
+                    }
+
+                    listToExport.Add(floorEntity);
+                }
+
+                string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "JSON files (*.json)|*.json";
+                saveFileDialog.Title = "Save JSON File";
+
+
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string path = saveFileDialog.FileName;
+                    File.WriteAllText(path, json);
+                    MessageBox.Show("Save Successfully!");
+                }
+            } else
+            {
+                string numberOfFloorNoData = "";
+                foreach(string number in listFloorNoData)
+                {
+                    numberOfFloorNoData += "'" + number + "'" + " ";
+                }
+                MessageBox.Show("Error! Floor " + numberOfFloorNoData + "have not been data imported yet!");
+            }    
             
         }
     }
