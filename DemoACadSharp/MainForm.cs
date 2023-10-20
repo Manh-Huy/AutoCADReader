@@ -29,6 +29,7 @@ using Aspose.CAD;
 using Color = System.Drawing.Color;
 using TreeView = System.Windows.Forms.TreeView;
 using System.Collections;
+using Line = ACadSharp.Entities.Line;
 
 namespace DemoACadSharp
 {
@@ -336,6 +337,51 @@ namespace DemoACadSharp
                             coordinates.Add(posString);
                         }
                     }
+
+                    if (entity is Insert)
+                    {
+                        Insert insert = (Insert)entity;
+
+                        XYZ position = insert.InsertPoint;
+
+                        coordinates.Add(position.ToString());
+                    }
+                    if (entity is Line)
+                    {
+                        Line line = (Line)entity;
+
+                        XYZ startPoint = line.StartPoint;
+
+                        XYZ endPoint = line.EndPoint;
+
+                        coordinates.Add(startPoint.ToString());
+
+                        coordinates.Add(endPoint.ToString());
+                    }
+                    if (entity is Arc) // Cần không?
+                    {
+                        Arc arc = entity as Arc;
+
+                        XYZ center = arc.Center;
+                        double radius = arc.Radius;
+                        double startAngle = arc.StartAngle;
+                        double endAngle = arc.EndAngle;
+
+                        coordinates.Add(center.ToString());
+                        coordinates.Add(radius.ToString());
+                        coordinates.Add(startAngle.ToString());
+                        coordinates.Add(endAngle.ToString());
+                    }
+                    if (entity is Hatch)
+                    {
+                        Hatch originalHatch = entity as Hatch;
+
+                        foreach (XY seedPoint in originalHatch.SeedPoints)
+                        {
+                            coordinates.Add(seedPoint.ToString());
+                        }
+                    }
+
                     AcadEntity entityInfo = new AcadEntity(coutId, layerName, objectType, coordinates);
                     listAllEntity.Add(entityInfo);
                     coutId++;
