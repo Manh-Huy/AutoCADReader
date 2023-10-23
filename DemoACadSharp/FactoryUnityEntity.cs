@@ -8,45 +8,40 @@ namespace DemoACadSharp
 {
     public class FactoryUnityEntity
     {
-        public static dynamic createObjectUnity(UnityEntity unityEntity)
+        public static dynamic createObjectUnity(AcadEntity entity, string typeOfEntityUnity)
         {
-            FactoryUnityEntity factory = new FactoryUnityEntity();
-            switch (unityEntity.TypeOfUnityEntity)
+            switch (typeOfEntityUnity)
             {
                 case "None":
-                    UnityEntity tempEntity = new UnityEntity("None");
+                    AcadEntity tempEntity = entity;
                     return tempEntity;
                 case "Wall":
                     Wall wallEntity = new Wall("Wall");
-                    wallEntity.Id = unityEntity.Id;
-                    wallEntity.LayerName = unityEntity.LayerName;
-                    wallEntity.ObjectType = unityEntity.ObjectType;
-                    wallEntity.Coordinates = unityEntity.Coordinates;
-                    wallEntity.TypeOfUnityEntity = unityEntity.TypeOfUnityEntity;
+                    wallEntity.Id = entity.Id;
+                    wallEntity.LayerName = entity.LayerName;
+                    wallEntity.ObjectType = entity.ObjectType;
+                    wallEntity.Coordinates = entity.Coordinates;
                     return wallEntity;
                 case "Stair":
                     Stair stairEntity = new Stair("Stair");
-                    stairEntity.Id = unityEntity.Id;
-                    stairEntity.LayerName = unityEntity.LayerName;
-                    stairEntity.ObjectType = unityEntity.ObjectType;
-                    stairEntity.Coordinates = unityEntity.Coordinates;
-                    stairEntity.TypeOfUnityEntity = unityEntity.TypeOfUnityEntity;
+                    stairEntity.Id = entity.Id;
+                    stairEntity.LayerName = entity.LayerName;
+                    stairEntity.ObjectType = entity.ObjectType;
+                    stairEntity.Coordinates = entity.Coordinates;
                     return stairEntity;
                 case "Door":
                     Door doorEntity = new Door("Door");
-                    doorEntity.Id = unityEntity.Id;
-                    doorEntity.LayerName = unityEntity.LayerName;
-                    doorEntity.ObjectType = unityEntity.ObjectType;
-                    doorEntity.Coordinates = unityEntity.Coordinates;
-                    doorEntity.TypeOfUnityEntity = unityEntity.TypeOfUnityEntity;
+                    doorEntity.Id = entity.Id;
+                    doorEntity.LayerName = entity.LayerName;
+                    doorEntity.ObjectType = entity.ObjectType;
+                    doorEntity.Coordinates = entity.Coordinates;
                     return doorEntity;
                 case "Power":
                     Power powerEntity = new Power("Power");
-                    powerEntity.Id = unityEntity.Id;
-                    powerEntity.LayerName = unityEntity.LayerName;
-                    powerEntity.ObjectType = unityEntity.ObjectType;
-                    powerEntity.Coordinates = unityEntity.Coordinates;
-                    powerEntity.TypeOfUnityEntity = unityEntity.TypeOfUnityEntity;
+                    powerEntity.Id = entity.Id;
+                    powerEntity.LayerName = entity.LayerName;
+                    powerEntity.ObjectType = entity.ObjectType;
+                    powerEntity.Coordinates = entity.Coordinates;
                     return powerEntity;
             }
             return null;
@@ -54,15 +49,15 @@ namespace DemoACadSharp
 
 
         // Em Tín ráng viết hàm này để tránh duplicate mà đé o được =))))))))
-        private dynamic copyProperties(UnityEntity unityEntity)
+        /*private dynamic copyProperties(entity entity)
         {
-            var copyObject = unityEntity;
-            copyObject.Id = unityEntity.Id;
-            copyObject.LayerName = unityEntity.LayerName;
-            copyObject.ObjectType = unityEntity.ObjectType;
-            copyObject.Coordinates = unityEntity.Coordinates;
-            copyObject.TypeOfUnityEntity = unityEntity.TypeOfUnityEntity;
+            var copyObject = entity;
+            copyObject.Id = entity.Id;
+            copyObject.LayerName = entity.LayerName;
+            copyObject.ObjectType = entity.ObjectType;
+            copyObject.Coordinates = entity.Coordinates;
+            copyObject.TypeOfentity = entity.TypeOfentity;
             return copyObject;
-        }
+        }*/
     }
 }

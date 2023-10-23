@@ -172,7 +172,7 @@ namespace DemoACadSharp
             {
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
-                copyDataFromAcadEntityToUnityEntity();
+                //copyDataFromAcadEntityToUnityEntity();
                 MessageBox.Show("Selected Successfully!");
             }
             else
@@ -201,28 +201,30 @@ namespace DemoACadSharp
                         switch (unityEntity.TypeOfUnityEntity)
                         {
                             case "Wall":
-                                foreach (Wall wall in floor.ListWalls)
+                                if (unityEntity is Wall wall)
                                 {
                                     if (wall.Id == idEntity)
                                         propertyGrid1.SelectedObject = wall;
                                 }
                                 break;
                             case "Stair":
-                                foreach (Stair stair in floor.ListStairs)
+                                if (unityEntity is Stair stair)
+
                                 {
                                     if (stair.Id == idEntity)
                                         propertyGrid1.SelectedObject = stair;
                                 }
                                 break;
                             case "Door":
-                                foreach (Door door in floor.ListDoors)
+                                if (unityEntity is Door door)
                                 {
                                     if (door.Id == idEntity)
                                         propertyGrid1.SelectedObject = door;
                                 }
                                 break;
                             case "Power":
-                                foreach (Power power in floor.ListPowers)
+                                if (unityEntity is Power power)
+
                                 {
                                     if (power.Id == idEntity)
                                         propertyGrid1.SelectedObject = power;
@@ -301,7 +303,7 @@ namespace DemoACadSharp
                 objectType = getObjectType(selectedNode.Text);
             }
 
-            foreach (UnityEntity childEntity in floor.ListUnityEntities)
+            /*foreach (UnityEntity childEntity in floor.ListUnityEntities)
             {
                 if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType)
                 {
@@ -326,6 +328,32 @@ namespace DemoACadSharp
                             break;
                     }
                 }
+            }*/
+
+            foreach (AcadEntity entity in floor.ListSelectedEntities)
+            {
+                if (entity.LayerName == layerName && entity.ObjectType == objectType)
+                {
+                    var templateEntity = FactoryUnityEntity.createObjectUnity(entity, typeOfUnityEntity);
+                    switch (templateEntity)
+                    {
+                        case Wall wall:
+                            floor.ListUnityEntities.Add(wall);
+                            break;
+
+                        case Stair stair:
+                            floor.ListUnityEntities.Add(stair);
+                            break;
+
+                        case Door door:
+                            floor.ListUnityEntities.Add(door);
+                            break;
+
+                        case Power power:
+                            floor.ListUnityEntities.Add(power);
+                            break;
+                    }
+                }
             }
 
 
@@ -333,7 +361,7 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            /*currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             Floor floor = Architecture.getInstance().Floors[currentFloor];
             List<UnityEntity> listToExport = new List<UnityEntity>();
             listToExport.AddRange(floor.ListWalls);
@@ -354,105 +382,59 @@ namespace DemoACadSharp
                 string path = saveFileDialog.FileName;
                 File.WriteAllText(path, json);
                 MessageBox.Show("Save Successfully!");
-            }
+            }*/
         }
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool check = false;
-            List<string> listFloorNoData = new List<string>();
-            for(int i = 0; i < Architecture.getInstance().Floors.Count; i++)
+
+            List<ExportArchitectureToJSON> listToExport = new List<ExportArchitectureToJSON>();
+            foreach (Floor floor in Architecture.getInstance().Floors)
             {
-                if (Architecture.getInstance().Floors[i].ListUnityEntities == null)
-                {
-                    listFloorNoData.Add((i + 1).ToString());
-                }    
+                ExportArchitectureToJSON floorEntity = new ExportArchitectureToJSON();
+                floorEntity.NameFloor = "Floor " + floor.Order.ToString();
+                floorEntity.ListToExport = floor.ListUnityEntities;
+
+                listToExport.Add(floorEntity);
             }
 
-            foreach (Floor floorCheck in Architecture.getInstance().Floors)
+            string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.Title = "Save JSON File";
+
+
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if(floorCheck.ListUnityEntities == null)
-                {
-                    check = false;
-                    break;
-                } else
-                {
-                    check = true;
-                }    
-            }    
-
-            if(check)
-            {
-                List<ExportArchitectureToJSON> listToExport = new List<ExportArchitectureToJSON>();
-                foreach (Floor floor in Architecture.getInstance().Floors)
-                {
-                    ExportArchitectureToJSON floorEntity = new ExportArchitectureToJSON();
-                    floorEntity.NameFloor = "Floor " + floor.Order.ToString();
-                    if (floor.ListWalls.Count > 0)
-                    {
-                        floorEntity.ListToExport.AddRange(floor.ListWalls);
-                    }
-                    if (floor.ListStairs.Count > 0)
-                    {
-                        floorEntity.ListToExport.AddRange(floor.ListStairs);
-                    }
-                    if (floor.ListDoors.Count > 0)
-                    {
-                        floorEntity.ListToExport.AddRange(floor.ListDoors);
-                    }
-                    if (floor.ListPowers.Count > 0)
-                    {
-                        floorEntity.ListToExport.AddRange(floor.ListPowers);
-                    }
-
-                    listToExport.Add(floorEntity);
-                }
-
-                string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
-
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "JSON files (*.json)|*.json";
-                saveFileDialog.Title = "Save JSON File";
+                string path = saveFileDialog.FileName;
+                File.WriteAllText(path, json);
+                MessageBox.Show("Save Successfully!");
+            }
 
 
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string path = saveFileDialog.FileName;
-                    File.WriteAllText(path, json);
-                    MessageBox.Show("Save Successfully!");
-                }
-            } else
-            {
-                string numberOfFloorNoData = "";
-                foreach(string number in listFloorNoData)
-                {
-                    numberOfFloorNoData += "'" + number + "'" + " ";
-                }
-                MessageBox.Show("Error! Floor " + numberOfFloorNoData + "have not been data imported yet!");
-            }    
-            
         }
 
         #endregion
 
         #region Method
 
-        private void copyDataFromAcadEntityToUnityEntity()
-        {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
-            floor.ListUnityEntities = new List<UnityEntity>();
-            foreach (AcadEntity entity in floor.ListSelectedEntities)
-            {
-                UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
-                floor.ListUnityEntities.Add(unityEntity);
-            }
-            floor.ListWalls = new List<Wall>();
-            floor.ListStairs = new List<Stair>();
-            floor.ListDoors = new List<Door>();
-            floor.ListPowers = new List<Power>();
-        }
+        /*        private void copyDataFromAcadEntityToUnityEntity()
+                {
+                    currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+                    Floor floor = Architecture.getInstance().Floors[currentFloor];
+                    floor.ListUnityEntities = new List<UnityEntity>();
+                    foreach (AcadEntity entity in floor.ListSelectedEntities)
+                    {
+                        UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
+                        floor.ListUnityEntities.Add(unityEntity);
+                    }
+                    floor.ListWalls = new List<Wall>();
+                    floor.ListStairs = new List<Stair>();
+                    floor.ListDoors = new List<Door>();
+                    floor.ListPowers = new List<Power>();
+                }*/
 
         //Hàm xử lý chuỗi trên node con
         private string deleteId(string input)
@@ -565,7 +547,7 @@ namespace DemoACadSharp
                 {
                     if (UniEntity.LayerName == entity.LayerName && UniEntity.ObjectType == entity.ObjectType)
                     {
-                        TreeNode childNode = new TreeNode($"{UniEntity.LayerName} ({UniEntity.ObjectType})");
+                        TreeNode childNode = new TreeNode($"{entity.Id}: {entity.LayerName} ({entity.ObjectType})");
                         parentNode.Nodes.Add(childNode);
                         //childNode.Tag = entity;
                         //objectDictionary[childNode] = entity;
@@ -602,12 +584,12 @@ namespace DemoACadSharp
                         if (childNode.Checked)
                         {
                             int idChildEntity = getIdEntity(childNode.Text);
-                            foreach (AcadEntity childEntity in Architecture.getInstance().Floors[currentFloor].ListAllEntities)
+                            foreach (AcadEntity childEntity in architecture.Floors[currentFloor].ListAllEntities)
                             {
                                 if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
                                      idChildEntity == childEntity.Id)
                                 {
-                                    Architecture.getInstance().Floors[currentFloor].ListSelectedEntities.Add(childEntity);
+                                    architecture.Floors[currentFloor].ListSelectedEntities.Add(childEntity);
                                 }
                             }
                         }
@@ -615,7 +597,7 @@ namespace DemoACadSharp
                 }
             }
 
-            Architecture.getInstance().Floors[currentFloor].ListSelectedEntities.Reverse();
+            architecture.Floors[currentFloor].ListSelectedEntities.Reverse();
         }
 
         private void setDataToTreeView_View(int currentFloor)
@@ -645,7 +627,7 @@ namespace DemoACadSharp
             treeViewSelectedEntity.Nodes.Clear();
             int currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
-            listUniqueSelectedEntity = Architecture.getInstance().Floors[currentFloor].getUniqueSelectedEntities();
+            listUniqueSelectedEntity = architecture.Floors[currentFloor].getUniqueSelectedEntities();
 
             if (listUniqueSelectedEntity != null)
             {

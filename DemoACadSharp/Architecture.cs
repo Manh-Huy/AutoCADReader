@@ -24,6 +24,7 @@ namespace DemoACadSharp
             this.numberOfFloor = _numberOfFloor;
             this.floors = new List<Floor>();
             this.floors.Add(new Floor());
+            this.floors[0].Order = 1;
 
             instance = this;
         }
