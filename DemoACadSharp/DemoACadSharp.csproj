@@ -93,6 +93,9 @@
   <ItemGroup>
     <Compile Include="AcadEntity.cs" />
     <Compile Include="Architecture.cs" />
+    <Compile Include="CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Document.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="EntityInfo.cs" />
