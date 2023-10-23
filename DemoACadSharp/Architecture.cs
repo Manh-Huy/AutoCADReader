@@ -19,16 +19,12 @@ namespace DemoACadSharp
 
         }
 
-        public Architecture(string _nameArchitecture, int _numberOfFloor, string _typeOfRoof)
+        public Architecture(int _numberOfFloor)
         {
-            this.nameArchitecture = _nameArchitecture;
             this.numberOfFloor = _numberOfFloor;
-            this.typeOfRoof = _typeOfRoof;
             this.floors = new List<Floor>();
-            for(int i = 0; i < this.numberOfFloor; i++)
-            {
-                this.floors.Add(new Floor());
-            }    
+            this.floors.Add(new Floor());
+
             instance = this;
         }
 
@@ -36,7 +32,7 @@ namespace DemoACadSharp
         {
             if(instance == null)
             {
-                instance = new Architecture();
+                instance = new Architecture(1);
             }    
             return instance;
         }

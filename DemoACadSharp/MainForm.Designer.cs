@@ -34,6 +34,7 @@
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripLoadTime = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -44,6 +45,7 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExportToJSON = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
@@ -59,8 +61,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnExportToJSON = new System.Windows.Forms.Button();
-            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.menuStripAllFeature.SuspendLayout();
             this.statusStripLoadTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -97,23 +98,30 @@
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
             // openFileToolStripMenuItem
             // 
             this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.openFileToolStripMenuItem.Text = "Open File";
             this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
+            // 
+            // exportJSONToolStripMenuItem
+            // 
+            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
+            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.exportJSONToolStripMenuItem.Text = "Export (JSON)";
+            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
             // 
             // statusStripLoadTime
             // 
@@ -223,6 +231,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(957, 414);
             this.panel1.TabIndex = 3;
+            // 
+            // btnExportToJSON
+            // 
+            this.btnExportToJSON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportToJSON.Location = new System.Drawing.Point(3, 346);
+            this.btnExportToJSON.Name = "btnExportToJSON";
+            this.btnExportToJSON.Size = new System.Drawing.Size(351, 29);
+            this.btnExportToJSON.TabIndex = 7;
+            this.btnExportToJSON.Text = "Export to JSON";
+            this.btnExportToJSON.UseVisualStyleBackColor = true;
+            this.btnExportToJSON.Click += new System.EventHandler(this.btnExportToJSON_Click);
             // 
             // propertyGrid1
             // 
@@ -359,29 +378,22 @@
             this.label1.TabIndex = 13;
             this.label1.Text = "Name Of House:";
             // 
-            // btnExportToJSON
+            // btnAdd
             // 
-            this.btnExportToJSON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportToJSON.Location = new System.Drawing.Point(3, 346);
-            this.btnExportToJSON.Name = "btnExportToJSON";
-            this.btnExportToJSON.Size = new System.Drawing.Size(351, 29);
-            this.btnExportToJSON.TabIndex = 7;
-            this.btnExportToJSON.Text = "Export to JSON";
-            this.btnExportToJSON.UseVisualStyleBackColor = true;
-            this.btnExportToJSON.Click += new System.EventHandler(this.btnExportToJSON_Click);
-            // 
-            // exportJSONToolStripMenuItem
-            // 
-            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
-            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.exportJSONToolStripMenuItem.Text = "Export (JSON)";
-            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
+            this.btnAdd.Location = new System.Drawing.Point(693, 33);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(55, 37);
+            this.btnAdd.TabIndex = 19;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(981, 515);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtTopFloor);
             this.Controls.Add(this.cbNumberFloor);
             this.Controls.Add(this.txtNameHouse);
@@ -447,5 +459,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExportToJSON;
         private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
+        private System.Windows.Forms.Button btnAdd;
     }
 }
