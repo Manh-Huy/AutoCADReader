@@ -45,6 +45,11 @@ namespace DemoACadSharp
 
         private void importFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            importFile();
+        }
+
+        private void importFile()
+        {
             currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
             // Dọn Cache
@@ -93,6 +98,11 @@ namespace DemoACadSharp
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            openFile();
+        }
+
+        private void openFile()
+        {
             // Mở hộp thoại OpenFileDialog để chọn tệp JSON
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -117,7 +127,7 @@ namespace DemoACadSharp
                         architecture.Floors[currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
                         _listUniqueEntities = architecture.Floors[currentFloor].getUniqueEntities();
                         architecture.Floors[currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
-                        string imagePath= floor.ImageURL;
+                        string imagePath = floor.ImageURL;
                         pictureBoxThumbNail.Image = LoadImage(imagePath);
 
                         setDataToTreeView_View(currentFloor);
@@ -234,7 +244,18 @@ namespace DemoACadSharp
                 treeView1.Nodes.Clear();
                 treeViewSelectedEntity.Nodes.Clear();
                 pictureBoxThumbNail.Image = null;
-                MessageBox.Show("Rhyderrr");
+
+                CustomMessageBox customMessageBox = new CustomMessageBox("This floor does not have data yet!");
+                DialogResult result = customMessageBox.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    importFile();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    openFile();
+                }
             }
             else
             {
