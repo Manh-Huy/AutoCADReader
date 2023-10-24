@@ -254,7 +254,7 @@ namespace DemoACadSharp
                 {
                     importFile();
                 }
-                else if (result == DialogResult.Cancel)
+                else if (result == DialogResult.Retry)
                 {
                     openFile();
                 }
