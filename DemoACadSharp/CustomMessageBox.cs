@@ -65,7 +65,7 @@ namespace DemoACadSharp
         private void OpenButton_Click(object sender, EventArgs e)
         {
             // Xử lý khi nhấn vào nút Open
-            DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Retry;
             Close();
         }
     }
