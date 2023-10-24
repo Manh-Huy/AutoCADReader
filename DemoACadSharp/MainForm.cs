@@ -66,6 +66,8 @@ namespace DemoACadSharp
 
                 _listAllEntities = GetAllEntities(filePath);
 
+                _listAllEntities = clearLayer0(_listAllEntities);
+
                 // Chỉ lấy Entity Đại Diện
                 _listUniqueEntities = _listAllEntities
                     .GroupBy(entity => new { entity.LayerName, entity.ObjectType })
@@ -95,6 +97,20 @@ namespace DemoACadSharp
                 }
             }
         }
+
+        private List<AcadEntity> clearLayer0(List<AcadEntity> listEntities)
+        {
+            List<AcadEntity> listNo0Entities = new List<AcadEntity>();
+            foreach(AcadEntity entity in listEntities)
+            {
+                if(entity.LayerName != "0")
+                {
+                    listNo0Entities.Add(entity);
+                }
+            }
+
+            return listNo0Entities;
+        }    
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -388,17 +404,19 @@ namespace DemoACadSharp
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            List<ExportArchitectureToJSON> listToExport = new List<ExportArchitectureToJSON>();
-            foreach (Floor floor in Architecture.getInstance().Floors)
+            UnityArchitecture unityArchitecture = new UnityArchitecture();
+            unityArchitecture.NameArchitecture = txtNameHouse.Text;
+            unityArchitecture.NumberOfFloor = architecture.NumberOfFloor;
+            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
+            foreach (Floor floor in architecture.Floors)
             {
-                ExportArchitectureToJSON floorEntity = new ExportArchitectureToJSON();
-                floorEntity.NameFloor = "Floor " + floor.Order.ToString();
-                floorEntity.ListToExport = floor.ListUnityEntities;
-
-                listToExport.Add(floorEntity);
+                UnityFloor newFloor = new UnityFloor();
+                newFloor.Order = floor.Order;
+                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
+                unityArchitecture.ListFloor.Add(newFloor);
             }
 
-            string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";

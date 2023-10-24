@@ -127,7 +127,9 @@
       <DependentUpon>ReadFileAutoCadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Stair.cs" />
+    <Compile Include="UnityArchitecture.cs" />
     <Compile Include="UnityEntity.cs" />
+    <Compile Include="UnityFloor.cs" />
     <Compile Include="Wall.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
