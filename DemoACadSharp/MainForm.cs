@@ -20,14 +20,14 @@ namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
-        Architecture architecture = Architecture.getInstance();
+        Architecture _architecture = Architecture.getInstance();
 
         List<AcadEntity> _listAllEntities = new List<AcadEntity>();
 
         List<AcadEntity> _listUniqueEntities = new List<AcadEntity>();
 
-        int currentFloor = 1;
-        private TreeNode selectedNode;
+        int _currentFloor = 1;
+        private TreeNode _selectedNode;
 
         public MainForm()
         {
@@ -50,11 +50,13 @@ namespace DemoACadSharp
 
         private void importFile()
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
             // Dọn Cache
             _listAllEntities.Clear();
             _listUniqueEntities.Clear();
+            treeView1.Nodes.Clear();
+            treeViewSelectedEntity.Nodes.Clear();
 
             // Hiển thị hộp thoại mở tệp và cho phép người dùng chọn tệp DWG
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -72,8 +74,8 @@ namespace DemoACadSharp
                     .Select(group => new AcadEntity(null, group.Key.LayerName, group.Key.ObjectType, null))
                     .ToList();
 
-                architecture.Floors[currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
-                architecture.Floors[currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
+                _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
 
                 AddEntityToHierachy(_listUniqueEntities, _listAllEntities);
 
@@ -111,7 +113,7 @@ namespace DemoACadSharp
                 {
                     try
                     {
-                        currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+                        _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
                         _listAllEntities.Clear();
 
                         string json = File.ReadAllText(openFileDialog.FileName);
@@ -123,14 +125,14 @@ namespace DemoACadSharp
                             _listAllEntities.Add(entity);
                         }
 
-                        architecture.Floors[currentFloor].Order = currentFloor + 1;
-                        architecture.Floors[currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
-                        _listUniqueEntities = architecture.Floors[currentFloor].getUniqueEntities();
-                        architecture.Floors[currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                        _architecture.Floors[_currentFloor].Order = _currentFloor + 1;
+                        _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
+                        _listUniqueEntities = _architecture.Floors[_currentFloor].getUniqueEntities();
+                        _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
                         string imagePath = floor.ImageURL;
                         pictureBoxThumbNail.Image = LoadImage(imagePath);
 
-                        setDataToTreeView_View(currentFloor);
+                        setDataToTreeView_View(_currentFloor);
                     }
                     catch (Exception ex)
                     {
@@ -144,8 +146,8 @@ namespace DemoACadSharp
 
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Architecture.getInstance().Floors[currentFloor].ImageURL = SaveImageToLocalFolder(pictureBoxThumbNail);
-            string json = JsonConvert.SerializeObject(Architecture.getInstance().Floors[currentFloor], Formatting.Indented);
+            Architecture.getInstance().Floors[_currentFloor].ImageURL = SaveImageToLocalFolder(pictureBoxThumbNail);
+            string json = JsonConvert.SerializeObject(Architecture.getInstance().Floors[_currentFloor], Formatting.Indented);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
@@ -172,7 +174,7 @@ namespace DemoACadSharp
             {
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
-                //copyDataFromAcadEntityToUnityEntity();
+                tabControl1.SelectedIndex = 1;
                 MessageBox.Show("Selected Successfully!");
             }
             else
@@ -183,9 +185,8 @@ namespace DemoACadSharp
 
         private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
-
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[_currentFloor];
 
             if (e.Node.Nodes.Count == 0)
             {
@@ -238,10 +239,10 @@ namespace DemoACadSharp
 
         private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
-            if (Architecture.getInstance().Floors[currentFloor].ListAllEntities == null ||
-                    Architecture.getInstance().Floors[currentFloor].ListAllEntities.Count == 0)
+            if (Architecture.getInstance().Floors[_currentFloor].ListAllEntities == null ||
+                    Architecture.getInstance().Floors[_currentFloor].ListAllEntities.Count == 0)
             {
                 treeView1.Nodes.Clear();
                 treeViewSelectedEntity.Nodes.Clear();
@@ -261,7 +262,7 @@ namespace DemoACadSharp
             }
             else
             {
-                setDataToTreeView_View(currentFloor);
+                setDataToTreeView_View(_currentFloor);
                 setDataToTreeView_Config();
             }
         }
@@ -270,7 +271,7 @@ namespace DemoACadSharp
         {
             if (e.Button == MouseButtons.Right)
             {
-                selectedNode = e.Node;
+                _selectedNode = e.Node;
                 if (e.Node != null && e.Node.Nodes.Count > 0)
                 {
                     e.Node.ContextMenuStrip = contextMenuStrip1;
@@ -292,43 +293,16 @@ namespace DemoACadSharp
 
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[_currentFloor];
             string layerName = "", objectType = "";
             string typeOfUnityEntity = e.ClickedItem.Text;
 
-            if (selectedNode != null)
+            if (_selectedNode != null)
             {
-                layerName = getLayer(selectedNode.Text);
-                objectType = getObjectType(selectedNode.Text);
+                layerName = getLayer(_selectedNode.Text);
+                objectType = getObjectType(_selectedNode.Text);
             }
-
-            /*foreach (UnityEntity childEntity in floor.ListUnityEntities)
-            {
-                if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType)
-                {
-                    childEntity.TypeOfUnityEntity = typeOfUnityEntity;
-                    var templateEntity = FactoryUnityEntity.createObjectUnity(childEntity);
-                    switch (templateEntity)
-                    {
-                        case Wall wall:
-                            floor.ListWalls.Add(wall);
-                            break;
-
-                        case Stair stair:
-                            floor.ListStairs.Add(stair);
-                            break;
-
-                        case Door door:
-                            floor.ListDoors.Add(door);
-                            break;
-
-                        case Power power:
-                            floor.ListPowers.Add(power);
-                            break;
-                    }
-                }
-            }*/
 
             foreach (AcadEntity entity in floor.ListSelectedEntities)
             {
@@ -361,28 +335,7 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
-            /*currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
-            List<UnityEntity> listToExport = new List<UnityEntity>();
-            listToExport.AddRange(floor.ListWalls);
-            listToExport.AddRange(floor.ListStairs);
-            listToExport.AddRange(floor.ListDoors);
-            listToExport.AddRange(floor.ListPowers);
 
-            string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON files (*.json)|*.json";
-            saveFileDialog.Title = "Save JSON File";
-
-
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string path = saveFileDialog.FileName;
-                File.WriteAllText(path, json);
-                MessageBox.Show("Save Successfully!");
-            }*/
         }
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
@@ -404,8 +357,6 @@ namespace DemoACadSharp
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
             saveFileDialog.Title = "Save JSON File";
 
-
-
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string path = saveFileDialog.FileName;
@@ -413,28 +364,11 @@ namespace DemoACadSharp
                 MessageBox.Show("Save Successfully!");
             }
 
-
         }
 
         #endregion
 
         #region Method
-
-        /*        private void copyDataFromAcadEntityToUnityEntity()
-                {
-                    currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-                    Floor floor = Architecture.getInstance().Floors[currentFloor];
-                    floor.ListUnityEntities = new List<UnityEntity>();
-                    foreach (AcadEntity entity in floor.ListSelectedEntities)
-                    {
-                        UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
-                        floor.ListUnityEntities.Add(unityEntity);
-                    }
-                    floor.ListWalls = new List<Wall>();
-                    floor.ListStairs = new List<Stair>();
-                    floor.ListDoors = new List<Door>();
-                    floor.ListPowers = new List<Power>();
-                }*/
 
         //Hàm xử lý chuỗi trên node con
         private string deleteId(string input)
@@ -560,8 +494,8 @@ namespace DemoACadSharp
         // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
         private void getDataFromTreeView_View()
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Architecture.getInstance().Floors[currentFloor].ListSelectedEntities = new List<AcadEntity>();
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Architecture.getInstance().Floors[_currentFloor].ListSelectedEntities = new List<AcadEntity>();
 
             Stack<TreeNode> nodeStack = new Stack<TreeNode>();
 
@@ -584,12 +518,12 @@ namespace DemoACadSharp
                         if (childNode.Checked)
                         {
                             int idChildEntity = getIdEntity(childNode.Text);
-                            foreach (AcadEntity childEntity in architecture.Floors[currentFloor].ListAllEntities)
+                            foreach (AcadEntity childEntity in _architecture.Floors[_currentFloor].ListAllEntities)
                             {
                                 if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
                                      idChildEntity == childEntity.Id)
                                 {
-                                    architecture.Floors[currentFloor].ListSelectedEntities.Add(childEntity);
+                                    _architecture.Floors[_currentFloor].ListSelectedEntities.Add(childEntity);
                                 }
                             }
                         }
@@ -597,22 +531,22 @@ namespace DemoACadSharp
                 }
             }
 
-            architecture.Floors[currentFloor].ListSelectedEntities.Reverse();
+            _architecture.Floors[_currentFloor].ListSelectedEntities.Reverse();
         }
 
-        private void setDataToTreeView_View(int currentFloor)
+        private void setDataToTreeView_View(int _currentFloor)
         {
 
             treeView1.Nodes.Clear();
             treeView1.CheckBoxes = true;
 
 
-            foreach (AcadEntity parentEntity in architecture.Floors[currentFloor].ListUniqueEntities)
+            foreach (AcadEntity parentEntity in _architecture.Floors[_currentFloor].ListUniqueEntities)
             {
                 TreeNode parentNode = treeView1.Nodes.Add($"{parentEntity.LayerName} ({parentEntity.ObjectType})");
 
 
-                foreach (AcadEntity childEntity in architecture.Floors[currentFloor].ListAllEntities)
+                foreach (AcadEntity childEntity in _architecture.Floors[_currentFloor].ListAllEntities)
                 {
                     if (parentEntity.LayerName == childEntity.LayerName && parentEntity.ObjectType == childEntity.ObjectType)
                     {
@@ -625,9 +559,9 @@ namespace DemoACadSharp
         private void setDataToTreeView_Config()
         {
             treeViewSelectedEntity.Nodes.Clear();
-            int currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            int _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
-            listUniqueSelectedEntity = architecture.Floors[currentFloor].getUniqueSelectedEntities();
+            listUniqueSelectedEntity = _architecture.Floors[_currentFloor].getUniqueSelectedEntities();
 
             if (listUniqueSelectedEntity != null)
             {
@@ -636,7 +570,7 @@ namespace DemoACadSharp
                     TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{entity.LayerName} ({entity.ObjectType})");
                     parentNode.ForeColor = Color.Black;
 
-                    foreach (AcadEntity childEntity in Architecture.getInstance().Floors[currentFloor].ListSelectedEntities)
+                    foreach (AcadEntity childEntity in Architecture.getInstance().Floors[_currentFloor].ListSelectedEntities)
                     {
                         if (entity.LayerName == childEntity.LayerName && entity.ObjectType == childEntity.ObjectType)
                         {
@@ -756,10 +690,10 @@ namespace DemoACadSharp
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            architecture.NumberOfFloor++;
-            architecture.Floors.Add(new Floor());
-            cbNumberFloor.Text = architecture.NumberOfFloor.ToString();
-            cbNumberFloor.Items.Add(architecture.NumberOfFloor);
+            _architecture.NumberOfFloor++;
+            _architecture.Floors.Add(new Floor());
+            cbNumberFloor.Text = _architecture.NumberOfFloor.ToString();
+            cbNumberFloor.Items.Add(_architecture.NumberOfFloor);
             treeView1.Nodes.Clear();
             pictureBoxThumbNail.Image = null;
         }
