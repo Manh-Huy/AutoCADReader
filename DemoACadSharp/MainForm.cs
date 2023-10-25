@@ -29,9 +29,18 @@ namespace DemoACadSharp
         int _currentFloor = 1;
         private TreeNode _selectedNode;
 
+        public enum UnityEntitiesEnum
+        {
+            None,
+            Door,
+            Stair,
+            Wall
+        }
+
         public MainForm()
         {
             InitializeComponent();
+            PopulateContextMenuStrip();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -267,6 +276,7 @@ namespace DemoACadSharp
             }
         }
 
+        //Sự kiện bắt chuột trái 
         private void treeViewSelectedEntity_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -686,6 +696,29 @@ namespace DemoACadSharp
             }
         }
 
+        private void PopulateContextMenuStrip()
+        {
+            foreach (UnityEntitiesEnum option in Enum.GetValues(typeof(UnityEntitiesEnum)))
+            {
+                ToolStripMenuItem item1 = new ToolStripMenuItem(option.ToString());
+                contextMenuStrip1.Items.Add(item1);
+                item1.Click += ToolStripMenuItem_Click;
+            }
+        }
+
+        //hàm đánh check khi click vào 1 MenuItem
+        private void ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //reset all checked item
+            foreach(ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            {
+                toolStripMenuItem.Checked = false;
+            }
+
+            //checked item picked
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            clickedItem.Checked = !clickedItem.Checked;
+        }
         #endregion
 
         private void btnAdd_Click(object sender, EventArgs e)

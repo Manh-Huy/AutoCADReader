@@ -50,11 +50,6 @@
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.doorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.powerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtTopFloor = new System.Windows.Forms.TextBox();
             this.cbNumberFloor = new System.Windows.Forms.ComboBox();
             this.txtNameHouse = new System.Windows.Forms.TextBox();
@@ -70,7 +65,6 @@
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripAllFeature
@@ -282,45 +276,9 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noneToolStripMenuItem,
-            this.wallToolStripMenuItem,
-            this.stairToolStripMenuItem,
-            this.doorToolStripMenuItem,
-            this.powerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 124);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 32);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
-            // 
-            // noneToolStripMenuItem
-            // 
-            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
-            this.noneToolStripMenuItem.Text = "None";
-            // 
-            // wallToolStripMenuItem
-            // 
-            this.wallToolStripMenuItem.Name = "wallToolStripMenuItem";
-            this.wallToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
-            this.wallToolStripMenuItem.Text = "Wall";
-            // 
-            // stairToolStripMenuItem
-            // 
-            this.stairToolStripMenuItem.Name = "stairToolStripMenuItem";
-            this.stairToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
-            this.stairToolStripMenuItem.Text = "Stair";
-            // 
-            // doorToolStripMenuItem
-            // 
-            this.doorToolStripMenuItem.Name = "doorToolStripMenuItem";
-            this.doorToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
-            this.doorToolStripMenuItem.Text = "Door";
-            // 
-            // powerToolStripMenuItem
-            // 
-            this.powerToolStripMenuItem.Name = "powerToolStripMenuItem";
-            this.powerToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
-            this.powerToolStripMenuItem.Text = "Power";
             // 
             // txtTopFloor
             // 
@@ -419,7 +377,6 @@
             this.tabPage2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -446,11 +403,6 @@
         private System.Windows.Forms.PictureBox pictureBoxSelected;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wallToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stairToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem doorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem powerToolStripMenuItem;
         private System.Windows.Forms.TextBox txtTopFloor;
         private System.Windows.Forms.ComboBox cbNumberFloor;
         private System.Windows.Forms.TextBox txtNameHouse;
