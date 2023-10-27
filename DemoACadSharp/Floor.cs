@@ -11,11 +11,10 @@ namespace DemoACadSharp
         int order;
         string imageURL;
         List<AcadEntity> listAllEntities;
-        List<AcadEntity> listSelectedEntities;
-        List<AcadEntity> listUniqueEntities;
-        List<AcadEntity> listUniqueSelectedEntities;
+        List<AcadEntity> listSelectedEntities = new List<AcadEntity>();
+        List<AcadEntity> listUniqueEntities ;
+        List<AcadEntity> listUniqueSelectedEntities = new List<AcadEntity>();
         List<UnityEntity> listUnityEntities = new List<UnityEntity>();
-
 
         public int Order { get => order; set => order = value; }
         public string ImageURL { get => imageURL; set => imageURL = value; }
