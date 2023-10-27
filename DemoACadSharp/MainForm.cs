@@ -59,6 +59,7 @@ namespace DemoACadSharp
 
         private void importFile()
         {
+            //gán tầng
             _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
             // Dọn Cache
@@ -86,8 +87,10 @@ namespace DemoACadSharp
                 _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
                 _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
 
+                //Thêm Entity vào TreeView
                 AddEntityToHierachy(_listUniqueEntities, _listAllEntities);
 
+                //Load ảnh
                 using (CadImage cadImage = (CadImage)Aspose.CAD.Image.Load(filePath))
                 {
                     // Create output options for the image (e.g., PNG)
@@ -153,6 +156,7 @@ namespace DemoACadSharp
             }
         }
 
+        //Đổ data lên TreeView_View
         private void setDataToTreeView_View(int _currentFloor)
         {
 
@@ -206,7 +210,7 @@ namespace DemoACadSharp
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
                 tabControl1.SelectedIndex = 1;
-                MessageBox.Show("Selected Successfully!");
+                MessageBox.Show("Selected Successfully!", "Select Entity",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             else
             {
@@ -280,6 +284,7 @@ namespace DemoACadSharp
             }
         }
 
+        //sự kiện doubleClick vào node con
         private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
@@ -374,38 +379,39 @@ namespace DemoACadSharp
                 {
                     string layerName = getLayer(e.Node.Text);
                     string objectType = getObjectType(e.Node.Text);
-                    /*                   
-                    //Sender là treeview
-                    TreeView treeview = sender as TreeView;
-                    //TreeNodeCollection là những node cha
-                    TreeNodeCollection parentNodes = treeview.Nodes;
-                    //lấy index node cha parentNodes[index]
-                    //duyệt qua cha lấy con
-                    foreach (TreeNode childNode in parentNodes[3].Nodes)
-                    {
-                        string test = childNode.Text;
-                    }*/
+
                     if(_architecture.Floors[_currentFloor].ListUnityEntities.Count == 0)
                     {
-                        //reset all checked item
                         SetNoneMenuItemToChecked();
                     }
                     else
                     {
                         foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
                         {
+                            bool isBreak = false; //break when found at least 1 same type
                             if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType)
                             {
-                                    foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+                                foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+                                {
+                                    toolStripMenuItem.Checked = false;
+                                    if (toolStripMenuItem.Text == unityEntity.TypeOfUnityEntity.ToString())
                                     {
-                                        toolStripMenuItem.Checked = false;
-                                        if (toolStripMenuItem.Text == unityEntity.TypeOfUnityEntity.ToString())
+                                        //clean option before checks
+                                        foreach (ToolStripMenuItem toolStripMenuItem1 in contextMenuStrip1.Items)
                                         {
-                                            toolStripMenuItem.Checked = true;
+                                            toolStripMenuItem1.Checked = false;
                                         }
+                                        toolStripMenuItem.Checked = true;
+                                        isBreak = true;
+                                        break;
                                     }
-                                
+                                }
                             }
+                            else
+                            {
+                                SetNoneMenuItemToChecked();
+                            }
+                            if (isBreak == true) break;
                         }
                     }
 
@@ -426,6 +432,7 @@ namespace DemoACadSharp
             }
         }
 
+        //hàm chọn tất cả node con khi chọn node cha
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Nodes.Count > 0)
@@ -777,5 +784,6 @@ namespace DemoACadSharp
             treeView1.Nodes.Clear();
             pictureBoxThumbNail.Image = null;
         }
+
     }
 }
