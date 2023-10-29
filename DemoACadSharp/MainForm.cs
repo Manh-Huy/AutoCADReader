@@ -250,6 +250,7 @@ namespace DemoACadSharp
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
                 tabControl1.SelectedIndex = 1;
+                propertyGrid1.SelectedObject = null;
                 MessageBox.Show("Selected Successfully!", "Select Entity",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             else
@@ -335,12 +336,13 @@ namespace DemoACadSharp
                 int idEntity = getIdEntity(e.Node.Text);
                 string layerName = deleteId(getLayer(e.Node.Text));
                 string objectType = getObjectType(e.Node.Text);
-
+                bool seleted = false;
                 foreach (UnityEntity unityEntity in floor.ListUnityEntities)
                 {
                     if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType
                         && unityEntity.Id == idEntity)
                     {
+                        seleted = true;
                         switch (unityEntity.TypeOfUnityEntity)
                         {
                             case "Wall":
@@ -376,6 +378,7 @@ namespace DemoACadSharp
                         }
                     }
                 }
+                if (seleted == false) propertyGrid1.SelectedObject = null;
             }
         }
 
