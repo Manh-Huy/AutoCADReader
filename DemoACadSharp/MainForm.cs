@@ -558,9 +558,9 @@ namespace DemoACadSharp
 
             UnityArchitecture unityArchitecture = new UnityArchitecture();
             unityArchitecture.NameArchitecture = txtNameHouse.Text;
-            unityArchitecture.NumberOfFloor = architecture.NumberOfFloor;
+            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
             unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
-            foreach (Floor floor in architecture.Floors)
+            foreach (Floor floor in _architecture.Floors)
             {
                 UnityFloor newFloor = new UnityFloor();
                 newFloor.Order = floor.Order;
