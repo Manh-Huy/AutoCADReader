@@ -29,6 +29,9 @@ namespace DemoACadSharp
         int _currentFloor = 1;
         private TreeNode _selectedNode;
 
+        const string _TempFolderPath = "..\\..\\Temp\\";
+        const string _PictureFolderPath = "..\\..\\Picture Autocad2D\\";
+
         public enum UnityEntitiesEnum
         {
             None,
@@ -41,6 +44,10 @@ namespace DemoACadSharp
         {
             InitializeComponent();
             PopulateContextMenuStrip();
+            if (!Directory.Exists(_TempFolderPath))
+            {
+                Directory.CreateDirectory(_TempFolderPath);
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -97,7 +104,9 @@ namespace DemoACadSharp
                     PngOptions pngOptions = new PngOptions();
 
                     // Save the image as PNG
-                    string outputPath = "..\\..\\Picture Autocad2D\\output_image.png"; // Output file path
+                    string fileName = GenerateRandomImageName(8) + ".png";
+                    string outputPath = _TempFolderPath + fileName; // Output file path
+                    _architecture.Floors[_currentFloor].ImageURL = outputPath;
                     cadImage.Save(outputPath, pngOptions);
 
                     // Display the image on the PictureBox
@@ -141,6 +150,7 @@ namespace DemoACadSharp
                         _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
                         _listUniqueEntities = _architecture.Floors[_currentFloor].getUniqueEntities();
                         _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                        _architecture.Floors[_currentFloor].ImageURL = floor.ImageURL;
                         string imagePath = floor.ImageURL;
                         pictureBoxThumbNail.Image = LoadImage(imagePath);
 
@@ -195,6 +205,36 @@ namespace DemoACadSharp
                 string path = saveFileDialog.FileName;
                 File.WriteAllText(path, json);
                 MessageBox.Show("Save Successfully!");
+                //DeleteTempFolder(_TempFolderPath);
+            }
+        }
+
+        private void DeleteTempFolder(string folderPath)
+        {
+            try
+            {
+                // Check if the folder exists
+                if (System.IO.Directory.Exists(folderPath))
+                {
+                    // Get a list of all files in the folder
+                    string[] files = System.IO.Directory.GetFiles(folderPath);
+
+                    // Delete each file in the folder
+                    foreach (string file in files)
+                    {
+                        System.IO.File.Delete(file);
+                    }
+
+                    MessageBox.Show("All files in the folder have been deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("The folder does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -366,6 +406,8 @@ namespace DemoACadSharp
             {
                 setDataToTreeView_View(_currentFloor);
                 setDataToTreeView_Config();
+                string imgName = Architecture.getInstance().Floors[_currentFloor].ImageURL;
+                pictureBoxThumbNail.Image = LoadImage(imgName);
             }
         }
 
@@ -697,7 +739,7 @@ namespace DemoACadSharp
             if (pictureBox.Image != null)
             {
                 string fileName = GenerateRandomImageName(8) + ".jpg";
-                string folderPath = "..\\..\\Picture Autocad2D\\";
+                string folderPath = _PictureFolderPath;
 
                 if (!Directory.Exists(folderPath))
                 {
@@ -713,7 +755,7 @@ namespace DemoACadSharp
                 return filePath;
             }
             return null;
-        }
+        }       
 
         public string GenerateRandomImageName(int length)
         {

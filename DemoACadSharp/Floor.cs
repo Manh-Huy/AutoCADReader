@@ -58,7 +58,7 @@ namespace DemoACadSharp
         }
         public List<AcadEntity> getUniqueSelectedEntities()
         {
-            if (listSelectedEntities != null)
+            if (listSelectedEntities.Count != 0)
             {
 
                 bool isNewUniqueEntity = false;
@@ -84,8 +84,9 @@ namespace DemoACadSharp
                     if (isNewUniqueEntity) listUniqueSelectedEntities.Add(currentEntity);
                 }
 
-            }
             return listUniqueSelectedEntities;
+            }
+            return null;
         }
 
 
