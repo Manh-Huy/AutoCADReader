@@ -20,18 +20,34 @@ namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
-        Architecture architecture = Architecture.getInstance();
+        Architecture _architecture = Architecture.getInstance();
 
         List<AcadEntity> _listAllEntities = new List<AcadEntity>();
 
         List<AcadEntity> _listUniqueEntities = new List<AcadEntity>();
 
-        int currentFloor = 1;
-        private TreeNode selectedNode;
+        int _currentFloor = 1;
+        private TreeNode _selectedNode;
+
+        const string _TempFolderPath = "..\\..\\Temp\\";
+        const string _PictureFolderPath = "..\\..\\Picture Autocad2D\\";
+
+        public enum UnityEntitiesEnum
+        {
+            None,
+            Door,
+            Stair,
+            Wall
+        }
 
         public MainForm()
         {
             InitializeComponent();
+            PopulateContextMenuStrip();
+            if (!Directory.Exists(_TempFolderPath))
+            {
+                Directory.CreateDirectory(_TempFolderPath);
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -50,11 +66,14 @@ namespace DemoACadSharp
 
         private void importFile()
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            //gán tầng
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
             // Dọn Cache
             _listAllEntities.Clear();
             _listUniqueEntities.Clear();
+            treeView1.Nodes.Clear();
+            treeViewSelectedEntity.Nodes.Clear();
 
             // Hiển thị hộp thoại mở tệp và cho phép người dùng chọn tệp DWG
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -74,18 +93,22 @@ namespace DemoACadSharp
                     .Select(group => new AcadEntity(null, group.Key.LayerName, group.Key.ObjectType, null))
                     .ToList();
 
-                architecture.Floors[currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
-                architecture.Floors[currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
+                _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
 
+                //Thêm Entity vào TreeView
                 AddEntityToHierachy(_listUniqueEntities, _listAllEntities);
 
+                //Load ảnh
                 using (CadImage cadImage = (CadImage)Aspose.CAD.Image.Load(filePath))
                 {
                     // Create output options for the image (e.g., PNG)
                     PngOptions pngOptions = new PngOptions();
 
                     // Save the image as PNG
-                    string outputPath = "..\\..\\Picture Autocad2D\\output_image.png"; // Output file path
+                    string fileName = GenerateRandomImageName(8) + ".png";
+                    string outputPath = _TempFolderPath + fileName; // Output file path
+                    _architecture.Floors[_currentFloor].ImageURL = outputPath;
                     cadImage.Save(outputPath, pngOptions);
 
                     // Display the image on the PictureBox
@@ -127,7 +150,7 @@ namespace DemoACadSharp
                 {
                     try
                     {
-                        currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+                        _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
                         _listAllEntities.Clear();
 
                         string json = File.ReadAllText(openFileDialog.FileName);
@@ -139,14 +162,15 @@ namespace DemoACadSharp
                             _listAllEntities.Add(entity);
                         }
 
-                        architecture.Floors[currentFloor].Order = currentFloor + 1;
-                        architecture.Floors[currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
-                        _listUniqueEntities = architecture.Floors[currentFloor].getUniqueEntities();
-                        architecture.Floors[currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                        _architecture.Floors[_currentFloor].Order = _currentFloor + 1;
+                        _architecture.Floors[_currentFloor].ListAllEntities = new List<AcadEntity>(_listAllEntities);
+                        _listUniqueEntities = _architecture.Floors[_currentFloor].getUniqueEntities();
+                        _architecture.Floors[_currentFloor].ListUniqueEntities = new List<AcadEntity>(_listUniqueEntities);
+                        _architecture.Floors[_currentFloor].ImageURL = floor.ImageURL;
                         string imagePath = floor.ImageURL;
                         pictureBoxThumbNail.Image = LoadImage(imagePath);
 
-                        setDataToTreeView_View(currentFloor);
+                        setDataToTreeView_View(_currentFloor);
                     }
                     catch (Exception ex)
                     {
@@ -158,10 +182,33 @@ namespace DemoACadSharp
             }
         }
 
+        //Đổ data lên TreeView_View
+        private void setDataToTreeView_View(int _currentFloor)
+        {
+
+            treeView1.Nodes.Clear();
+            treeView1.CheckBoxes = true;
+
+
+            foreach (AcadEntity parentEntity in _architecture.Floors[_currentFloor].ListUniqueEntities)
+            {
+                TreeNode parentNode = treeView1.Nodes.Add($"{parentEntity.LayerName} ({parentEntity.ObjectType})");
+
+
+                foreach (AcadEntity childEntity in _architecture.Floors[_currentFloor].ListAllEntities)
+                {
+                    if (parentEntity.LayerName == childEntity.LayerName && parentEntity.ObjectType == childEntity.ObjectType)
+                    {
+                        TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
+                    }
+                }
+            }
+        }
+
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Architecture.getInstance().Floors[currentFloor].ImageURL = SaveImageToLocalFolder(pictureBoxThumbNail);
-            string json = JsonConvert.SerializeObject(Architecture.getInstance().Floors[currentFloor], Formatting.Indented);
+            Architecture.getInstance().Floors[_currentFloor].ImageURL = SaveImageToLocalFolder(pictureBoxThumbNail);
+            string json = JsonConvert.SerializeObject(Architecture.getInstance().Floors[_currentFloor], Formatting.Indented);
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
@@ -174,6 +221,36 @@ namespace DemoACadSharp
                 string path = saveFileDialog.FileName;
                 File.WriteAllText(path, json);
                 MessageBox.Show("Save Successfully!");
+                //DeleteTempFolder(_TempFolderPath);
+            }
+        }
+
+        private void DeleteTempFolder(string folderPath)
+        {
+            try
+            {
+                // Check if the folder exists
+                if (System.IO.Directory.Exists(folderPath))
+                {
+                    // Get a list of all files in the folder
+                    string[] files = System.IO.Directory.GetFiles(folderPath);
+
+                    // Delete each file in the folder
+                    foreach (string file in files)
+                    {
+                        System.IO.File.Delete(file);
+                    }
+
+                    MessageBox.Show("All files in the folder have been deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("The folder does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -188,8 +265,9 @@ namespace DemoACadSharp
             {
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
-                //copyDataFromAcadEntityToUnityEntity();
-                MessageBox.Show("Selected Successfully!");
+                tabControl1.SelectedIndex = 1;
+                propertyGrid1.SelectedObject = null;
+                MessageBox.Show("Selected Successfully!", "Select Entity",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             else
             {
@@ -197,23 +275,90 @@ namespace DemoACadSharp
             }
         }
 
+        // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
+        private void getDataFromTreeView_View()
+        {
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+
+            Stack<TreeNode> nodeStack = new Stack<TreeNode>();
+
+            foreach (TreeNode node in treeView1.Nodes)
+            {
+                nodeStack.Push(node);
+            }
+
+            while (nodeStack.Count > 0)
+            {
+                TreeNode currentNode = nodeStack.Pop();
+
+                if (currentNode.Checked)
+                {
+                    string layerName = getLayer(currentNode.Text);
+                    string objectType = getObjectType(currentNode.Text);
+
+                    foreach (TreeNode childNode in currentNode.Nodes)
+                    {
+                        if (childNode.Checked)
+                        {
+                            int idChildEntity = getIdEntity(childNode.Text);
+                            foreach (AcadEntity childEntity in _architecture.Floors[_currentFloor].ListAllEntities)
+                            {
+                                if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
+                                     idChildEntity == childEntity.Id)
+                                {
+                                   _architecture.Floors[_currentFloor].ListSelectedEntities.Add(childEntity);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            _architecture.Floors[_currentFloor].ListSelectedEntities.Reverse();
+        }
+        private void setDataToTreeView_Config()
+        {
+            treeViewSelectedEntity.Nodes.Clear();
+            int _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
+            listUniqueSelectedEntity = _architecture.Floors[_currentFloor].getUniqueSelectedEntities();
+
+            if (listUniqueSelectedEntity != null)
+            {
+                foreach (AcadEntity entity in listUniqueSelectedEntity)
+                {
+                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{entity.LayerName} ({entity.ObjectType})");
+                    parentNode.ForeColor = Color.Black;
+
+                    foreach (AcadEntity childEntity in Architecture.getInstance().Floors[_currentFloor].ListSelectedEntities)
+                    {
+                        if (entity.LayerName == childEntity.LayerName && entity.ObjectType == childEntity.ObjectType)
+                        {
+                            TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
+                        }
+                    }
+                }
+            }
+        }
+
+        //sự kiện doubleClick vào node con
         private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
-
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[_currentFloor];
 
             if (e.Node.Nodes.Count == 0)
             {
                 int idEntity = getIdEntity(e.Node.Text);
                 string layerName = deleteId(getLayer(e.Node.Text));
                 string objectType = getObjectType(e.Node.Text);
-
+                bool seleted = false;
                 foreach (UnityEntity unityEntity in floor.ListUnityEntities)
                 {
                     if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType
                         && unityEntity.Id == idEntity)
                     {
+                        seleted = true;
                         switch (unityEntity.TypeOfUnityEntity)
                         {
                             case "Wall":
@@ -249,15 +394,16 @@ namespace DemoACadSharp
                         }
                     }
                 }
+                if (seleted == false) propertyGrid1.SelectedObject = null;
             }
         }
 
         private void cbNumberFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
-            if (Architecture.getInstance().Floors[currentFloor].ListAllEntities == null ||
-                    Architecture.getInstance().Floors[currentFloor].ListAllEntities.Count == 0)
+            if (Architecture.getInstance().Floors[_currentFloor].ListAllEntities == null ||
+                    Architecture.getInstance().Floors[_currentFloor].ListAllEntities.Count == 0)
             {
                 treeView1.Nodes.Clear();
                 treeViewSelectedEntity.Nodes.Clear();
@@ -277,23 +423,77 @@ namespace DemoACadSharp
             }
             else
             {
-                setDataToTreeView_View(currentFloor);
+                setDataToTreeView_View(_currentFloor);
                 setDataToTreeView_Config();
+                string imgName = Architecture.getInstance().Floors[_currentFloor].ImageURL;
+                pictureBoxThumbNail.Image = LoadImage(imgName);
             }
         }
 
+        //Sự kiện bắt chuột trái 
         private void treeViewSelectedEntity_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                selectedNode = e.Node;
+                _selectedNode = e.Node;
                 if (e.Node != null && e.Node.Nodes.Count > 0)
                 {
+                    string layerName = getLayer(e.Node.Text);
+                    string objectType = getObjectType(e.Node.Text);
+
+                    if(_architecture.Floors[_currentFloor].ListUnityEntities.Count == 0)
+                    {
+                        SetNoneMenuItemToChecked();
+                    }
+                    else
+                    {
+                        foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                        {
+                            bool isBreak = false; //break when found at least 1 same type
+                            if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType)
+                            {
+                                foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+                                {
+                                    toolStripMenuItem.Checked = false;
+                                    if (toolStripMenuItem.Text == unityEntity.TypeOfUnityEntity.ToString())
+                                    {
+                                        //clean option before checks
+                                        foreach (ToolStripMenuItem toolStripMenuItem1 in contextMenuStrip1.Items)
+                                        {
+                                            toolStripMenuItem1.Checked = false;
+                                        }
+                                        toolStripMenuItem.Checked = true;
+                                        isBreak = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                SetNoneMenuItemToChecked();
+                            }
+                            if (isBreak == true) break;
+                        }
+                    }
+
                     e.Node.ContextMenuStrip = contextMenuStrip1;
                 }
             }
         }
 
+        private void SetNoneMenuItemToChecked()
+        {
+            foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            {
+                toolStripMenuItem.Checked = false;
+                if (toolStripMenuItem.Text == "None")
+                {
+                    toolStripMenuItem.Checked = true;
+                }
+            }
+        }
+
+        //hàm chọn tất cả node con khi chọn node cha
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Nodes.Count > 0)
@@ -308,43 +508,16 @@ namespace DemoACadSharp
 
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
+            _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
+            Floor floor = Architecture.getInstance().Floors[_currentFloor];
             string layerName = "", objectType = "";
             string typeOfUnityEntity = e.ClickedItem.Text;
 
-            if (selectedNode != null)
+            if (_selectedNode != null)
             {
-                layerName = getLayer(selectedNode.Text);
-                objectType = getObjectType(selectedNode.Text);
+                layerName = getLayer(_selectedNode.Text);
+                objectType = getObjectType(_selectedNode.Text);
             }
-
-            /*foreach (UnityEntity childEntity in floor.ListUnityEntities)
-            {
-                if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType)
-                {
-                    childEntity.TypeOfUnityEntity = typeOfUnityEntity;
-                    var templateEntity = FactoryUnityEntity.createObjectUnity(childEntity);
-                    switch (templateEntity)
-                    {
-                        case Wall wall:
-                            floor.ListWalls.Add(wall);
-                            break;
-
-                        case Stair stair:
-                            floor.ListStairs.Add(stair);
-                            break;
-
-                        case Door door:
-                            floor.ListDoors.Add(door);
-                            break;
-
-                        case Power power:
-                            floor.ListPowers.Add(power);
-                            break;
-                    }
-                }
-            }*/
 
             foreach (AcadEntity entity in floor.ListSelectedEntities)
             {
@@ -377,28 +550,7 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
-            /*currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Floor floor = Architecture.getInstance().Floors[currentFloor];
-            List<UnityEntity> listToExport = new List<UnityEntity>();
-            listToExport.AddRange(floor.ListWalls);
-            listToExport.AddRange(floor.ListStairs);
-            listToExport.AddRange(floor.ListDoors);
-            listToExport.AddRange(floor.ListPowers);
 
-            string json = JsonConvert.SerializeObject(listToExport, Formatting.Indented);
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON files (*.json)|*.json";
-            saveFileDialog.Title = "Save JSON File";
-
-
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string path = saveFileDialog.FileName;
-                File.WriteAllText(path, json);
-                MessageBox.Show("Save Successfully!");
-            }*/
         }
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
@@ -422,8 +574,6 @@ namespace DemoACadSharp
             saveFileDialog.Filter = "JSON files (*.json)|*.json";
             saveFileDialog.Title = "Save JSON File";
 
-
-
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string path = saveFileDialog.FileName;
@@ -431,28 +581,11 @@ namespace DemoACadSharp
                 MessageBox.Show("Save Successfully!");
             }
 
-
         }
 
         #endregion
 
         #region Method
-
-        /*        private void copyDataFromAcadEntityToUnityEntity()
-                {
-                    currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-                    Floor floor = Architecture.getInstance().Floors[currentFloor];
-                    floor.ListUnityEntities = new List<UnityEntity>();
-                    foreach (AcadEntity entity in floor.ListSelectedEntities)
-                    {
-                        UnityEntity unityEntity = new UnityEntity(entity.Id, entity.LayerName, entity.ObjectType, entity.Coordinates);
-                        floor.ListUnityEntities.Add(unityEntity);
-                    }
-                    floor.ListWalls = new List<Wall>();
-                    floor.ListStairs = new List<Stair>();
-                    floor.ListDoors = new List<Door>();
-                    floor.ListPowers = new List<Power>();
-                }*/
 
         //Hàm xử lý chuỗi trên node con
         private string deleteId(string input)
@@ -575,96 +708,6 @@ namespace DemoACadSharp
             }
         }
 
-        // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
-        private void getDataFromTreeView_View()
-        {
-            currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            Architecture.getInstance().Floors[currentFloor].ListSelectedEntities = new List<AcadEntity>();
-
-            Stack<TreeNode> nodeStack = new Stack<TreeNode>();
-
-            foreach (TreeNode node in treeView1.Nodes)
-            {
-                nodeStack.Push(node);
-            }
-
-            while (nodeStack.Count > 0)
-            {
-                TreeNode currentNode = nodeStack.Pop();
-
-                if (currentNode.Checked)
-                {
-                    string layerName = getLayer(currentNode.Text);
-                    string objectType = getObjectType(currentNode.Text);
-
-                    foreach (TreeNode childNode in currentNode.Nodes)
-                    {
-                        if (childNode.Checked)
-                        {
-                            int idChildEntity = getIdEntity(childNode.Text);
-                            foreach (AcadEntity childEntity in architecture.Floors[currentFloor].ListAllEntities)
-                            {
-                                if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
-                                     idChildEntity == childEntity.Id)
-                                {
-                                    architecture.Floors[currentFloor].ListSelectedEntities.Add(childEntity);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            architecture.Floors[currentFloor].ListSelectedEntities.Reverse();
-        }
-
-        private void setDataToTreeView_View(int currentFloor)
-        {
-
-            treeView1.Nodes.Clear();
-            treeView1.CheckBoxes = true;
-
-
-            foreach (AcadEntity parentEntity in architecture.Floors[currentFloor].ListUniqueEntities)
-            {
-                TreeNode parentNode = treeView1.Nodes.Add($"{parentEntity.LayerName} ({parentEntity.ObjectType})");
-
-
-                foreach (AcadEntity childEntity in architecture.Floors[currentFloor].ListAllEntities)
-                {
-                    if (parentEntity.LayerName == childEntity.LayerName && parentEntity.ObjectType == childEntity.ObjectType)
-                    {
-                        TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
-                    }
-                }
-            }
-        }
-
-        private void setDataToTreeView_Config()
-        {
-            treeViewSelectedEntity.Nodes.Clear();
-            int currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
-            listUniqueSelectedEntity = architecture.Floors[currentFloor].getUniqueSelectedEntities();
-
-            if (listUniqueSelectedEntity != null)
-            {
-                foreach (AcadEntity entity in listUniqueSelectedEntity)
-                {
-                    TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{entity.LayerName} ({entity.ObjectType})");
-                    parentNode.ForeColor = Color.Black;
-
-                    foreach (AcadEntity childEntity in Architecture.getInstance().Floors[currentFloor].ListSelectedEntities)
-                    {
-                        if (entity.LayerName == childEntity.LayerName && entity.ObjectType == childEntity.ObjectType)
-                        {
-                            TreeNode childNode = parentNode.Nodes.Add($"{childEntity.Id}: {childEntity.LayerName} ({childEntity.ObjectType})");
-                        }
-                    }
-                }
-            }
-        }
-
         private string getLayer(string input)
         {
             int openBracketIndex = input.IndexOf("(");
@@ -717,7 +760,7 @@ namespace DemoACadSharp
             if (pictureBox.Image != null)
             {
                 string fileName = GenerateRandomImageName(8) + ".jpg";
-                string folderPath = "..\\..\\Picture Autocad2D\\";
+                string folderPath = _PictureFolderPath;
 
                 if (!Directory.Exists(folderPath))
                 {
@@ -733,7 +776,7 @@ namespace DemoACadSharp
                 return filePath;
             }
             return null;
-        }
+        }       
 
         public string GenerateRandomImageName(int length)
         {
@@ -770,16 +813,40 @@ namespace DemoACadSharp
             }
         }
 
+        private void PopulateContextMenuStrip()
+        {
+            foreach (UnityEntitiesEnum option in Enum.GetValues(typeof(UnityEntitiesEnum)))
+            {
+                ToolStripMenuItem item1 = new ToolStripMenuItem(option.ToString());
+                contextMenuStrip1.Items.Add(item1);
+                item1.Click += ToolStripMenuItem_Click;
+            }
+        }
+
+        //hàm đánh check khi click vào 1 MenuItem
+        private void ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //reset all checked item
+            foreach(ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            {
+                toolStripMenuItem.Checked = false;
+            }
+
+            //checked item picked
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            clickedItem.Checked = !clickedItem.Checked;
+        }
         #endregion
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            architecture.NumberOfFloor++;
-            architecture.Floors.Add(new Floor());
-            cbNumberFloor.Text = architecture.NumberOfFloor.ToString();
-            cbNumberFloor.Items.Add(architecture.NumberOfFloor);
+            _architecture.NumberOfFloor++;
+            _architecture.Floors.Add(new Floor());
+            cbNumberFloor.Text = _architecture.NumberOfFloor.ToString();
+            cbNumberFloor.Items.Add(_architecture.NumberOfFloor);
             treeView1.Nodes.Clear();
             pictureBoxThumbNail.Image = null;
         }
+
     }
 }

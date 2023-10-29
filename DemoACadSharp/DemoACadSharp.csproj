@@ -167,6 +167,7 @@
   <ItemGroup>
     <Folder Include="File Text\LwPolyline Entities\" />
     <Folder Include="Picture Autocad2D\" />
+    <Folder Include="Temp\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\345668002_207268608768377_4716940698160860698_n.png" />
