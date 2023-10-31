@@ -35,9 +35,10 @@ namespace DemoACadSharp
         public enum UnityEntitiesEnum
         {
             None,
+            Wall,
             Door,
             Stair,
-            Wall
+            Window
         }
 
         public MainForm()
@@ -383,6 +384,13 @@ namespace DemoACadSharp
                                         propertyGrid1.SelectedObject = door;
                                 }
                                 break;
+                            case "Window":
+                                if (unityEntity is Window window)
+                                {
+                                    if (window.Id == idEntity)
+                                        propertyGrid1.SelectedObject = window;
+                                }
+                                break;
                             case "Power":
                                 if (unityEntity is Power power)
 
@@ -537,6 +545,10 @@ namespace DemoACadSharp
                         case Door door:
                             floor.ListUnityEntities.Add(door);
                             break;
+
+                        case Window window:
+                            floor.ListUnityEntities.Add(window);
+                            break;  
 
                         case Power power:
                             floor.ListUnityEntities.Add(power);

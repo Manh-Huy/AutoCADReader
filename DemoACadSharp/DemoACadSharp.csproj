@@ -131,6 +131,7 @@
     <Compile Include="UnityEntity.cs" />
     <Compile Include="UnityFloor.cs" />
     <Compile Include="Wall.cs" />
+    <Compile Include="Window.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>

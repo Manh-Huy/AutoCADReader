@@ -36,6 +36,13 @@ namespace DemoACadSharp
                     doorEntity.ObjectType = entity.ObjectType;
                     doorEntity.Coordinates = entity.Coordinates;
                     return doorEntity;
+                case "Window":
+                    Window windowEntity = new Window("Window");
+                    windowEntity.Id = entity.Id;
+                    windowEntity.LayerName = entity.LayerName;
+                    windowEntity.ObjectType = entity.ObjectType;
+                    windowEntity.Coordinates = entity.Coordinates;
+                    return windowEntity;
                 case "Power":
                     Power powerEntity = new Power("Power");
                     powerEntity.Id = entity.Id;
