@@ -15,6 +15,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Color = System.Drawing.Color;
 using Line = ACadSharp.Entities.Line;
+using System.Diagnostics;
 
 namespace DemoACadSharp
 {
@@ -562,7 +563,33 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
+            // Path to the Unity executable (Unity.exe)
+            string unityPath = @"F:\Unity Projects\AutoCadUnity\CreateObjectByCode\Build\CreateObjectByCode.exe";
+            
+            // Path to the Unity project folder
+            string unityProjectPath = @"F:\Unity Projects\AutoCadUnity\CreateObjectByCode";
 
+            // Command to run the Unity script
+            string command = $"\"{unityPath}\" -projectPath \"{unityProjectPath}\" -executeMethod BuildAndRun.BuildAndRunGame";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo("cmd.exe")
+            {
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = new Process
+            {
+                StartInfo = startInfo
+            };
+            process.Start();
+
+            // Execute the Unity script to build and run
+            process.StandardInput.WriteLine(command);
+            process.StandardInput.Flush();
+            process.StandardInput.Close();
+            process.WaitForExit();
         }
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
