@@ -39,7 +39,8 @@ namespace DemoACadSharp
             Wall,
             Door,
             Stair,
-            Window
+            Window,
+            Power
         }
 
         public MainForm()
