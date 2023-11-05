@@ -32,7 +32,9 @@ namespace DemoACadSharp
 
         const string _TempFolderPath = "..\\..\\Temp\\";
         const string _PictureFolderPath = "..\\..\\Picture Autocad2D\\";
-
+        const string _UnityPath = "..\\..\\Build\\";
+        const string _UnityExePath = "..\\..\\Build\\CreateObjectByCode.exe";
+        const string _DebugBuildJsonPath = "..\\..\\bin\\Debug\\Build\\house2.json";
         public enum UnityEntitiesEnum
         {
             None,
@@ -564,12 +566,26 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
-            // Path to the Unity executable (Unity.exe)
-            string unityPath = @"F:\Unity Projects\AutoCadUnity\CreateObjectByCode\Build\CreateObjectByCode.exe";
-            
-            // Path to the Unity project folder
-            string unityProjectPath = @"F:\Unity Projects\AutoCadUnity\CreateObjectByCode";
+            UnityArchitecture unityArchitecture = new UnityArchitecture();
+            unityArchitecture.NameArchitecture = txtNameHouse.Text;
+            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
+            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
+            foreach (Floor floor in _architecture.Floors)
+            {
+                UnityFloor newFloor = new UnityFloor();
+                newFloor.Order = floor.Order;
+                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
+                unityArchitecture.ListFloor.Add(newFloor);
+            }
 
+            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
+
+            File.WriteAllText(_DebugBuildJsonPath, json);
+
+            // Path to the Unity executable (Unity.exe)
+            string unityPath = _UnityExePath;
+            // Path to the Unity project folder
+            string unityProjectPath = _UnityPath;
             // Command to run the Unity script
             string command = $"\"{unityPath}\" -projectPath \"{unityProjectPath}\" -executeMethod BuildAndRun.BuildAndRunGame";
 
