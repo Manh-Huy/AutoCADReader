@@ -901,6 +901,7 @@ namespace DemoACadSharp
             cbNumberFloor.Text = _architecture.NumberOfFloor.ToString();
             cbNumberFloor.Items.Add(_architecture.NumberOfFloor);
             treeView1.Nodes.Clear();
+            treeViewSelectedEntity.Nodes.Clear();
             pictureBoxThumbNail.Image = null;
         }
 
