@@ -1,4 +1,4 @@
-﻿using ACadSharp.Entities;
+using ACadSharp.Entities;
 using ACadSharp.IO;
 using ACadSharp;
 using Aspose.CAD.FileFormats.Cad;
@@ -264,7 +264,11 @@ namespace DemoACadSharp
             bool isHaveCheck = false;
             foreach (TreeNode node in treeView1.Nodes)
             {
-                if (node.Checked) isHaveCheck = true;
+                if (node.Checked)
+                {
+                    isHaveCheck = true;
+                    break;
+                }
             }
             if (isHaveCheck)
             {
@@ -272,7 +276,7 @@ namespace DemoACadSharp
                 setDataToTreeView_Config();
                 tabControl1.SelectedIndex = 1;
                 propertyGrid1.SelectedObject = null;
-                MessageBox.Show("Selected Successfully!", "Select Entity",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("Selected Successfully!", "Select Entity", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -301,6 +305,7 @@ namespace DemoACadSharp
                     string layerName = getLayer(currentNode.Text);
                     string objectType = getObjectType(currentNode.Text);
 
+                    //Lấy node con
                     foreach (TreeNode childNode in currentNode.Nodes)
                     {
                         if (childNode.Checked)
@@ -311,7 +316,10 @@ namespace DemoACadSharp
                                 if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
                                      idChildEntity == childEntity.Id)
                                 {
-                                   _architecture.Floors[_currentFloor].ListSelectedEntities.Add(childEntity);
+                                    if (!_architecture.Floors[_currentFloor].ListSelectedEntities.Contains(childEntity))
+                                    {
+                                        _architecture.Floors[_currentFloor].ListSelectedEntities.Add(childEntity);
+                                    }
                                 }
                             }
                         }
@@ -453,7 +461,8 @@ namespace DemoACadSharp
                     string layerName = getLayer(e.Node.Text);
                     string objectType = getObjectType(e.Node.Text);
 
-                    if(_architecture.Floors[_currentFloor].ListUnityEntities.Count == 0)
+                    //chưa chọn UnityEntity
+                    if (_architecture.Floors[_currentFloor].ListUnityEntities.Count == 0)
                     {
                         SetNoneMenuItemToChecked();
                     }
@@ -552,7 +561,7 @@ namespace DemoACadSharp
 
                         case Window window:
                             floor.ListUnityEntities.Add(window);
-                            break;  
+                            break;
 
                         case Power power:
                             floor.ListUnityEntities.Add(power);
@@ -560,7 +569,7 @@ namespace DemoACadSharp
                     }
                 }
             }
-
+            ResponsiveTreeNode();
 
         }
 
@@ -641,24 +650,7 @@ namespace DemoACadSharp
 
         #endregion
 
-        #region Method
-
-        //Hàm xử lý chuỗi trên node con
-        private string deleteId(string input)
-        {
-            int colonIndex = input.IndexOf(':');
-            if (colonIndex >= 0 && colonIndex < input.Length - 1)
-            {
-                string y = input.Substring(colonIndex + 1).Trim();
-                return y;
-            }
-            else
-            {
-                // Trường hợp không tìm thấy ký tự ':' hoặc không có phần tử "y"
-                // Xử lý hoặc trả về giá trị mặc định tùy thuộc vào logic của bạn
-                return string.Empty;
-            }
-        }
+        #region 
 
         public List<AcadEntity> GetAllEntities(string file)
         {
@@ -811,6 +803,23 @@ namespace DemoACadSharp
             return 0;
         }
 
+        //Hàm xử lý chuỗi trên node con
+        private string deleteId(string input)
+        {
+            int colonIndex = input.IndexOf(':');
+            if (colonIndex >= 0 && colonIndex < input.Length - 1)
+            {
+                string y = input.Substring(colonIndex + 1).Trim();
+                return y;
+            }
+            else
+            {
+                // Trường hợp không tìm thấy ký tự ':' hoặc không có phần tử "y"
+                // Xử lý hoặc trả về giá trị mặc định tùy thuộc vào logic của bạn
+                return string.Empty;
+            }
+        }
+
         public string SaveImageToLocalFolder(PictureBox pictureBox)
         {
             if (pictureBox.Image != null)
@@ -832,7 +841,7 @@ namespace DemoACadSharp
                 return filePath;
             }
             return null;
-        }       
+        }
 
         public string GenerateRandomImageName(int length)
         {
@@ -883,7 +892,7 @@ namespace DemoACadSharp
         private void ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //reset all checked item
-            foreach(ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
             {
                 toolStripMenuItem.Checked = false;
             }
@@ -892,6 +901,45 @@ namespace DemoACadSharp
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
             clickedItem.Checked = !clickedItem.Checked;
         }
+
+        private void ResponsiveTreeNode()
+        {
+            bool isFound = false;
+            foreach(TreeNode parentNode in treeViewSelectedEntity.Nodes)
+            {
+                foreach(TreeNode childNode in parentNode.Nodes)
+                {
+                    int idChildEntity = getIdEntity(childNode.Text);
+                    string layerName = getLayer(childNode.Text);
+                    layerName = deleteId(layerName);
+                    string objectType = getObjectType(childNode.Text);
+
+                    foreach (UnityEntity childEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                    {
+                        if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
+                             idChildEntity == childEntity.Id)
+                        {
+                            if (!_architecture.Floors[_currentFloor].ListSelectedEntities.Contains(childEntity))
+                            {
+                                parentNode.ForeColor = Color.Blue;
+                                isFound = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isFound)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        parentNode.ForeColor = Color.Black;
+                        break;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         private void btnAdd_Click(object sender, EventArgs e)
