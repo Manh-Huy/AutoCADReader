@@ -1064,6 +1064,17 @@ namespace DemoACadSharp
             treeView1.Nodes.Clear();
             treeViewSelectedEntity.Nodes.Clear();
             pictureBoxThumbNail.Image = null;
+            CustomMessageBox customMessageBox = new CustomMessageBox("This floor does not have data yet!");
+            DialogResult result = customMessageBox.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                importFile();
+            }
+            else if (result == DialogResult.Retry)
+            {
+                openFile();
+            }
         }
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
