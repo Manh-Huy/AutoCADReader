@@ -184,7 +184,6 @@ namespace DemoACadSharp
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxThumbNail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBoxThumbNail.Image = global::DemoACadSharp.Properties.Resources._345668002_207268608768377_4716940698160860698_n;
             this.pictureBoxThumbNail.Location = new System.Drawing.Point(364, 6);
             this.pictureBoxThumbNail.Name = "pictureBoxThumbNail";
             this.pictureBoxThumbNail.Size = new System.Drawing.Size(662, 375);
@@ -208,7 +207,7 @@ namespace DemoACadSharp
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(973, 384);
+            this.tabPage2.Size = new System.Drawing.Size(1034, 384);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Config";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -266,10 +265,9 @@ namespace DemoACadSharp
             this.pictureBoxSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxSelected.Image = global::DemoACadSharp.Properties.Resources._376371757_161526873661412_820728656325930674_n;
             this.pictureBoxSelected.Location = new System.Drawing.Point(779, 3);
             this.pictureBoxSelected.Name = "pictureBoxSelected";
-            this.pictureBoxSelected.Size = new System.Drawing.Size(175, 369);
+            this.pictureBoxSelected.Size = new System.Drawing.Size(244, 369);
             this.pictureBoxSelected.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxSelected.TabIndex = 2;
             this.pictureBoxSelected.TabStop = false;
@@ -278,7 +276,8 @@ namespace DemoACadSharp
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 32);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // txtTopFloor

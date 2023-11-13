@@ -42,7 +42,8 @@ namespace DemoACadSharp
             Door,
             Stair,
             Window,
-            Power
+            Power,
+            Remove
         }
 
         public MainForm()
@@ -274,6 +275,7 @@ namespace DemoACadSharp
             {
                 getDataFromTreeView_View();
                 setDataToTreeView_Config();
+                _architecture.Floors[_currentFloor].ListUnityEntities = SynchronizedListWhenReselect();
                 tabControl1.SelectedIndex = 1;
                 propertyGrid1.SelectedObject = null;
                 MessageBox.Show("Selected Successfully!", "Select Entity", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -287,6 +289,7 @@ namespace DemoACadSharp
         // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
         private void getDataFromTreeView_View()
         {
+            _architecture.Floors[_currentFloor].ListSelectedEntities.Clear();
             _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
 
             Stack<TreeNode> nodeStack = new Stack<TreeNode>();
@@ -329,19 +332,54 @@ namespace DemoACadSharp
 
             _architecture.Floors[_currentFloor].ListSelectedEntities.Reverse();
         }
+
+        private List<UnityEntity> SynchronizedListWhenReselect()
+        {
+            List<UnityEntity> newList = new List<UnityEntity>();
+            if (_architecture.Floors[_currentFloor].ListUnityEntities.Count > 0)
+            {
+                List<AcadEntity> listUniqueSelectedEntity = _architecture.Floors[_currentFloor].getUniqueSelectedEntities();
+
+                foreach (AcadEntity uniqueSelectedEntity in listUniqueSelectedEntity)
+                {
+                    foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                    {
+                        if (uniqueSelectedEntity.LayerName == unityEntity.LayerName && uniqueSelectedEntity.ObjectType == unityEntity.ObjectType)
+                        {
+                            newList.Add(unityEntity);
+                        }
+                    }
+                }
+            }
+            else return _architecture.Floors[_currentFloor].ListUnityEntities;
+
+            return newList;
+        }
         private void setDataToTreeView_Config()
         {
             treeViewSelectedEntity.Nodes.Clear();
             int _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
-            List<AcadEntity> listUniqueSelectedEntity = new List<AcadEntity>();
-            listUniqueSelectedEntity = _architecture.Floors[_currentFloor].getUniqueSelectedEntities();
+            List<AcadEntity> listUniqueSelectedEntity = _architecture.Floors[_currentFloor].getUniqueSelectedEntities();
 
             if (listUniqueSelectedEntity != null)
             {
                 foreach (AcadEntity entity in listUniqueSelectedEntity)
                 {
                     TreeNode parentNode = treeViewSelectedEntity.Nodes.Add($"{entity.LayerName} ({entity.ObjectType})");
-                    parentNode.ForeColor = Color.Black;
+                    if (_architecture.Floors[_currentFloor].ListUnityEntities.Count > 0)
+                    {
+                        foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                        {
+                            if (unityEntity.LayerName == entity.LayerName && unityEntity.ObjectType == entity.ObjectType
+                                && unityEntity.TypeOfUnityEntity != "")
+                            {
+                                parentNode.ForeColor = Color.OrangeRed;
+                                parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Underline);
+                                break;
+                            }
+                        }
+                    }
+
 
                     foreach (AcadEntity childEntity in Architecture.getInstance().Floors[_currentFloor].ListSelectedEntities)
                     {
@@ -542,54 +580,66 @@ namespace DemoACadSharp
                 }
             }
 
-
             if (_selectedNode != null)
             {
                 layerName = getLayer(_selectedNode.Text);
                 objectType = getObjectType(_selectedNode.Text);
             }
 
-            foreach (AcadEntity entity in floor.ListSelectedEntities)
+            if (typeOfUnityEntity == "Remove")
             {
-                if (entity.LayerName == layerName && entity.ObjectType == objectType)
+                string treeNodeName = layerName + " (" + objectType + ")";
+                foreach (TreeNode treeNode in treeViewSelectedEntity.Nodes)
                 {
-                    var templateEntity = FactoryUnityEntity.createObjectUnity(entity, typeOfUnityEntity);
-                    _architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                    switch (templateEntity)
+                    if (treeNode.Text == treeNodeName)
                     {
-                        case Wall wall:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            floor.ListUnityEntities.Add(wall);
-                            break;
-
-                        case Stair stair:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            floor.ListUnityEntities.Add(stair);
-                            break;
-
-                        case Door door:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            floor.ListUnityEntities.Add(door);
-                            break;
-
-                        case Window window:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            floor.ListUnityEntities.Add(window);
-                            break;
-
-                        case Power power:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            floor.ListUnityEntities.Add(power);
-                            break;
-
-                        case AcadEntity none:
-                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
-                            break;
+                        treeViewSelectedEntity.Nodes.Remove(treeNode);
+                        if (typeOfUnityEntityBefore != "None")
+                        {
+                            _architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenRemoveTreeNode(layerName, objectType, typeOfUnityEntityBefore);
+                        }
+                        break;
                     }
                 }
             }
-            ResponsiveTreeNode();
+            else
+            {
+                foreach (AcadEntity entity in floor.ListSelectedEntities)
+                {
+                    if (entity.LayerName == layerName && entity.ObjectType == objectType)
+                    {
+                        var templateEntity = FactoryUnityEntity.createObjectUnity(entity, typeOfUnityEntity);
+                        _architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
+                        switch (templateEntity)
+                        {
+                            case Wall wall:
+                                floor.ListUnityEntities.Add(wall);
+                                break;
 
+                            case Stair stair:
+                                floor.ListUnityEntities.Add(stair);
+                                break;
+
+                            case Door door:
+                                floor.ListUnityEntities.Add(door);
+                                break;
+
+                            case Window window:
+                                floor.ListUnityEntities.Add(window);
+                                break;
+
+                            case Power power:
+                                floor.ListUnityEntities.Add(power);
+                                break;
+
+                            case AcadEntity none:
+                                break;
+                        }
+                    }
+                }
+
+                ResponsiveTreeNode(layerName, objectType, typeOfUnityEntity);
+            }
         }
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
@@ -921,41 +971,22 @@ namespace DemoACadSharp
             clickedItem.Checked = !clickedItem.Checked;
         }
 
-        private void ResponsiveTreeNode()
+        private void ResponsiveTreeNode(string layerName, string objectType, string selected)
         {
-            bool isFound = false;
+            string treeNodeName = layerName + " (" + objectType + ")";
             foreach (TreeNode parentNode in treeViewSelectedEntity.Nodes)
             {
-                foreach (TreeNode childNode in parentNode.Nodes)
+                if(treeNodeName == parentNode.Text)
                 {
-                    int idChildEntity = getIdEntity(childNode.Text);
-                    string layerName = getLayer(childNode.Text);
-                    layerName = deleteId(layerName);
-                    string objectType = getObjectType(childNode.Text);
-
-                    foreach (UnityEntity childEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
-                    {
-                        if (childEntity.LayerName == layerName && childEntity.ObjectType == objectType &&
-                             idChildEntity == childEntity.Id)
-                        {
-                            if (!_architecture.Floors[_currentFloor].ListSelectedEntities.Contains(childEntity))
-                            {
-                                parentNode.ForeColor = Color.Blue;
-                                parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Bold);
-                                isFound = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isFound)
-                    {
-                        break;
-                    }
-                    else
+                    if (selected == "None")
                     {
                         parentNode.ForeColor = Color.Black;
                         parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Regular);
-                        break;
+                    }
+                    else
+                    {
+                        parentNode.ForeColor = Color.OrangeRed;
+                        parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Underline);
                     }
                 }
             }
@@ -970,9 +1001,10 @@ namespace DemoACadSharp
                 {
                     foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
                     {
-                        if(unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.TypeOfUnityEntity == beforeType)
+                        if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.TypeOfUnityEntity == beforeType)
                         {
-                        }else
+                        }
+                        else
                         {
                             newList.Add(unityEntity);
                         }
@@ -984,10 +1016,33 @@ namespace DemoACadSharp
                     {
                         if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.Id == id)
                         {
-                        } else
+                        }
+                        else
                         {
                             newList.Add(unityEntity);
                         }
+                    }
+                }
+
+            }
+            else return _architecture.Floors[_currentFloor].ListUnityEntities;
+
+            return newList;
+        }
+
+        private List<UnityEntity> DeleteUnityEntityWhenRemoveTreeNode(string layerName, string objectType, string currentType)
+        {
+            List<UnityEntity> newList = new List<UnityEntity>();
+            if (_architecture.Floors[_currentFloor].ListUnityEntities.Count > 0)
+            {
+                foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                {
+                    if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.TypeOfUnityEntity == currentType)
+                    {
+                    }
+                    else
+                    {
+                        newList.Add(unityEntity);
                     }
                 }
             }
@@ -995,6 +1050,8 @@ namespace DemoACadSharp
 
             return newList;
         }
+
+
 
         #endregion
 
@@ -1009,5 +1066,17 @@ namespace DemoACadSharp
             pictureBoxThumbNail.Image = null;
         }
 
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            {
+                if (toolStripMenuItem.Text == "Remove")
+                {
+                    toolStripMenuItem.ForeColor = Color.White;
+                    toolStripMenuItem.BackColor = Color.Red;
+                    toolStripMenuItem.Font = new Font(toolStripMenuItem.Font, FontStyle.Bold);
+                }
+            }
+        }
     }
 }
