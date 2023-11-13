@@ -129,16 +129,16 @@ namespace DemoACadSharp
         private List<AcadEntity> clearLayer0(List<AcadEntity> listEntities)
         {
             List<AcadEntity> listNo0Entities = new List<AcadEntity>();
-            foreach(AcadEntity entity in listEntities)
+            foreach (AcadEntity entity in listEntities)
             {
-                if(entity.LayerName != "0")
+                if (entity.LayerName != "0")
                 {
                     listNo0Entities.Add(entity);
                 }
             }
 
             return listNo0Entities;
-        }    
+        }
 
         private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -533,6 +533,15 @@ namespace DemoACadSharp
             Floor floor = Architecture.getInstance().Floors[_currentFloor];
             string layerName = "", objectType = "";
             string typeOfUnityEntity = e.ClickedItem.Text;
+            string typeOfUnityEntityBefore = "";
+            foreach (ToolStripMenuItem toolStripMenuItem in contextMenuStrip1.Items)
+            {
+                if (toolStripMenuItem.Checked)
+                {
+                    typeOfUnityEntityBefore = toolStripMenuItem.Text;
+                }
+            }
+
 
             if (_selectedNode != null)
             {
@@ -545,26 +554,36 @@ namespace DemoACadSharp
                 if (entity.LayerName == layerName && entity.ObjectType == objectType)
                 {
                     var templateEntity = FactoryUnityEntity.createObjectUnity(entity, typeOfUnityEntity);
+                    _architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                     switch (templateEntity)
                     {
                         case Wall wall:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             floor.ListUnityEntities.Add(wall);
                             break;
 
                         case Stair stair:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             floor.ListUnityEntities.Add(stair);
                             break;
 
                         case Door door:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             floor.ListUnityEntities.Add(door);
                             break;
 
                         case Window window:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             floor.ListUnityEntities.Add(window);
                             break;
 
                         case Power power:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             floor.ListUnityEntities.Add(power);
+                            break;
+
+                        case AcadEntity none:
+                            //_architecture.Floors[_currentFloor].ListUnityEntities = DeleteUnityEntityWhenChangeTypeUnity(layerName, objectType, templateEntity.Id, typeOfUnityEntity, typeOfUnityEntityBefore);
                             break;
                     }
                 }
@@ -905,9 +924,9 @@ namespace DemoACadSharp
         private void ResponsiveTreeNode()
         {
             bool isFound = false;
-            foreach(TreeNode parentNode in treeViewSelectedEntity.Nodes)
+            foreach (TreeNode parentNode in treeViewSelectedEntity.Nodes)
             {
-                foreach(TreeNode childNode in parentNode.Nodes)
+                foreach (TreeNode childNode in parentNode.Nodes)
                 {
                     int idChildEntity = getIdEntity(childNode.Text);
                     string layerName = getLayer(childNode.Text);
@@ -922,6 +941,7 @@ namespace DemoACadSharp
                             if (!_architecture.Floors[_currentFloor].ListSelectedEntities.Contains(childEntity))
                             {
                                 parentNode.ForeColor = Color.Blue;
+                                parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Bold);
                                 isFound = true;
                                 break;
                             }
@@ -934,10 +954,46 @@ namespace DemoACadSharp
                     else
                     {
                         parentNode.ForeColor = Color.Black;
+                        parentNode.NodeFont = new Font(treeViewSelectedEntity.Font, FontStyle.Regular);
                         break;
                     }
                 }
             }
+        }
+
+        private List<UnityEntity> DeleteUnityEntityWhenChangeTypeUnity(string layerName, string objectType, int id, string currentType, string beforeType)
+        {
+            List<UnityEntity> newList = new List<UnityEntity>();
+            if (_architecture.Floors[_currentFloor].ListUnityEntities.Count > 0)
+            {
+                if (currentType == "None")
+                {
+                    foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                    {
+                        if(unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.TypeOfUnityEntity == beforeType)
+                        {
+                        }else
+                        {
+                            newList.Add(unityEntity);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (UnityEntity unityEntity in _architecture.Floors[_currentFloor].ListUnityEntities)
+                    {
+                        if (unityEntity.LayerName == layerName && unityEntity.ObjectType == objectType && unityEntity.Id == id)
+                        {
+                        } else
+                        {
+                            newList.Add(unityEntity);
+                        }
+                    }
+                }
+            }
+            else return _architecture.Floors[_currentFloor].ListUnityEntities;
+
+            return newList;
         }
 
         #endregion
