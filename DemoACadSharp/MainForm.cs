@@ -21,6 +21,10 @@ namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
+        public static string _pathProject;
+        public static string _nameHouse;
+
+
         Architecture _architecture = Architecture.getInstance();
 
         List<AcadEntity> _listAllEntities = new List<AcadEntity>();
@@ -58,6 +62,7 @@ namespace DemoACadSharp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            txtNameHouse.Text = _nameHouse;
             cbNumberFloor.Text = 1.ToString();
             cbNumberFloor.Items.Add(1);
         }
