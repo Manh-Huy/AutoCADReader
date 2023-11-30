@@ -92,7 +92,6 @@ D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\D
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.SuggestedBindingRedirects.cache
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.MainForm.resources
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.Properties.Resources.resources
-D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.ReadFileAutoCadForm.resources
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.GenerateResource.cache
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CoreCompileInputs.cache
 D:\hoc\On school\Project on Software Engineering\autocadbuda\DemoACadSharp\obj\Debug\DemoACadSharp.csproj.CopyComplete

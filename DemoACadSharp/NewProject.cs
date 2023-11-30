@@ -38,7 +38,7 @@ namespace DemoACadSharp
             string folderPath = txtPath.Text;
 
             try
-            {
+            { 
                 string fullPath = Path.Combine(folderPath, folderName);
                 // Kiểm tra xem thư mục đã tồn tại chưa
                 if (!Directory.Exists(fullPath))

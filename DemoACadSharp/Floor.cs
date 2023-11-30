@@ -89,14 +89,5 @@ namespace DemoACadSharp
             return null;
         }
 
-
-
-
-        Document entityOfFloor = new Document();
-        Document allEntityOfFloor = new Document();
-
-        public Document EntityOfFloor { get => entityOfFloor; set => entityOfFloor = value; }
-        public Document AllEntityOfFloor { get => allEntityOfFloor; set => allEntityOfFloor = value; }
-
     }
 }
