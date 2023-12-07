@@ -100,18 +100,13 @@
     <Compile Include="FactoryUnityEntity.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="House.cs" />
-    <Compile Include="InitialForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InitialForm.Designer.cs">
-      <DependentUpon>InitialForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManageProject.cs" />
     <Compile Include="NewProject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +116,7 @@
     <Compile Include="Power.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressReport.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="ProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,9 +130,6 @@
     <Compile Include="UnityFloor.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="Window.cs" />
-    <EmbeddedResource Include="InitialForm.resx">
-      <DependentUpon>InitialForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -32,7 +32,6 @@ namespace DemoACadSharp
             this.menuStripAllFeature = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripLoadTime = new System.Windows.Forms.StatusStrip();
@@ -83,7 +82,6 @@ namespace DemoACadSharp
             // 
             this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importFileToolStripMenuItem,
-            this.openFileToolStripMenuItem,
             this.saveFileToolStripMenuItem,
             this.exportJSONToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
@@ -93,28 +91,21 @@ namespace DemoACadSharp
             // importFileToolStripMenuItem
             // 
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.importFileToolStripMenuItem.Text = "Import (dwg)";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
-            // 
-            // openFileToolStripMenuItem
-            // 
-            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.openFileToolStripMenuItem.Text = "Open File";
-            this.openFileToolStripMenuItem.Click += new System.EventHandler(this.openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveFileToolStripMenuItem.Text = "Save File";
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
             // exportJSONToolStripMenuItem
             // 
             this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
-            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.exportJSONToolStripMenuItem.Text = "Export (JSON)";
             this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
             // 
@@ -304,6 +295,7 @@ namespace DemoACadSharp
             this.txtNameHouse.Name = "txtNameHouse";
             this.txtNameHouse.Size = new System.Drawing.Size(123, 22);
             this.txtNameHouse.TabIndex = 16;
+            this.txtNameHouse.TextChanged += new System.EventHandler(this.txtNameHouse_TextChanged);
             // 
             // label3
             // 
@@ -355,6 +347,7 @@ namespace DemoACadSharp
             this.cbBoxTopRoof.Name = "cbBoxTopRoof";
             this.cbBoxTopRoof.Size = new System.Drawing.Size(123, 24);
             this.cbBoxTopRoof.TabIndex = 20;
+            this.cbBoxTopRoof.SelectedValueChanged += new System.EventHandler(this.cbBoxTopRoof_SelectedValueChanged);
             // 
             // MainForm
             // 
@@ -398,7 +391,6 @@ namespace DemoACadSharp
         private System.Windows.Forms.MenuStrip menuStripAllFeature;
         private System.Windows.Forms.ToolStripMenuItem FileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStripLoadTime;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;

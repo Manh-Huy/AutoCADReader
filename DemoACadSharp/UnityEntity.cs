@@ -13,6 +13,10 @@ namespace DemoACadSharp
         Color color;
         double height;
 
+        public UnityEntity()
+        {
+        }
+
         public UnityEntity(int? id, string layerName, string objectType, List<string> coordinates) : base(id, layerName, objectType, coordinates)
         {
         }

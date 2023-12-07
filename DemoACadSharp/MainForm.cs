@@ -16,13 +16,20 @@ using Newtonsoft.Json.Linq;
 using Color = System.Drawing.Color;
 using Line = ACadSharp.Entities.Line;
 using System.Diagnostics;
+using Aspose.CAD.FileFormats.Dwf.DwfXps.FixedPage.DTO;
 
 namespace DemoACadSharp
 {
     public partial class MainForm : Form
     {
+        public static bool _isCreate = false;
+        public static bool _isOpen = false;
+
+        public static string _nameProject;
         public static string _pathProject;
         public static string _nameHouse;
+        public static string _pathJsonFile;
+        public static string _pathfolderImage;
 
 
         Architecture _architecture = Architecture.getInstance();
@@ -62,9 +69,28 @@ namespace DemoACadSharp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            txtNameHouse.Text = _nameHouse;
-            cbNumberFloor.Text = 1.ToString();
-            cbNumberFloor.Items.Add(1);
+            if (_isCreate)
+            {
+                txtNameHouse.Text = _nameHouse;
+                Architecture.getInstance().NameArchitecture = txtNameHouse.Text;
+                cbNumberFloor.Text = 1.ToString();
+                cbNumberFloor.Items.Add(1);
+            }
+            else if (_isOpen)
+            {
+
+                string json = File.ReadAllText(_pathJsonFile);
+                _architecture = JsonConvert.DeserializeObject<Architecture>(json);
+                txtNameHouse.Text = _architecture.NameArchitecture;
+                cbBoxTopRoof.Text = _architecture.TypeOfRoof;
+                for(int i = 0; i < _architecture.NumberOfFloor; i++)
+                {
+                    cbNumberFloor.Items.Add(i + 1);
+                }
+                setDataToTreeView_View(_currentFloor);
+                setDataToTreeView_Config();
+            }
+
         }
 
 
@@ -118,7 +144,7 @@ namespace DemoACadSharp
 
                     // Save the image as PNG
                     string fileName = GenerateRandomImageName(8) + ".png";
-                    string outputPath = _TempFolderPath + fileName; // Output file path
+                    string outputPath = _pathfolderImage + "\\" + fileName; // Output file path
                     _architecture.Floors[_currentFloor].ImageURL = outputPath;
                     cadImage.Save(outputPath, pngOptions);
 
@@ -218,22 +244,11 @@ namespace DemoACadSharp
 
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Architecture.getInstance().Floors[_currentFloor].ImageURL = SaveImageToLocalFolder(pictureBoxThumbNail);
-            string json = JsonConvert.SerializeObject(Architecture.getInstance().Floors[_currentFloor], Formatting.Indented);
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON files (*.json)|*.json";
-            saveFileDialog.Title = "Save JSON File";
+            string architectureJSON = JsonConvert.SerializeObject(Architecture.getInstance(), Formatting.Indented);
+            File.WriteAllText(_pathJsonFile, architectureJSON);
 
-
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string path = saveFileDialog.FileName;
-                File.WriteAllText(path, json);
-                MessageBox.Show("Save Successfully!");
-                //DeleteTempFolder(_TempFolderPath);
-            }
+            MessageBox.Show("Save Successfully!");
         }
 
         private void DeleteTempFolder(string folderPath)
@@ -899,14 +914,14 @@ namespace DemoACadSharp
             if (pictureBox.Image != null)
             {
                 string fileName = GenerateRandomImageName(8) + ".jpg";
-                string folderPath = _PictureFolderPath;
+                string folderPath = _pathfolderImage;
 
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
 
-                string filePath = Path.Combine(folderPath, fileName);
+                string filePath = System.IO.Path.Combine(folderPath, fileName);
 
                 Bitmap image = new Bitmap(pictureBoxThumbNail.Image);
 
@@ -981,7 +996,7 @@ namespace DemoACadSharp
             string treeNodeName = layerName + " (" + objectType + ")";
             foreach (TreeNode parentNode in treeViewSelectedEntity.Nodes)
             {
-                if(treeNodeName == parentNode.Text)
+                if (treeNodeName == parentNode.Text)
                 {
                     if (selected == "None")
                     {
@@ -1065,6 +1080,8 @@ namespace DemoACadSharp
             _architecture.NumberOfFloor++;
             _architecture.Floors.Add(new Floor());
             cbNumberFloor.Text = _architecture.NumberOfFloor.ToString();
+            _currentFloor = Int32.Parse(cbNumberFloor.Text);
+            _architecture.Floors[_currentFloor - 1].Order = _architecture.NumberOfFloor;
             cbNumberFloor.Items.Add(_architecture.NumberOfFloor);
             treeView1.Nodes.Clear();
             treeViewSelectedEntity.Nodes.Clear();
@@ -1093,6 +1110,16 @@ namespace DemoACadSharp
                     toolStripMenuItem.Font = new Font(toolStripMenuItem.Font, FontStyle.Bold);
                 }
             }
+        }
+
+        private void txtNameHouse_TextChanged(object sender, EventArgs e)
+        {
+            Architecture.getInstance().NameArchitecture = txtNameHouse.Text;
+        }
+
+        private void cbBoxTopRoof_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Architecture.getInstance().TypeOfRoof = cbBoxTopRoof.Text;
         }
     }
 }

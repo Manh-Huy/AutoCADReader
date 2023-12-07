@@ -32,24 +32,32 @@ namespace DemoACadSharp
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            string folderName = txtProjectName.Text;
-
-            // Lấy đường dẫn đầy đủ của thư mục muốn tạo
-            string folderPath = txtPath.Text;
+            ManageProject manageProject = new ManageProject();
+            Project newProject = new Project(txtProjectName.Text, txtPath.Text, DateTime.Now);
 
             try
-            { 
-                string fullPath = Path.Combine(folderPath, folderName);
+            {
+
+                // Xử lý appData
+                manageProject.EnsureAppFolderExists(newProject);
+
+                // Xử lý tạo project tại thư mục được chọn
+                string fullPath = Path.Combine(newProject.Path, newProject.NameProject);
                 // Kiểm tra xem thư mục đã tồn tại chưa
                 if (!Directory.Exists(fullPath))
                 {
                     // Tạo thư mục mới
                     Directory.CreateDirectory(fullPath);
+                    string jsonFilePath = Path.Combine(fullPath, $"{newProject.NameProject}.json");
+                    File.WriteAllText(jsonFilePath, "[]");
                     string ImageFolder = Path.Combine(fullPath, "Image");
                     Directory.CreateDirectory(ImageFolder);
                     MainForm mainForm = new MainForm();
+                    MainForm._isCreate = true;
                     MainForm._pathProject = txtPath.Text;
                     MainForm._nameHouse = txtNameHouse.Text;
+                    MainForm._pathJsonFile = jsonFilePath;
+                    MainForm._pathfolderImage = ImageFolder;
                     mainForm.ShowDialog();
                     this.Close();
                 }
