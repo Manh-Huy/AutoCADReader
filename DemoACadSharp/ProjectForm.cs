@@ -110,32 +110,35 @@ namespace DemoACadSharp
             if (isExist)
             {
                 string filePath = Path.Combine(appNameFoler, "ListProject.json");
-                string jsonContent = File.ReadAllText(filePath);
-                manageProject.ListProject = JsonConvert.DeserializeObject<List<Project>>(jsonContent);
-                manageProject.ListProject.Sort((p1, p2) => p2.DateTime.CompareTo(p1.DateTime));
-                List<Project> recentProjects = manageProject.ListProject.Take(5).ToList();
 
-                DataTable dataTable = new DataTable();
-
-                dataTable.Columns.Add("ProjectName", typeof(string));
-                dataTable.Columns.Add("Path", typeof(string));
-                dataTable.Columns.Add("DateTime", typeof(DateTime));
-
-                foreach (Project project in recentProjects)
+                if (File.Exists(filePath) || Directory.Exists(filePath))
                 {
-                    dataTable.Rows.Add(project.NameProject, project.Path, project.DateTime);
+                    string jsonContent = File.ReadAllText(filePath);
+                    manageProject.ListProject = JsonConvert.DeserializeObject<List<Project>>(jsonContent);
+                    manageProject.ListProject.Sort((p1, p2) => p2.DateTime.CompareTo(p1.DateTime));
+                    List<Project> recentProjects = manageProject.ListProject.Take(5).ToList();
+
+                    DataTable dataTable = new DataTable();
+
+                    dataTable.Columns.Add("ProjectName", typeof(string));
+                    dataTable.Columns.Add("Path", typeof(string));
+                    dataTable.Columns.Add("DateTime", typeof(DateTime));
+
+                    foreach (Project project in recentProjects)
+                    {
+                        dataTable.Rows.Add(project.NameProject, project.Path, project.DateTime);
+                    }
+
+                    dataGridView1.DataSource = dataTable;
+                    dataGridView1.Columns["ProjectName"].Width = 160;
+                    dataGridView1.Columns["Path"].Width = 230;
+                    dataGridView1.Columns["DateTime"].Width = 130;
+
+                    dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                    // Thiết lập căn giữa cho văn bản trong các ô
+                    dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
-
-                dataGridView1.DataSource = dataTable;
-                dataGridView1.Columns["ProjectName"].Width = 160;
-                dataGridView1.Columns["Path"].Width = 230;
-                dataGridView1.Columns["DateTime"].Width = 130;
-
-                dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-                // Thiết lập căn giữa cho văn bản trong các ô
-                dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
             }
         }
 

@@ -664,6 +664,77 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
+          /*  UnityArchitecture unityArchitecture = new UnityArchitecture();
+            unityArchitecture.NameArchitecture = txtNameHouse.Text;
+            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
+            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
+            foreach (Floor floor in _architecture.Floors)
+            {
+                UnityFloor newFloor = new UnityFloor();
+                newFloor.Order = floor.Order;
+                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
+                unityArchitecture.ListFloor.Add(newFloor);
+            }
+
+            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
+
+            File.WriteAllText(_DebugBuildJsonPath, json);
+
+            // Path to the Unity executable (Unity.exe)
+            string unityPath = _UnityExePath;
+            // Path to the Unity project folder
+            string unityProjectPath = _UnityPath;
+            // Command to run the Unity script
+            string command = $"\"{unityPath}\" -projectPath \"{unityProjectPath}\" -executeMethod BuildAndRun.BuildAndRunGame";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo("cmd.exe")
+            {
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = new Process
+            {
+                StartInfo = startInfo
+            };
+            process.Start();
+
+            // Execute the Unity script to build and run
+            process.StandardInput.WriteLine(command);
+            process.StandardInput.Flush();
+            process.StandardInput.Close();
+            process.WaitForExit();*/
+        }
+
+        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            /*UnityArchitecture unityArchitecture = new UnityArchitecture();
+            unityArchitecture.NameArchitecture = txtNameHouse.Text;
+            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
+            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
+            foreach (Floor floor in _architecture.Floors)
+            {
+                UnityFloor newFloor = new UnityFloor();
+                newFloor.Order = floor.Order;
+                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
+                unityArchitecture.ListFloor.Add(newFloor);
+            }
+
+            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.Title = "Save JSON File";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = saveFileDialog.FileName;
+                File.WriteAllText(path, json);
+                MessageBox.Show("Save Successfully!");
+            }*/
+
             UnityArchitecture unityArchitecture = new UnityArchitecture();
             unityArchitecture.NameArchitecture = txtNameHouse.Text;
             unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
@@ -705,35 +776,6 @@ namespace DemoACadSharp
             process.StandardInput.Flush();
             process.StandardInput.Close();
             process.WaitForExit();
-        }
-
-        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            UnityArchitecture unityArchitecture = new UnityArchitecture();
-            unityArchitecture.NameArchitecture = txtNameHouse.Text;
-            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
-            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
-            foreach (Floor floor in _architecture.Floors)
-            {
-                UnityFloor newFloor = new UnityFloor();
-                newFloor.Order = floor.Order;
-                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
-                unityArchitecture.ListFloor.Add(newFloor);
-            }
-
-            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON files (*.json)|*.json";
-            saveFileDialog.Title = "Save JSON File";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string path = saveFileDialog.FileName;
-                File.WriteAllText(path, json);
-                MessageBox.Show("Save Successfully!");
-            }
 
         }
 

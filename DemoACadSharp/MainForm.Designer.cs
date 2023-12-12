@@ -44,7 +44,6 @@ namespace DemoACadSharp
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnExportToJSON = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.treeViewSelectedEntity = new System.Windows.Forms.TreeView();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
@@ -208,7 +207,6 @@ namespace DemoACadSharp
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.btnExportToJSON);
             this.panel1.Controls.Add(this.propertyGrid1);
             this.panel1.Controls.Add(this.treeViewSelectedEntity);
             this.panel1.Controls.Add(this.pictureBoxSelected);
@@ -216,17 +214,6 @@ namespace DemoACadSharp
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(957, 414);
             this.panel1.TabIndex = 3;
-            // 
-            // btnExportToJSON
-            // 
-            this.btnExportToJSON.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportToJSON.Location = new System.Drawing.Point(3, 346);
-            this.btnExportToJSON.Name = "btnExportToJSON";
-            this.btnExportToJSON.Size = new System.Drawing.Size(351, 29);
-            this.btnExportToJSON.TabIndex = 7;
-            this.btnExportToJSON.Text = "Export to JSON";
-            this.btnExportToJSON.UseVisualStyleBackColor = true;
-            this.btnExportToJSON.Click += new System.EventHandler(this.btnExportToJSON_Click);
             // 
             // propertyGrid1
             // 
@@ -246,7 +233,7 @@ namespace DemoACadSharp
             | System.Windows.Forms.AnchorStyles.Left)));
             this.treeViewSelectedEntity.Location = new System.Drawing.Point(3, 3);
             this.treeViewSelectedEntity.Name = "treeViewSelectedEntity";
-            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 341);
+            this.treeViewSelectedEntity.Size = new System.Drawing.Size(351, 369);
             this.treeViewSelectedEntity.TabIndex = 0;
             this.treeViewSelectedEntity.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseClick);
             this.treeViewSelectedEntity.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewSelectedEntity_NodeMouseDoubleClick);
@@ -412,7 +399,6 @@ namespace DemoACadSharp
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnExportToJSON;
         private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.ComboBox cbBoxTopRoof;
