@@ -71,24 +71,30 @@ namespace DemoACadSharp
         {
             if (_isCreate)
             {
+                _currentFloor = 0;
                 txtNameHouse.Text = _nameHouse;
                 Architecture.getInstance().NameArchitecture = txtNameHouse.Text;
                 cbNumberFloor.Text = 1.ToString();
                 cbNumberFloor.Items.Add(1);
+                _isCreate = false;
             }
             else if (_isOpen)
             {
-
+                _currentFloor = 0;
                 string json = File.ReadAllText(_pathJsonFile);
                 _architecture = JsonConvert.DeserializeObject<Architecture>(json);
+
                 txtNameHouse.Text = _architecture.NameArchitecture;
                 cbBoxTopRoof.Text = _architecture.TypeOfRoof;
-                for(int i = 0; i < _architecture.NumberOfFloor; i++)
+                for (int i = 0; i < _architecture.NumberOfFloor; i++)
                 {
                     cbNumberFloor.Items.Add(i + 1);
                 }
                 setDataToTreeView_View(_currentFloor);
                 setDataToTreeView_Config();
+                string imgName = Architecture.getInstance().Floors[0].ImageURL;
+                pictureBoxThumbNail.Image = LoadImage(imgName);
+                _isOpen = false;
             }
 
         }
@@ -664,47 +670,47 @@ namespace DemoACadSharp
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
         {
-          /*  UnityArchitecture unityArchitecture = new UnityArchitecture();
-            unityArchitecture.NameArchitecture = txtNameHouse.Text;
-            unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
-            unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
-            foreach (Floor floor in _architecture.Floors)
-            {
-                UnityFloor newFloor = new UnityFloor();
-                newFloor.Order = floor.Order;
-                newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
-                unityArchitecture.ListFloor.Add(newFloor);
-            }
+            /*  UnityArchitecture unityArchitecture = new UnityArchitecture();
+              unityArchitecture.NameArchitecture = txtNameHouse.Text;
+              unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
+              unityArchitecture.TypeOfRoof = cbBoxTopRoof.Text;
+              foreach (Floor floor in _architecture.Floors)
+              {
+                  UnityFloor newFloor = new UnityFloor();
+                  newFloor.Order = floor.Order;
+                  newFloor.ListEntities = new List<UnityEntity>(floor.ListUnityEntities);
+                  unityArchitecture.ListFloor.Add(newFloor);
+              }
 
-            string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
+              string json = JsonConvert.SerializeObject(unityArchitecture, Formatting.Indented);
 
-            File.WriteAllText(_DebugBuildJsonPath, json);
+              File.WriteAllText(_DebugBuildJsonPath, json);
 
-            // Path to the Unity executable (Unity.exe)
-            string unityPath = _UnityExePath;
-            // Path to the Unity project folder
-            string unityProjectPath = _UnityPath;
-            // Command to run the Unity script
-            string command = $"\"{unityPath}\" -projectPath \"{unityProjectPath}\" -executeMethod BuildAndRun.BuildAndRunGame";
+              // Path to the Unity executable (Unity.exe)
+              string unityPath = _UnityExePath;
+              // Path to the Unity project folder
+              string unityProjectPath = _UnityPath;
+              // Command to run the Unity script
+              string command = $"\"{unityPath}\" -projectPath \"{unityProjectPath}\" -executeMethod BuildAndRun.BuildAndRunGame";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo("cmd.exe")
-            {
-                RedirectStandardInput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+              ProcessStartInfo startInfo = new ProcessStartInfo("cmd.exe")
+              {
+                  RedirectStandardInput = true,
+                  UseShellExecute = false,
+                  CreateNoWindow = true
+              };
 
-            Process process = new Process
-            {
-                StartInfo = startInfo
-            };
-            process.Start();
+              Process process = new Process
+              {
+                  StartInfo = startInfo
+              };
+              process.Start();
 
-            // Execute the Unity script to build and run
-            process.StandardInput.WriteLine(command);
-            process.StandardInput.Flush();
-            process.StandardInput.Close();
-            process.WaitForExit();*/
+              // Execute the Unity script to build and run
+              process.StandardInput.WriteLine(command);
+              process.StandardInput.Flush();
+              process.StandardInput.Close();
+              process.WaitForExit();*/
         }
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
