@@ -25,6 +25,8 @@ namespace DemoACadSharp
         public static bool _isCreate = false;
         public static bool _isOpen = false;
 
+        private bool _isChange = false;
+
         public static string _nameProject;
         public static string _pathProject;
         public static string _nameHouse;
@@ -76,10 +78,13 @@ namespace DemoACadSharp
                 Architecture.getInstance().NameArchitecture = txtNameHouse.Text;
                 cbNumberFloor.Text = 1.ToString();
                 cbNumberFloor.Items.Add(1);
-                _isCreate = false;
+                this.Text = _nameProject;
+_isCreate = false;
+                _isChange = false;
             }
             else if (_isOpen)
             {
+
                 _currentFloor = 0;
                 string json = File.ReadAllText(_pathJsonFile);
                 _architecture = JsonConvert.DeserializeObject<Architecture>(json);
@@ -104,7 +109,9 @@ namespace DemoACadSharp
                 setDataToTreeView_Config();
                 string imgName = Architecture.getInstance().Floors[0].ImageURL;
                 pictureBoxThumbNail.Image = LoadImage(imgName);
-                _isOpen = false;
+                this.Text = _nameProject;
+                _isOpen = false; 
+                _isChange = false;
             }
 
         }
@@ -115,6 +122,9 @@ namespace DemoACadSharp
         private void importFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             importFile();
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         private void importFile()
@@ -186,11 +196,6 @@ namespace DemoACadSharp
             }
 
             return listNo0Entities;
-        }
-
-        private void openFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFile();
         }
 
         private void openFile()
@@ -320,6 +325,9 @@ namespace DemoACadSharp
             {
                 MessageBox.Show("You have not selected any Entity yet!!");
             }
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         // Hàm này con chó nào đụng dzô tao đấm chếch mọe à
@@ -431,6 +439,7 @@ namespace DemoACadSharp
         //sự kiện doubleClick vào node con
         private void treeViewSelectedEntity_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            _isChange = true;
             _currentFloor = Int32.Parse(cbNumberFloor.Text) - 1;
             Floor floor = Architecture.getInstance().Floors[_currentFloor];
 
@@ -574,6 +583,9 @@ namespace DemoACadSharp
                     e.Node.ContextMenuStrip = contextMenuStrip1;
                 }
             }
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         private void SetNoneMenuItemToChecked()
@@ -680,6 +692,9 @@ namespace DemoACadSharp
 
                 ResponsiveTreeNode(layerName, objectType, typeOfUnityEntity);
             }
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         private void btnExportToJSON_Click(object sender, EventArgs e)
@@ -729,7 +744,6 @@ namespace DemoACadSharp
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             /*UnityArchitecture unityArchitecture = new UnityArchitecture();
             unityArchitecture.NameArchitecture = txtNameHouse.Text;
             unityArchitecture.NumberOfFloor = _architecture.NumberOfFloor;
@@ -796,6 +810,9 @@ namespace DemoACadSharp
             process.StandardInput.Flush();
             process.StandardInput.Close();
             process.WaitForExit();
+
+            _isChange = true;
+            this.Text = _nameProject + "*";
 
         }
 
@@ -1051,6 +1068,9 @@ namespace DemoACadSharp
             //checked item picked
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
             clickedItem.Checked = !clickedItem.Checked;
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         private void ResponsiveTreeNode(string layerName, string objectType, string selected)
@@ -1139,6 +1159,7 @@ namespace DemoACadSharp
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+
             _architecture.NumberOfFloor++;
             _architecture.Floors.Add(new Floor());
             cbNumberFloor.Text = _architecture.NumberOfFloor.ToString();
@@ -1159,6 +1180,8 @@ namespace DemoACadSharp
             {
                 openFile();
             }
+            _isChange = true;
+            this.Text = _nameProject + "*";
         }
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1177,11 +1200,34 @@ namespace DemoACadSharp
         private void txtNameHouse_TextChanged(object sender, EventArgs e)
         {
             Architecture.getInstance().NameArchitecture = txtNameHouse.Text;
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
         }
 
         private void cbBoxTopRoof_SelectedValueChanged(object sender, EventArgs e)
         {
             Architecture.getInstance().TypeOfRoof = cbBoxTopRoof.Text;
+            _isChange = true;
+            this.Text = _nameProject + "*";
+
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_isChange)
+            {
+                DialogResult result = MessageBox.Show("Do you want to save the changes you made to in " + _nameProject + " ?", "!Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.No)
+                {
+                } else if(result == DialogResult.Yes)
+                {
+                    _isChange=false;
+                    string architectureJSON = JsonConvert.SerializeObject(Architecture.getInstance(), Formatting.Indented);
+                    File.WriteAllText(_pathJsonFile, architectureJSON);
+
+                }    
+            }
         }
     }
 }

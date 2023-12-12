@@ -15,9 +15,13 @@ namespace DemoACadSharp
 {
     public partial class ProjectForm : Form
     {
+        int rowNumber = 0;
+        bool isDeleteProject = false;
+
         public ProjectForm()
         {
             InitializeComponent();
+            dataGridView1.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -98,10 +102,10 @@ namespace DemoACadSharp
 
         private void ProjectForm_Load(object sender, EventArgs e)
         {
-            LoadRecentProject();
+            LoadRecentProject(isDeleteProject);
         }
 
-        private void LoadRecentProject()
+        private void LoadRecentProject(bool isDelete)
         {
             ManageProject manageProject = new ManageProject();
             string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -134,17 +138,32 @@ namespace DemoACadSharp
                     dataGridView1.Columns["Path"].Width = 230;
                     dataGridView1.Columns["DateTime"].Width = 130;
 
+                    if (isDelete == false)
+                    {
+                        DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+                        buttonColumn.Name = "Options";
+                        buttonColumn.HeaderText = "Options";
+                        buttonColumn.Text = "..."; // Văn bản hiển thị trên nút
+                        buttonColumn.UseColumnTextForButtonValue = true;
+
+                        // Thêm cột nút vào DataGridView
+                        dataGridView1.Columns.Add(buttonColumn);
+                        dataGridView1.Columns["Options"].Width = 44;
+                    }
+
                     dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                     // Thiết lập căn giữa cho văn bản trong các ô
                     dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dataGridView1.AllowUserToAddRows = false;
+                    dataGridView1.Visible = true;
                 }
             }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Kiểm tra người dùng đã nhấp vào một dòng hợp lệ hay không
+            if (e.RowIndex < 3 && e.ColumnIndex != dataGridView1.Columns["Options"].Index) // Kiểm tra người dùng đã nhấp vào một dòng hợp lệ hay không
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
@@ -184,6 +203,66 @@ namespace DemoACadSharp
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                DataGridViewButtonCell buttonCell = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewButtonCell;
+                if (buttonCell != null) // Xác định xem ô nút được nhấp
+                {
+                    if (dataGridView1.ContextMenuStrip != null)
+                    {
+                        dataGridView1.ContextMenuStrip.Show(dataGridView1, dataGridView1.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Location); // Hiển thị ContextMenuStrip tại vị trí của ô nút
+                        rowNumber = e.RowIndex;
+                    }
+                }
+            }
+        }
+
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+            if (clickedItem != null)
+            {
+                string itemName = clickedItem.Text;
+                if (itemName == "Remove Project From List")
+                {
+                    isDeleteProject = true;
+
+                    DataGridViewRow row = dataGridView1.Rows[rowNumber];
+                    string projectName = row.Cells["ProjectName"].Value.ToString();
+                    string path = row.Cells["Path"].Value.ToString();
+                    DateTime dateTime = (DateTime)row.Cells["DateTime"].Value;
+                    Project currentProject = new Project(projectName, path, dateTime);
+                    ManageProject manageProject = new ManageProject();
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    string appNameFoler = Path.Combine(appDataFolder, "HKTArchitecture");
+                    bool isExist = manageProject.GetAppDataFolderPath(appDataFolder, appNameFoler);
+
+                    if (isExist)
+                    {
+                        List<Project> tempList = new List<Project>();
+                        string filePath = Path.Combine(appNameFoler, "ListProject.json");
+                        if (File.Exists(filePath) || Directory.Exists(filePath))
+                        {
+                            string jsonContent = File.ReadAllText(filePath);
+                            manageProject.ListProject = JsonConvert.DeserializeObject<List<Project>>(jsonContent);
+                            foreach (Project project in manageProject.ListProject)
+                            {
+                                if (project.NameProject != currentProject.NameProject)
+                                {
+                                    tempList.Add(project);
+                                }
+                            }
+                        }
+
+                        manageProject.ListProject.Clear();
+                        manageProject.ListProject = tempList;
+
+                        File.WriteAllText(filePath, JsonConvert.SerializeObject(manageProject.ListProject, Formatting.Indented));
+
+                        LoadRecentProject(isDeleteProject);
+                    }
                 }
             }
         }
