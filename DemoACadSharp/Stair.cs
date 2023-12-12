@@ -14,5 +14,8 @@ namespace DemoACadSharp
 
         public Stair(string typeOfUnityEntity) : base(typeOfUnityEntity) { }
 
+        public Stair() { }
+
+
     }
 }

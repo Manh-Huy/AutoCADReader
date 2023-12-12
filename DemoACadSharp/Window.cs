@@ -15,5 +15,7 @@ namespace DemoACadSharp
         public Window(string _typeOfUnityEntity) : base(_typeOfUnityEntity)
         {
         }
+
+        public Window() { }
     }
 }

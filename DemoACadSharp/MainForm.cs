@@ -83,6 +83,16 @@ namespace DemoACadSharp
                 _currentFloor = 0;
                 string json = File.ReadAllText(_pathJsonFile);
                 _architecture = JsonConvert.DeserializeObject<Architecture>(json);
+    
+
+                for (int i = 0; i < _architecture.NumberOfFloor; i++)
+                {
+                    _architecture.Floors[i].ListUnityEntities.Clear();
+                    _architecture.Floors[i].ListUnityEntities.AddRange(_architecture.Floors[i].ListWall);
+                    _architecture.Floors[i].ListUnityEntities.AddRange(_architecture.Floors[i].ListDoor);
+                    _architecture.Floors[i].ListUnityEntities.AddRange(_architecture.Floors[i].ListStair);
+                    _architecture.Floors[i].ListUnityEntities.AddRange(_architecture.Floors[i].ListWindow);
+                }
 
                 txtNameHouse.Text = _architecture.NameArchitecture;
                 cbBoxTopRoof.Text = _architecture.TypeOfRoof;
@@ -640,18 +650,22 @@ namespace DemoACadSharp
                         {
                             case Wall wall:
                                 floor.ListUnityEntities.Add(wall);
+                                floor.ListWall.Add(wall);
                                 break;
 
                             case Stair stair:
                                 floor.ListUnityEntities.Add(stair);
+                                floor.ListStair.Add(stair);
                                 break;
 
                             case Door door:
                                 floor.ListUnityEntities.Add(door);
+                                floor.ListDoor.Add(door);
                                 break;
 
                             case Window window:
                                 floor.ListUnityEntities.Add(window);
+                                floor.ListWindow.Add(window);
                                 break;
 
                             case Power power:

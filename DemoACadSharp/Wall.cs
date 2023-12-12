@@ -19,6 +19,9 @@ namespace DemoACadSharp
         }
 
         public Wall(string typeOfUnityEntity) : base(typeOfUnityEntity) { }
+
+        public Wall() { }
+
     }
 
 

@@ -13,5 +13,7 @@ namespace DemoACadSharp
         }
         public Door(string typeOfUnityEntity) : base(typeOfUnityEntity) { }
 
+        public Door() { }
+
     }
 }

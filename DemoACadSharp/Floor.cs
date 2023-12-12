@@ -15,6 +15,10 @@ namespace DemoACadSharp
         List<AcadEntity> listUniqueEntities ;
         List<AcadEntity> listUniqueSelectedEntities = new List<AcadEntity>();
         List<UnityEntity> listUnityEntities = new List<UnityEntity>();
+        List<Wall> listWall = new List<Wall>();
+        List<Door> listDoor = new List<Door>();
+        List<Stair> listStair = new List<Stair>();
+        List<Window> listWindow = new List<Window>();
 
         public int Order { get => order; set => order = value; }
         public string ImageURL { get => imageURL; set => imageURL = value; }
@@ -23,7 +27,10 @@ namespace DemoACadSharp
         public List<AcadEntity> ListUniqueEntities { get => listUniqueEntities; set => listUniqueEntities = value; }
         public List<AcadEntity> ListUniqueSelectedEntities { get => listUniqueSelectedEntities; set => listUniqueSelectedEntities = value; }
         public List<UnityEntity> ListUnityEntities { get => listUnityEntities; set => listUnityEntities = value; }
-
+        public List<Wall> ListWall { get => listWall; set => listWall = value; }
+        public List<Door> ListDoor { get => listDoor; set => listDoor = value; }
+        public List<Stair> ListStair { get => listStair; set => listStair = value; }
+        public List<Window> ListWindow { get => listWindow; set => listWindow = value; }
 
         public List<AcadEntity> getAllEntities() { return listAllEntities; }
         public List<AcadEntity> getSelectedEntities() { return listSelectedEntities; }
