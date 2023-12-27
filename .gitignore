@@ -17,7 +17,6 @@
 mono_crash.*
 
 # Build results
-[Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
 x64/
@@ -91,7 +90,6 @@ StyleCopReport.xml
 *.tlog
 *.vspscc
 *.vssscc
-.builds
 *.pidb
 *.svclog
 *.scc
@@ -395,6 +393,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-DemoACadSharp/bin/
 
 DemoACadSharp/obj/
